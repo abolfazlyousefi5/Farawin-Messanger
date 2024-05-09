@@ -1,6 +1,6 @@
 <?php
 
-class register  extends Controller
+class register extends Controller
 {
     public $chekLogin = "";
 
@@ -8,13 +8,13 @@ class register  extends Controller
     {
         parent::__construct();
 
-        if ($this->chekLogin = !FALSE) {
-            header("Location:" . URL);
-        }
+        // if ($this->chekLogin = !FALSE) {
+        //     header("Location:" . URL);
+        // }
     }
     function index()
     {
-        $this->view('register /index');
+        $this->view('register/index');
     }
     function insert_data()
     {
@@ -22,3 +22,4 @@ class register  extends Controller
         $pass = $_POST['password'];
     }
 }
+?>

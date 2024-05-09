@@ -17,8 +17,8 @@
         function model($modelUrl)
         {
             require_once 'app/models/model_' . $modelUrl . '.php';
-            $classname = 'model_' . $modelUrl;
-            $this->model = new $classname;
+            $class_name = 'model_' . $modelUrl;
+            $this->model = new $class_name;
         }
     }
 ?>
