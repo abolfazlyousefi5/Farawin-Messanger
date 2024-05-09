@@ -9,7 +9,7 @@
 
 <body>
     <h2>Login</h2>
-    <form action="register/insert_data">
+    <form action="register/insert_data" method="post">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" required><br>
         <label for="password">Password:</label><br>
