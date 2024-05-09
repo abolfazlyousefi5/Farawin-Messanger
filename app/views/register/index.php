@@ -7,7 +7,8 @@
     <title>Login</title>
 </head>
 
-<body>
+<body style="margin-top: 150px;">
+    <center>
     <h2>Login</h2>
     <form action="register/insert_data" method="post">
         <label for="username">Username:</label><br>
@@ -16,6 +17,7 @@
         <input type="password" id="password" name="password" required><br>
         <input type="submit" value="Login">
     </form>
+    </center>
 </body>
 
 </html>

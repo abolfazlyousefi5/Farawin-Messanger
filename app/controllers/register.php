@@ -22,4 +22,3 @@ class register extends Controller
         $pass = $_POST['password'];
     }
 }
-?>
