@@ -18,7 +18,6 @@ class register extends Controller
     }
     function insert_data()
     {
-        $username = $_POST['username'];
-        $pass = $_POST['password'];
+        $this->model->insert_data($_POST);
     }
 }

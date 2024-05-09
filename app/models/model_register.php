@@ -5,11 +5,6 @@ class model_register extends Model
     {
         parent::__construct();
     }
-    function insert($post)
-    {
-        $username = $post['username'];
-        $pass = md5($post['password']);
-    }
    
     function insert_data($post)
     {
@@ -18,11 +13,8 @@ class model_register extends Model
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
-            if($post['password']!=$post['confirm_password']){
-                echo "error";
-            }
-            $sql = "INSERT INTO loginform (username,password,register_date) VALUES (?,?,?)";
-            $params = array($post['username'], md5($post['password']), self::jalali_date("Y/m/d"));
+            $sql = "INSERT INTO loginform (username,password) VALUES (?,?)";
+            $params = array($post['username'], md5($post['password']));
             $this->doQuery($sql, $params);
 
             echo "ok";
