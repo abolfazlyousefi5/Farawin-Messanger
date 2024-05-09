@@ -12,6 +12,7 @@ class register extends Controller
         //     header("Location:" . URL);
         // }
     }
+    
     function index()
     {
         $this->view('register/index');
