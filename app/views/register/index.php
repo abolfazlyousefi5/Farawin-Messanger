@@ -195,15 +195,15 @@
                 <label for="username">Username:</label>
             </div>
             <div class="user-box">
-            <input type="password" id="password" name="password" required>
-            <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password:</label>
             </div>
             <a href="#">
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
-                <input type="submit" value="Login">
+                <input class="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none;">
             </a>
         </form>
     </div>
