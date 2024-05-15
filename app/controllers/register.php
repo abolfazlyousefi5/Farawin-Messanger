@@ -1,18 +1,18 @@
 <?php
 
-class register extends Controller
+class register extends  Controller
 {
-    public $chekLogin = "";
+    public $checkLogin = '';
 
     function __construct()
     {
         parent::__construct();
-
-        // if ($this->chekLogin = !FALSE) {
-        //     header("Location:" . URL);
-        // }
+        $this->checkLogin = Model::session_get("username");
+        if ($this->checkLogin != FALSE) {
+            header("Location:" . URL);
+        }
     }
-    
+
     function index()
     {
         $this->view('register/index');
@@ -21,4 +21,5 @@ class register extends Controller
     {
         $this->model->insert_data($_POST);
     }
+
 }

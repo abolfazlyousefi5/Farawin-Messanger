@@ -198,6 +198,10 @@
                 <input type="password" id="password" name="password" required>
                 <label for="password">Password:</label>
             </div>
+            <div class="user-box">
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <label for="password">Confirm-Password:</label>
+            </div>
             <a href="#">
                 <span></span>
                 <span></span>
