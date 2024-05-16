@@ -16,11 +16,11 @@ class model_login extends Model
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
-            echo "not found";
+            echo "پیدا نشد";
         } else {
             $this->session_set("username", $result[0]['username']);
             $this->checkLogin = $result[0]['username'];
-            echo "ok";
+            echo "ورود با موفقیت انجام شد";
         }
     }
 }
