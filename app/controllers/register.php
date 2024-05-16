@@ -2,7 +2,7 @@
 
 class register extends  Controller
 {
-    public $checkLogin = '';
+    public $checkLogin = "";
 
     function __construct()
     {
