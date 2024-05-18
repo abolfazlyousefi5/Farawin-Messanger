@@ -15,10 +15,10 @@ class Index extends Controller
 
     function index()
     {
-//        $widget = $this->model->getWidget($this->checkLogin);
-//        $data = array('widget' => $widget);
+    //    $widget = $this->model->getWidget($this->checkLogin);
+    //    $data = array('widget' => $widget);
 
-//        $this->view('index/index', $data);
+    //    $this->view('index/index', $data);
         $this->view('index/index');
     }
 

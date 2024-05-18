@@ -13,14 +13,15 @@ class model_register extends Model
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
-            if($post['password']!=$post['confirm-password']){
+            if ($post['password'] != $post['confirm-password']) {
                 echo "error";
             } else {
                 $sql = "INSERT INTO loginform (username,password,register_date) VALUES (?,?,?)";
                 $params = array($post['username'], md5($post['password']), self::jalali_date("Y/m/d"));
                 $this->doQuery($sql, $params);
+                // $_SESSION['username'] = $post['username'];
 
-                echo "ok";
+                echo "اطلاعات با موفقیت ذخیره شد";
 
                 header("Location:" . URL);
             }
@@ -28,5 +29,4 @@ class model_register extends Model
             echo "error";
         }
     }
-
 }

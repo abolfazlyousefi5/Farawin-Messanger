@@ -16,12 +16,23 @@ class model_login extends Model
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
-            echo "پیدا نشد";
+            echo json_encode(
+                array(
+                    "Massage" => "Not Found",
+                    "status_code" => "404"
+
+                )
+            );
         } else {
             $this->session_set("username", $result[0]['username']);
             $this->checkLogin = $result[0]['username'];
-            echo "ورود با موفقیت انجام شد";
+            echo json_encode(
+                array(
+                    "Massage" => "ok",
+                    "status_code" => "200"
+
+                )
+            );
         }
     }
 }
-?>
