@@ -40,8 +40,8 @@
 <body>
     <h2 class="h2">Main Page</h2>
     <div class="button-container">
-        <a class="button button1" href="app/controller/login.php"> Login</a>
-        <a class="button button2" href="app/register.php"> Register</a>
+        <a class="button button1" href="https://localhost/farawin-Messanger-master/login"> Login</a>
+        <a class="button button2" href="https://localhost/farawin-Messanger-master/register"> Register</a>
     </div>
 
 </body>
