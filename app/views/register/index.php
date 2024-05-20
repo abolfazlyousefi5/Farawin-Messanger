@@ -211,6 +211,39 @@
             </a>
         </form>
     </div>
-</body>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.submit').on('click', function(e) {
+                e.preventDefault();
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm-password').val();
+
+                if (username == "" || password == "" || confirmPassword == "") {
+                    alert('Please fill in all fields');
+                } else if (password != confirmPassword) {
+                    alert('Password and Confirm Password do not match');
+                } else {
+                    $.ajax({
+                        url: 'register/insert_data',
+                        type: 'POST',
+                        data: {
+                            username: username,
+                            password: password,
+                            confirm_password: confirmPassword
+                        },
+                        success: function(response) {
+                            console.log(response); 
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }""
+            });
+        });
+    </script>
+</body>
 </html>
