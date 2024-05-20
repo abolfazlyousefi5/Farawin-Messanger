@@ -189,7 +189,7 @@
 <body>
     <div class="login-box">
         <h2>Login</h2>
-        <form action="register/insert_data" method="post">
+        <form onsubmit="return false;">
             <div class="user-box">
                 <input type="text" id="username" name="username" required>
                 <label for="username">Username:</label>
@@ -207,19 +207,20 @@
                 <span></span>
                 <span></span>
                 <span></span>
-                <input class="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none;">
+                <input class="submit" id="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none;">
             </a>
+            <br>
+            <span id="#showError"></span>
         </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.submit').on('click', function(e) {
-                e.preventDefault();
-                var username = $('#username').val();
-                var password = $('#password').val();
-                var confirmPassword = $('#confirm-password').val();
+            $('#submit').on('click', function() {
+                var username = $('#username').value;
+                var password = $('#password').value;
+                var confirmPassword = $('#confirm-password').value;
 
                 if (username == "" || password == "" || confirmPassword == "") {
                     alert('Please fill in all fields');
@@ -227,23 +228,30 @@
                     alert('Password and Confirm Password do not match');
                 } else {
                     $.ajax({
-                        url: 'register/insert_data',
+                        url: " <?= URL; ?>register/insert_data",
                         type: 'POST',
                         data: {
-                            username: username,
-                            password: password,
-                            confirm_password: confirmPassword
+                            "username": username,
+                            " password": password,
+                            "confirm_password": confirmPassword
                         },
                         success: function(response) {
-                            console.log(response); 
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
+                        response = JSON.parse(response);
+                        if (response.status_code == "404") {
+                            $("#showError").text("UserName or Password or confirm password Is Wrong")
+                        } else {
+                            window.location("<?= URL; ?>");
                         }
+                    },
+                    error: function(response) {
+                        alert("Error");
+                    }
                     });
-                }""
+                }
+                ""
             });
         });
     </script>
 </body>
+
 </html>
