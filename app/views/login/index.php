@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="app/views/login/style.css">
+    <base href="<?= URL ?>">
+    <link rel="stylesheet" href="public/css/style_login.css">
     <title>Login-form</title>
     <base href="<?= URL ?>">
 </head>
