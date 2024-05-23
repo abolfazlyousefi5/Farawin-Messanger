@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="<?= URL ?>">
+    <base href="<?= URL; ?>">
     <link rel="stylesheet" href="public/css/style_register.css">
     <title>Login</title>
 </head>
@@ -30,14 +30,14 @@
                 <span></span>
                 <span></span>
                 <span></span>
-                <input class="submit" id="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none;">
+                <input class="submit" id="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none; border-radius: 6px;">
             </a>
             <br>
             <span id="#showError"></span>
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#submit').on('click', function() {
@@ -59,16 +59,16 @@
                             "confirm_password": confirmPassword
                         },
                         success: function(response) {
-                        response = JSON.parse(response);
-                        if (response.status_code == "404") {
-                            $("#showError").text("UserName or Password or confirm password Is Wrong")
-                        } else {
-                            window.location("<?= URL; ?>");
+                            response = JSON.parse(response);
+                            if (response.status_code == "404") {
+                                $("#showError").text("UserName or Password or confirm password Is Wrong")
+                            } else {
+                                window.location("<?= URL; ?>");
+                            }
+                        },
+                        error: function(response) {
+                            alert("Error");
                         }
-                    },
-                    error: function(response) {
-                        alert("Error");
-                    }
                     });
                 }
                 ""
