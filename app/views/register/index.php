@@ -41,9 +41,9 @@
     <script>
         $(document).ready(function() {
             $('#submit').on('click', function() {
-                var username = $('#username').value;
-                var password = $('#password').value;
-                var confirmPassword = $('#confirm-password').value;
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm-password').val();
 
                 if (username == "" || password == "" || confirmPassword == "") {
                     alert('Please fill in all fields');
@@ -51,11 +51,11 @@
                     alert('Password and Confirm Password do not match');
                 } else {
                     $.ajax({
-                        url: " <?= URL; ?>register/insert_data",
+                        url: "<?= URL; ?>register/insert_data",
                         type: 'POST',
                         data: {
                             "username": username,
-                            " password": password,
+                            "password": password,
                             "confirm_password": confirmPassword
                         },
                         success: function(response) {
@@ -63,7 +63,7 @@
                             if (response.status_code == "404") {
                                 $("#showError").text("UserName or Password or confirm password Is Wrong")
                             } else {
-                                window.location("<?= URL; ?>");
+                                window.location="<?= URL; ?>";
                             }
                         },
                         error: function(response) {
@@ -71,7 +71,7 @@
                         }
                     });
                 }
-                ""
+                
             });
         });
     </script>

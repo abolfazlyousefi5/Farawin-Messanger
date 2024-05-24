@@ -13,7 +13,7 @@ class model_register extends Model
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
-            if ($post['password'] != $post['confirm-password']) {
+            if ($post['password'] != $post['confirm_password']) {
                 echo json_encode(
                     array(
                         "Massage" => "Please Fill All Fields!",
@@ -32,7 +32,6 @@ class model_register extends Model
 
                     )
                 );
-                header("Location:" . URL);
             }
         } else {
             echo json_encode(
