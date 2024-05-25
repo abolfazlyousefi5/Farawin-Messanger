@@ -15,7 +15,7 @@
         <div class="login">
             <h1>Login</h1>
             <form method="post">
-                <input id="username" type="text" name="username" placeholder="Username" required="required" />
+                <input id="phone" type="text" name="phone" placeholder="Phone" required="required" />
                 <input id="password" type="password" name="password" placeholder="Password" required="required" />
                 <input id="btn" type="submit" value="send data" class="class=btn btn-primary btn-block btn-large">
                 <br>
@@ -28,11 +28,11 @@
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         $("#btn").on("click", function() {
-            var username = document.getElementById("username").value;
+            var phone = document.getElementById("phone").value;
             var password = document.getElementById("password").value;
 
-            if (username == "") {
-                $("#showError").text("Username Is Empty")
+            if (phone == "") {
+                $("#showError").text("phone Is Empty")
             } else if (password == "") {
                 $("#showError").text("Password Is Empty")
             } else {
@@ -40,13 +40,13 @@
                     url: " <?= URL; ?>login/check_data",
                     type: "POST",
                     data: {
-                        "username": username,
+                        "phone": phone,
                         "password": password
                     },
                     success: function(response) {
                         response = JSON.parse(response);
                         if (response.status_code == "404") {
-                            $("#showError").text("UserName or Password Is Wrong")
+                            $("#showError").text("phone or Password Is Wrong")
                         } else {
                             window.location("<?= URL; ?>");
                         }

@@ -8,8 +8,8 @@ class model_register extends Model
     }
     function insert_data($post)
     {
-        $sql = "SELECT * FROM loginform WHERE username=?";
-        $params = array($post['username']);
+        $sql = "SELECT * FROM loginform WHERE phone=?";
+        $params = array($post['phone']);
         $result = $this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
@@ -21,10 +21,10 @@ class model_register extends Model
                     )
                 );
             } else {
-                $sql = "INSERT INTO loginform (username,password,register_date) VALUES (?,?,?)";
-                $params = array($post['username'], md5($post['password']), self::jalali_date("Y/m/d"));
+                $sql = "INSERT INTO loginform (phone,password,register_date) VALUES (?,?,?)";
+                $params = array($post['phone'], md5($post['password']), self::jalali_date("Y/m/d"));
                 $this->doQuery($sql, $params);
-                $_SESSION['username'] = $post['username'];
+                $_SESSION['phone'] = $post['phone'];
                 echo json_encode(
                     array(
                         "Massage" => "Ok",

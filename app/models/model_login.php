@@ -11,8 +11,8 @@ class model_login extends Model
 
     function check_data($post)
     {
-        $sql = "SELECT * FROM loginform WHERE username=? and password=?";
-        $params =array($post['username'], md5($post['password']));
+        $sql = "SELECT * FROM loginform WHERE phone=? and password=?";
+        $params =array($post['phone'], md5($post['password']));
         $result =$this->doSelect($sql, $params);
 
         if (sizeof($result) == 0) {
@@ -24,8 +24,8 @@ class model_login extends Model
                 )
             );
         } else {
-            $this->session_set("username", $result[0]['username']);
-            $this->checkLogin= $result[0]['username'];
+            $this->session_set("phone", $result[0]['phone']);
+            $this->checkLogin= $result[0]['phone'];
             echo json_encode(
                 array(
                     "Massage" => "ok",

@@ -14,8 +14,8 @@
         <h2>Login</h2>
         <form onsubmit="return false;">
             <div class="user-box">
-                <input type="text" id="username" name="username" required>
-                <label for="username">Username:</label>
+                <input type="text" id="phone" name="phone" required>
+                <label for="phone">phone:</label>
             </div>
             <div class="user-box">
                 <input type="password" id="password" name="password" required>
@@ -41,11 +41,11 @@
     <script>
         $(document).ready(function() {
             $('#submit').on('click', function() {
-                var username = $('#username').val();
+                var phone = $('#phone').val();
                 var password = $('#password').val();
                 var confirmPassword = $('#confirm-password').val();
 
-                if (username == "" || password == "" || confirmPassword == "") {
+                if (phone == "" || password == "" || confirmPassword == "") {
                     alert('Please fill in all fields');
                 } else if (password != confirmPassword) {
                     alert('Password and Confirm Password do not match');
@@ -54,14 +54,14 @@
                         url: "<?= URL; ?>register/insert_data",
                         type: 'POST',
                         data: {
-                            "username": username,
+                            "phone": phone,
                             "password": password,
                             "confirm_password": confirmPassword
                         },
                         success: function(response) {
                             response = JSON.parse(response);
                             if (response.status_code == "404") {
-                                $("#showError").text("UserName or Password or confirm password Is Wrong")
+                                $("#showError").text("phone or Password or confirm password Is Wrong")
                             } else {
                                 window.location="<?= URL; ?>";
                             }
