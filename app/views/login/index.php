@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <form onsubmit="return false;">
+    <form onsubmit="return false;" class="box">
         <div class="login">
             <h1>Login</h1>
             <form method="post">
