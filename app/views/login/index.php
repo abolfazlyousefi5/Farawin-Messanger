@@ -27,6 +27,20 @@
 
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
+        function validatePhone(phone) {
+            var regex = /^[0-9]{1,11}$/;
+            return regex.test(phone);
+        }
+
+        $("#btn").on("click", function() {
+            var phone = document.getElementById("phone").value;
+            if (!validatePhone(phone)) {
+                $("#showError").text("The phone number is invalid");
+                return false;
+            } else
+                return true;
+        });
+
         $("#btn").on("click", function() {
             var phone = document.getElementById("phone").value;
             var password = document.getElementById("password").value;

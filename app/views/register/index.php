@@ -11,11 +11,11 @@
 
 <body>
     <div class="login-box">
-        <h2>Login</h2>
+        <h2>Register</h2>
         <form onsubmit="return false;">
             <div class="user-box">
                 <input type="text" id="phone" name="phone" required>
-                <label for="phone">phone:</label>
+                <label for="phone">Phone:</label>
             </div>
             <div class="user-box">
                 <input type="password" id="password" name="password" required>
@@ -39,6 +39,18 @@
 
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
+        function validatePhone(phone) {
+            var regex = /^[0-9]{1,11}$/;
+            return regex.test(phone);
+        }
+        $('#submit').on('click', function() {
+            var phone = $('#phone').val();
+            if (!validatePhone(phone)) {
+                alert('The phone number is invalid');
+                return false;
+            } else
+                return true;
+        });
         $(document).ready(function() {
             $('#submit').on('click', function() {
                 var phone = $('#phone').val();
@@ -63,7 +75,7 @@
                             if (response.status_code == "404") {
                                 $("#showError").text("phone or Password or confirm password Is Wrong")
                             } else {
-                                window.location="<?= URL; ?>";
+                                window.location = "<?= URL; ?>";
                             }
                         },
                         error: function(response) {
@@ -71,7 +83,7 @@
                         }
                     });
                 }
-                
+
             });
         });
     </script>
