@@ -4,6 +4,9 @@
 <head>
     <title>Farawin Massanger</title>
     <style>
+        body{
+            background-color: #243b55;
+        }
         .button-container {
             text-align: center;
             margin-top: 19%;
