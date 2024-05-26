@@ -18,8 +18,9 @@
                 <input id="phone" type="text" name="phone" placeholder="Phone" required="required" />
                 <input id="password" type="password" name="password" placeholder="Password" required="required" />
                 <input id="btn" type="submit" name="submit" value="Login">
+                <a href="https://localhost/farawin-Messanger-master/register" class="beautiful-button">Don't have an account? Please register</a>
                 <br>
-                <span id="showError"></span>
+                <span id="showError" style="color: darkgrey;"></span>
             </form>
         </div>
     </form>

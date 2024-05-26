@@ -65,4 +65,25 @@ body{
   .login-form input[type="submit"]:hover{
     background: #2ecc71;
   }
+  .beautiful-button {
+    background-color: #0e1621;; /* رنگ پس زمینه */
+    border: none;
+    color: rgb(75, 75, 75); /* رنگ متن */
+    padding: 15px 32px; /* اندازه پدینگ */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 1px -2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px; /* شکل گرد کردن گوشه‌ها */
+  }
+  
+  .beautiful-button:hover {
+    background-color: #101220; /* تغییر رنگ در حالت هاور */
+    box-shadow: 0 5px #1b0f19; /* تغییر سایه در حالت هاور */
+  }
+  
+  
   

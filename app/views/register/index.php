@@ -28,10 +28,11 @@
             <a href="#">
                 <span></span>
                 <span></span>
-                <span></span>
-                <span></span>
                 <input class="submit" id="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none; border-radius: 6px;">
+                <span></span>
+                <span></span>
             </a>
+            <a href="https://localhost/farawin-Messanger-master/login" class="beautiful-button">Do you have an account?</a>
             <br>
             <span id="#showError"></span>
         </form>
