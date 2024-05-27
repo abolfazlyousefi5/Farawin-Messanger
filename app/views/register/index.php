@@ -76,7 +76,7 @@
                             if (response.status_code == "404") {
                                 $("#showError").text("phone or Password or confirm password Is Wrong")
                             } else {
-                                window.location = "<?= URL; ?>";
+                                window.location = "<?= URL; ?> login";
                             }
                         },
                         error: function(response) {

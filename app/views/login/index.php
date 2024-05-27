@@ -59,16 +59,16 @@
                     success: function(response) {
                         response = JSON.parse(response);
                         if (response.status_code == "404") {
-                            $("#showError").text("phone or Password Is Wrong")
+                            alert("phone or Password Is Wrong")
                         } else {
-                            // window.location("<?= URL; ?>");
+                            window.location = "<?= URL; ?>";
+                            alert("مشخصات با موفقیت ثبت شد");
                         }
                     },
                     error: function(response) {
                         alert(response);
                     }
                 })
-                // alert("مشخصات با موفقیت ثبت شد");
             }
         });
     </script>
