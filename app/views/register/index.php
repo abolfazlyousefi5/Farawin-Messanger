@@ -28,7 +28,7 @@
             <a href="#">
                 <span></span>
                 <span></span>
-                <input class="submit" id="submit" type="submit" value="SUBMIT" style="background-color: #00a5f6; font-size: 15px; border: none; border-radius: 6px;">
+                <input class="submit" id="submit" type="submit" value="Submit" style="background:none; font-size: 15px; border: none; border-radius: 6px; color:aliceblue; font-family:Arial, Helvetica, sans-serif; font-size:17px;">
                 <span></span>
                 <span></span>
             </a>
