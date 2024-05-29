@@ -27,8 +27,18 @@
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         function validatePhone(phone) {
-            var regex = /^[0-9]{1,11}$/;
+            var regex = /^(?:98|\+98|0098|0)?9[0-9]{9}{1,11}$/;
             return regex.test(phone);
+        }
+
+        function CheckPassword(inputtxt) {
+            var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            if (inputtxt.match(passw)) {
+                return true;
+            } else {
+                return false;
+            }
+
         }
 
         $("#btn").on("click", function() {
@@ -48,7 +58,9 @@
                 $("#showError").text("phone Is Empty")
             } else if (password == "") {
                 $("#showError").text("Password Is Empty")
-            } else {
+            } else if (!CheckPassword(password)) {
+                alert("The password must be between 6 and 15 digits!")
+            } else
                 $.ajax({
                     url: " <?= URL; ?>login/check_data",
                     type: "POST",
@@ -69,7 +81,6 @@
                         alert(response);
                     }
                 })
-            }
         });
     </script>
 </body>

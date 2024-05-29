@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="<?= URL; ?>">
     <link rel="stylesheet" href="public/css/style_register.css">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 
 <body>
@@ -41,28 +41,33 @@
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         function validatePhone(phone) {
-            var regex = /^[0-9]{1,11}$/;
+            var regex = /^(?:98|\+98|0098|0)?9[0-9]{9}{1,11}$/;
+            return regex.test(phone);
+            }
+            
+            function validatePhone(phone) {
+            var regex = /^(?:98|\+98|0098|0)?9\d{9}$/;
             return regex.test(phone);
         }
+        
         $('#submit').on('click', function() {
             var phone = $('#phone').val();
-            if (!validatePhone(phone)) {
-                alert('The phone number is invalid');
-                return false;
-            } else
-                return true;
+            return true;
         });
         $(document).ready(function() {
             $('#submit').on('click', function() {
                 var phone = $('#phone').val();
                 var password = $('#password').val();
                 var confirmPassword = $('#confirm-password').val();
-
                 if (phone == "" || password == "" || confirmPassword == "") {
                     alert('Please fill in all fields');
+                } else if (!validatePhone(phone)) {
+                    alert('The phone number is invalid');
                 } else if (password != confirmPassword) {
                     alert('Password and Confirm Password do not match');
-                } else {
+                } else if(!CheckPassword(password)){
+                    alert("The password must be between 6 and 15 digits!")
+                }
                     $.ajax({
                         url: "<?= URL; ?>register/insert_data",
                         type: 'POST',
@@ -83,8 +88,6 @@
                             alert("Error");
                         }
                     });
-                }
-
             });
         });
     </script>
