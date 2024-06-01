@@ -22,8 +22,8 @@
 				<div class="card mb-sm-3 mb-md-0 contacts_card">
 					<div class="card-header">
 						<div class="input-group" style="display: flex; justify-content: flex-start; flex-direction: row-reverse;" ;>
-							<a href="modal"><i class="fa fa-plus-circle plus"></i></a>
-							<a href=""><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
+							<a href="#" id="plus"><i class="fa fa-plus-circle plus"></i></a>
+							<a href="#" id="plus"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
 						</div>
 					</div>
 					<div class="card-body contacts_body">
@@ -194,76 +194,78 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
+	<div id="modal">
+		<div class="content">
+			<h2 class="h2-modal">Add Contact</h2>
+            <form onsubmit="return false">
+                <input type="text" placeholder="Name" id="name2" class="contact"><br>
+                <input type="text" placeholder="Phone" id="phone2" class="contact" maxlength="11"><br>
+                <button type="submit" id="add" class="contact">Add Contact</button><br>
+                <span id="warning1" style="color: white;display:none;">bbbbbbbbbbb</span>
+            </form>
+        </div>
+    </div>
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!-- <script src="public/js/jquery-3.4.1.min.js"></script> -->
+	<script type="text/javascript" src="public/js/demo.js"></script>
 	<script>
-		function validatePhone(phone) {
-			var regex = /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/;
-			if (phone.match(phone)) {
-				return true;
-			} else {
-				return false;
-			}
+		function Checkphone(phone) {
+			var regex = new regex("^(\\+98|0)?9\\d{9}$");
+			var result = regex.test(phone);
+			return result;
 		}
 
-		function CheckPassword(inputtxt) {
-			var passw = /^(?=^.{6,15}$)((?=.*[A-Za-z0-9])(?=.*[a-z]))^.*$/
-			if (inputtxt.match(passw)) {
-				return true;
+
+		var modal = document.getElementById('modal');
+		var plus = document.getElementById('plus');
+		var add = document.getElementById('add');
+		plus.onclick = function() {
+			modal.style.display = 'block';
+		};
+
+		add.onclick = function() {
+			var contactName = document.getElementById("name2").value;
+			var contactPhone = document.getElementById("phone2").value;
+			var warning1 = document.getElementById("warning1");
+			if (contactName == "" || contactPhone == "") {
+				warning1.style.display = "block";
+				$("#warning1").text("Please Fill In All Fields");
+			} else if (Checkphone(contactPhone) == false) {
+				warning1.style.display = "block";
+				alert("The Mobile Format Is Not Respected.")
+
 			} else {
-				return false;
-			}
-		}
 
-		function CheckPhone(checkPhone) {
-
-		}
-		$("#btn").on("click", function() {
-			var phone = document.getElementById("phone").value;
-			if (!validatePhone(phone)) {
-				$("#showError").text("The phone number is invalid");
-				return false;
-			} else
-				return true;
-		});
-
-		$("#btn").on("click", function() {
-			var phone = document.getElementById("phone").value;
-			var password = document.getElementById("password").value;
-
-			if (phone == "") {
-				$("#showError").text("phone Is Empty")
-			} else if (password == "") {
-				$("#showError").text("Password Is Empty")
-			} else if (!CheckPassword(password)) {
-				alert("The password must be between 6 and 15 digits!")
-			} else {
 				$.ajax({
-					url: " <?= URL; ?>index/contact_data",
+					url: "<?= URL; ?>index/contact_data",
 					type: "POST",
 					data: {
 						"contactName": contactName,
 						"contactPhone": contactPhone
+
 					},
 					success: function(response) {
 						response = JSON.parse(response);
 						if (response.status_code == "404") {
-							alert("مخاطب وجود ندارد")
+							modal.style.display = "none";
+							//    alert("مخاطب در فراوین حساب کاربری ندارد");
 						} else {
-							alert("مخاطب اضافه شد");
+							modal.style.display = "none";
+							//    alert("مخاطب اضافه شد");
+
 						}
 					},
 					error: function(response) {
-						alert("Error");
+						alert("خطای 500");
 					}
-				})
+				});
 			}
-		});
+		};
 	</script>
 </body>
 

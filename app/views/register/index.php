@@ -64,7 +64,7 @@
                 var password = $('#password').val();
                 var confirmPassword = $('#confirm-password').val();
                 if (phone == "" || password == "" || confirmPassword == "") {
-                    alert('Please fill in all fields');
+                    alert('Please Fill In All Fields');
                 } else if (!validatePhone(phone)) {
                     alert('The phone number is invalid');
                 } else if (password != confirmPassword) {

@@ -59,11 +59,11 @@
             var password = document.getElementById("password").value;
 
             if (phone == "") {
-                $("#showError").text("phone Is Empty")
+                alert("phone Is Empty");
             } else if (password == "") {
-                $("#showError").text("Password Is Empty")
+                alert("Password Is Empty");
             } else if (!CheckPassword(password)) {
-                alert("The password must be between 6 and 15 digits!")
+                alert("Password must be between 6 and 15 digits and numbers between 0 and 9")
             } else {
                 $.ajax({
                     url: " <?= URL; ?>login/check_data",
