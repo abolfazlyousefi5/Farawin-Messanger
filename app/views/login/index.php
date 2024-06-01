@@ -27,12 +27,16 @@
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         function validatePhone(phone) {
-            var regex = /^(?:98|\+98|0098|0)?9[0-9]{9}{1,11}$/;
-            return regex.test(phone);
+            var regex = /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/;
+            if (phone.match(phone)) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function CheckPassword(inputtxt) {
-            var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            var passw = /^(?=^.{6,15}$)((?=.*[A-Za-z0-9])(?=.*[a-z]))^.*$/
             if (inputtxt.match(passw)) {
                 return true;
             } else {
@@ -60,7 +64,7 @@
                 $("#showError").text("Password Is Empty")
             } else if (!CheckPassword(password)) {
                 alert("The password must be between 6 and 15 digits!")
-            } else
+            } else {
                 $.ajax({
                     url: " <?= URL; ?>login/check_data",
                     type: "POST",
@@ -74,13 +78,15 @@
                             alert("phone or Password Is Wrong")
                         } else {
                             window.location = "<?= URL; ?>";
-                            alert("مشخصات با موفقیت ثبت شد");
+                            alert("ورود با موفقیت انجام شد");
+
                         }
                     },
                     error: function(response) {
                         alert(response);
                     }
                 })
+            }
         });
     </script>
 </body>

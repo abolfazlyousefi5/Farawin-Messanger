@@ -11,7 +11,7 @@ class model_login extends Model
 
     function check_data($post)
     {
-        $sql = "SELECT * FROM loginform WHERE phone=? and password=?";
+        $sql = "SELECT * FROM users WHERE phone=? and password=?";
         $params =array($post['phone'], md5($post['password']));
         $result =$this->doSelect($sql, $params);
 

@@ -25,7 +25,7 @@
                 <input type="password" id="confirm-password" name="confirm-password" required>
                 <label for="password">Confirm-Password:</label>
             </div>
-            <a href="#">
+            <a>
                 <span></span>
                 <span></span>
                 <input class="submit" id="submit" type="submit" value="Submit" style="background:none; font-size: 15px; border: none; border-radius: 6px; color:aliceblue; font-family:Arial, Helvetica, sans-serif; font-size:17px;">
@@ -41,19 +41,23 @@
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
         function validatePhone(phone) {
-            var regex = /^(?:98|\+98|0098|0)?9[0-9]{9}{1,11}$/;
-            return regex.test(phone);
+            var regex = /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/;
+            if (phone.match(phone)) {
+                return true;
+            } else {
+                return false;
             }
-            
-            function validatePhone(phone) {
-            var regex = /^(?:98|\+98|0098|0)?9\d{9}$/;
-            return regex.test(phone);
         }
-        
-        $('#submit').on('click', function() {
-            var phone = $('#phone').val();
-            return true;
-        });
+
+        function CheckPassword(inputtxt) {
+            var passw = /^(?=^.{6,15}$)((?=.*[A-Za-z0-9])(?=.*[a-z]))^.*$/;
+            if (inputtxt.match(passw)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         $(document).ready(function() {
             $('#submit').on('click', function() {
                 var phone = $('#phone').val();
@@ -65,9 +69,9 @@
                     alert('The phone number is invalid');
                 } else if (password != confirmPassword) {
                     alert('Password and Confirm Password do not match');
-                } else if(!CheckPassword(password)){
+                } else if (!CheckPassword(password)) {
                     alert("The password must be between 6 and 15 digits!")
-                }
+                } else {
                     $.ajax({
                         url: "<?= URL; ?>register/insert_data",
                         type: 'POST',
@@ -82,12 +86,14 @@
                                 $("#showError").text("phone or Password or confirm password Is Wrong")
                             } else {
                                 window.location = "<?= URL; ?> login";
+                                alert("مشخصات با موفقیت ثبت شد");
                             }
                         },
                         error: function(response) {
                             alert("Error");
                         }
                     });
+                }
             });
         });
     </script>

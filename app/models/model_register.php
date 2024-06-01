@@ -8,7 +8,7 @@ class model_register extends Model
     }
     function insert_data($post)
     {
-        $sql = "SELECT * FROM loginform WHERE phone=?";
+        $sql = "SELECT * FROM users WHERE phone=?";
         $params = array($post['phone']);
         $result = $this->doSelect($sql, $params);
 
@@ -21,7 +21,7 @@ class model_register extends Model
                     )
                 );
             } else {
-                $sql = "INSERT INTO loginform (phone,password,register_date) VALUES (?,?,?)";
+                $sql = "INSERT INTO users (phone,password,register_date) VALUES (?,?,?)";
                 $params = array($post['phone'], md5($post['password']), self::jalali_date("Y/m/d"));
                 $this->doQuery($sql, $params);
                 $_SESSION['phone'] = $post['phone'];
