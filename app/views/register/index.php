@@ -40,13 +40,18 @@
 
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
-        function validatePhone(phone) {
-            var regex = /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/;
-            if (phone.match(phone)) {
-                return true;
-            } else {
-                return false;
-            }
+        // function validatePhone(phone) {
+        //     var regex = '/^(?:98|\+98|0098|0)?9[0-9]{9}$/';
+        //     if (regex.test(phone)) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
+        function Checkphone(phone) {
+            var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
+            var result = regex.test(phone);
+            return result;
         }
 
         function CheckPassword(inputtxt) {
@@ -65,7 +70,7 @@
                 var confirmPassword = $('#confirm-password').val();
                 if (phone == "" || password == "" || confirmPassword == "") {
                     alert('Please Fill In All Fields');
-                } else if (!validatePhone(phone)) {
+                } else if (!Checkphone(phone)) {
                     alert('The phone number is invalid');
                 } else if (password != confirmPassword) {
                     alert('Password and Confirm Password do not match');
