@@ -203,10 +203,10 @@
 		<div class="content">
 			<h2 class="h2-modal">Add Contact</h2>
             <form onsubmit="return false">
-                <input type="text" placeholder="Name" id="name2" class="contact"><br>
-                <input type="text" placeholder="Phone" id="phone2" class="contact" maxlength="11"><br>
+                <input type="text" placeholder="Name" id="name" class="contact"><br>
+                <input type="text" placeholder="Phone" id="phone" class="contact" maxlength="11"><br>
                 <button type="submit" id="add" class="contact">Add Contact</button><br>
-                <span id="warning1" style="color: white;display:none;">bbbbbbbbbbb</span>
+                <span id="warning" style="color: white;display:none;">Massage Error</span>
             </form>
         </div>
     </div>
@@ -229,12 +229,12 @@
 		};
 
 		add.onclick = function() {
-			var contactName = document.getElementById("name2").value;
-			var contactPhone = document.getElementById("phone2").value;
-			var warning1 = document.getElementById("warning1");
+			var contactName = document.getElementById("name").value;
+			var contactPhone = document.getElementById("phone").value;
+			var warning1 = document.getElementById("warning");
 			if (contactName == "" || contactPhone == "") {
 				warning1.style.display = "block";
-				$("#warning1").text("Please Fill In All Fields");
+				$("#warning").text("Please Fill In All Fields");
 			} else if (Checkphone(contactPhone) == false) {
 				warning1.style.display = "block";
 				alert("The Mobile Format Is Not Respected.")
