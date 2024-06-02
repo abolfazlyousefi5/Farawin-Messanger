@@ -8,9 +8,9 @@ class register extends  Controller
     {
         parent::__construct();
         $this->checkLogin = Model::session_get("phone");
-        // if ($this->checkLogin != FALSE) {
-        //     header("Location: ".URL);
-        // }
+        if ($this->checkLogin != FALSE) {
+            header("Location: ".URL."login");
+        }
     }
 
     function index()

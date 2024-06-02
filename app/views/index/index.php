@@ -219,8 +219,7 @@
 			var result = regex.test(phone);
 			return result;
 		}
-
-
+		
 		var modal = document.getElementById('modal');
 		var plus = document.getElementById('plus');
 		var add = document.getElementById('add');
@@ -253,15 +252,14 @@
 						response = JSON.parse(response);
 						if (response.status_code == "404") {
 							modal.style.display = "none";
-							//    alert("مخاطب در فراوین حساب کاربری ندارد");
+							alert("The Contact Does Not Have An Account");
 						} else {
 							modal.style.display = "none";
-							//    alert("مخاطب اضافه شد");
-
+							 alert("Contact Added");
 						}
 					},
 					error: function(response) {
-						alert("خطای 500");
+						alert("Error 500");
 					}
 				});
 			}

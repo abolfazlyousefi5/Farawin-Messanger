@@ -9,8 +9,6 @@ class model_index extends Model
     function contact_data($post)
     {
         $checkid = Model::session_get("id");
-
-
         $sql = "SELECT * FROM users WHERE phone=? and password=?";
         $value = array($post)['contactPhone'];
 
