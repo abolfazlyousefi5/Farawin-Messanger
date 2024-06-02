@@ -40,14 +40,6 @@
 
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
-        // function validatePhone(phone) {
-        //     var regex = '/^(?:98|\+98|0098|0)?9[0-9]{9}$/';
-        //     if (regex.test(phone)) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // }
         function Checkphone(phone) {
             var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
             var result = regex.test(phone);

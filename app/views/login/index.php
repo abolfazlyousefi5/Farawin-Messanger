@@ -26,13 +26,10 @@
     </form>
     <script src="public/js/jquery-3.4.1.min.js"></script>
     <script>
-        function validatePhone(phone) {
-            var regex = /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/;
-            if (phone.match(phone)) {
-                return true;
-            } else {
-                return false;
-            }
+        function Checkphone(phone) {
+            var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
+            var result = regex.test(phone);
+            return result;
         }
 
         function CheckPassword(inputtxt) {
@@ -62,6 +59,8 @@
                 alert("phone Is Empty");
             } else if (password == "") {
                 alert("Password Is Empty");
+            } else if (!Checkphone(phone)) {
+                alert('The phone number is invalid');
             } else if (!CheckPassword(password)) {
                 alert("Password must be between 6 and 15 digits and numbers between 0 and 9")
             } else {
