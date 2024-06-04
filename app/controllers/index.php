@@ -6,6 +6,7 @@ class Index extends Controller
 
     function __construct()
     {
+        
         parent::__construct();
         $this->checkLogin = Model::session_get("phone");
         if ($this->checkLogin == FALSE) {

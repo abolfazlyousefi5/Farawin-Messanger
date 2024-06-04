@@ -8,27 +8,57 @@ class model_index extends Model
     }
     function contact_data($post)
     {
-        $checkid = Model::session_get("id");
         $sql = "SELECT * FROM users WHERE phone=?";
-        $value = array($post['contactName']);
-        $result = $this->doSelect($sql, $value);
+        $values = array($post['contactPhone']);
+        $result = $this->doSelect($sql, $values);
+        if (sizeof($result) != 0) {
+            if ($_SESSION['id'] == $result[0]['id']) {
+                echo json_encode(
+                    array(
+                        "msg" => "Your information cannot be added to the audience table",
+                        "status_code" =>  "101"
+                    )
+                );
+            } else {
 
-        if (count($result) != 0) {
-            $sql = "SELECT * FROM contact (userid , contactid , name) VALUES (?, ?, ?)";
-            $value = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
-            $this->doQuery($sql, $value);
-            echo json_encode(
-                array(
-                    "Massage" => "ok",
-                    "status_code" => "200"
-                )
-            );
+
+                $stmt = "SELECT * FROM contact WHERE contactid=?";
+                $params = array($result[0]['id']);
+                $res = $this->doSelect($stmt, $params);
+
+                if (sizeof($res) == 0) {
+                    $sql = "INSERT INTO contact(userid,contactid,name) VALUES(?,?,?) ";
+                    $values = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
+                    $this->doQuery($sql, $values);
+
+                    echo json_encode(
+                        array(
+                            "msg" => "ok",
+                            "status_code" =>  "200"
+                        )
+                    );
+                } else if ($res[0]['name'] == $post['contactName']) {
+                    echo json_encode(
+                        array(
+                            "msg" => "no",
+                            "status_code" =>  "303"
+                        )
+                    );
+                } else {
+                    echo json_encode(
+                        array(
+                            "msg" => "no",
+                            "status_code" => "606"
+                        )
+                    );
+                }
+            }
         } else {
+
             echo json_encode(
                 array(
-                    "Massage" => "Not Found",
-                    "status_code" => "404"
-
+                    "msg" => "not found",
+                    "status_code" =>  "404"
                 )
             );
         }

@@ -25,6 +25,7 @@ class model_login extends Model
             );
         } else {
             $this->session_set("phone", $result[0]['phone']);
+            $this->session_set("id", $result[0]['id']);
             $this->checkLogin= $result[0]['phone'];
             echo json_encode(
                 array(

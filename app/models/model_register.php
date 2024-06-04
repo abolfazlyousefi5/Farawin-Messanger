@@ -25,6 +25,7 @@ class model_register extends Model
                 $params = array($post['phone'], md5($post['password']), self::jalali_date("Y/m/d"));
                 $this->doQuery($sql, $params);
                 $_SESSION['phone'] = $post['phone'];
+                $_SESSION['id'] = Model::$conn->lastInsertId();
                 echo json_encode(
                     array(
                         "Massage" => "Ok",
