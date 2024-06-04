@@ -44,15 +44,6 @@
 
         $("#btn").on("click", function() {
             var phone = document.getElementById("phone").value;
-            if (!validatePhone(phone)) {
-                $("#showError").text("The phone number is invalid");
-                return false;
-            } else
-                return true;
-        });
-
-        $("#btn").on("click", function() {
-            var phone = document.getElementById("phone").value;
             var password = document.getElementById("password").value;
 
             if (phone == "") {
