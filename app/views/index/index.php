@@ -214,11 +214,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<script>
-		// function Checkphone(phone) {
-		// 	var regex = new regex("^(\\+98|0)?9\\d{9}$");
-		// 	var result = regex.test(phone);
-		// 	return result;
-		// }
 		function Checkphone(phone) {
             var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
             var result = regex.test(phone);

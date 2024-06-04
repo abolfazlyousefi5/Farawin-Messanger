@@ -8,12 +8,12 @@ class model_index extends Model
     }
     function contact_data($post)
     {
-        // $checkid = Model::session_get("id");
+        $checkid = Model::session_get("id");
         $sql = "SELECT * FROM users WHERE phone=?";
         $value = array($post['contactName']);
         $result = $this->doSelect($sql, $value);
 
-        if (sizeof($result) != 0) {
+        if (count($result) != 0) {
             $sql = "SELECT * FROM contact (userid , contactid , name) VALUES (?, ?, ?)";
             $value = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
             $this->doQuery($sql, $value);
