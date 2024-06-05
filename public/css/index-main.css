@@ -312,7 +312,8 @@ html {
     border-radius: 24px;
     transition: 0.25s;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 20px;
+    font-family: cursive;
 }
 #closeModal:hover{
   background-color: #2ecc71;
@@ -329,7 +330,6 @@ html {
 .content {
   border-radius: 15px;
   background-color:rgba(0,0,0,0.9);
-
   margin: 3% auto;
   width: 45%;
   border-radius: 14px;
