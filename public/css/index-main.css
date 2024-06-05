@@ -299,6 +299,26 @@ html {
   z-index: 1;
   border-radius: 15px;
 }
+#closeModal{
+  margin-left: 350px;
+  background: none;
+    color: white;
+    border: none;
+    display: block;
+    border: 2px solid #2ecc71;
+    padding: 10px 15px;
+    outline: none;
+    color: #fff;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+    font-size: 17px;
+}
+#closeModal:hover{
+  background-color: #2ecc71;
+}
+
+
 .h2-modal{
   color: #fff;
   margin: 0;
@@ -310,9 +330,9 @@ html {
   border-radius: 15px;
   background-color:rgba(0,0,0,0.9);
 
-  margin: 10% auto;
+  margin: 3% auto;
   width: 45%;
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 5%;
   text-align: center;
 }

@@ -12,7 +12,7 @@
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
-	<link rel="stylesheet" href="public/css/index.css">
+	<link rel="stylesheet" href="public/css/index-main.css">
 </head>
 
 <body>
@@ -201,25 +201,30 @@
 	</div>
 	<div id="modal">
 		<div class="content">
+			<button id="closeModal">X</button>
 			<h2 class="h2-modal">Add Contact</h2>
-            <form onsubmit="return false">
-                <input type="text" placeholder="Name" id="name" class="contact"><br>
-                <input type="text" placeholder="Phone" id="phone" class="contact" maxlength="11"><br>
-                <button type="submit" id="add" class="contact">Add Contact</button><br>
-                <span id="warning" style="color: white;display:none;">Massage Error</span>
-            </form>
-        </div>
-    </div>
+			<form onsubmit="return false">
+				<input type="text" placeholder="Name" id="name" class="contact"><br>
+				<input type="text" placeholder="Phone" id="phone" class="contact" maxlength="11"><br>
+				<button type="submit" id="add" class="contact">Add Contact</button><br>
+				<span id="warning" style="color: white;display:none;">Massage Error</span>
+			</form>
+		</div>
+	</div>
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<script>
+		$("#closeModal").click(function() {
+			$("#modal").hide();
+		});
+
 		function Checkphone(phone) {
-            var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
-            var result = regex.test(phone);
-            return result;
-        }
-		
+			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
+			var result = regex.test(phone);
+			return result;
+		}
+
 		var modal = document.getElementById('modal');
 		var plus = document.getElementById('plus');
 		var add = document.getElementById('add');
@@ -255,7 +260,7 @@
 							alert("The Contact Does Not Have An Account");
 						} else {
 							modal.style.display = "none";
-							 alert("Contact Added");
+							alert("Contact Added");
 						}
 					},
 					error: function(response) {
