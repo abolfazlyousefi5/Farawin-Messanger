@@ -23,71 +23,14 @@
 					<div class="card-header">
 						<div class="input-group" style="display: flex; justify-content: flex-start; flex-direction: row-reverse;" ;>
 							<a href="#" id="plus"><i class="fa fa-plus-circle plus"></i></a>
-							<a href="#" id="plus"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
+							<a href="#" id="ref"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
 						</div>
 					</div>
 					<div class="card-body contacts_body">
 						<ui class="contacts">
-							<li class="active">
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="public/images/default-profile.png" class="rounded-circle user_img">
-										<span class="online_icon"></span>
-									</div>
-									<div class="user_info">
-										<span>Khalid Charif</span>
-										<p>Online</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
-										<span class="online_icon offline"></span>
-									</div>
-									<div class="user_info">
-										<span>Chaymae Naim</span>
-										<p>Left 7 mins ago</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg" class="rounded-circle user_img">
-										<span class="online_icon"></span>
-									</div>
-									<div class="user_info">
-										<span>Sami Rafi</span>
-										<p>Online</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img">
-										<span class="online_icon offline"></span>
-									</div>
-									<div class="user_info">
-										<span>Hassan Agmir</span>
-										<p>Left 30 mins ago</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="d-flex bd-highlight">
-									<div class="img_cont">
-										<img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
-										<span class="online_icon offline"></span>
-									</div>
-									<div class="user_info">
-										<span>Abdou Chatabi</span>
-										<p>Left 50 mins ago</p>
-									</div>
-								</div>
-							</li>
+							<ul id="refresh_list">
+
+							</ul>
 						</ui>
 					</div>
 					<div class="card-footer"></div>
@@ -199,7 +142,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="modal">
+	<div id="Mymodal" class="Mymodal">
 		<div class="content">
 			<button id="closeModal">X</button>
 			<h2 class="h2-modal">Add Contact</h2>
@@ -211,13 +154,35 @@
 			</form>
 		</div>
 	</div>
+
+
+
+
+
+
+
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="public/js/demo.js"></script>
+	<!-- Script -->
 	<script>
+		window.onload=refreshContactList();
 		$("#closeModal").click(function() {
-			$("#modal").hide();
+			$("#Mymodal").hide();
 		});
+		function refreshContactList() {
+			var user_id = <?php echo Model::session_get('id'); ?>;
+			var data 
+			$.ajax({
+				type:"GET",
+				url:"<? URL; ?> index/get_contact_data",
+				data: {
+				},
+				success:async function (response) {
+					
+				}
+			})
+		}
 
 		function Checkphone(phone) {
 			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
@@ -225,11 +190,11 @@
 			return result;
 		}
 
-		var modal = document.getElementById('modal');
+		var modal = document.getElementById('Mymodal');
 		var plus = document.getElementById('plus');
 		var add = document.getElementById('add');
 		plus.onclick = function() {
-			modal.style.display = 'block';
+			Mymodal.style.display = 'block';
 		};
 
 		add.onclick = function() {
@@ -242,9 +207,7 @@
 			} else if (Checkphone(contactPhone) == false) {
 				warning1.style.display = "block";
 				alert("The Mobile Format Is Not Respected.")
-
 			} else {
-
 				$.ajax({
 					url: "<?= URL; ?>index/contact_data",
 					type: "POST",
@@ -256,19 +219,53 @@
 					success: function(response) {
 						response = JSON.parse(response);
 						if (response.status_code == "404") {
-							modal.style.display = "none";
+							Mymodal.style.display = "none";
 							alert("The Contact Does Not Have An Account");
 						} else {
-							modal.style.display = "none";
+							Mymodal.style.display = "none";
 							alert("Contact Added");
+							refreshed();
 						}
 					},
 					error: function(response) {
-						alert("Error 500");
+						alert("error 500");
 					}
 				});
-			}
-		};
+
+			};
+		}
+		var ref = document.getElementById("ref")
+		function Myresult(names) {
+			var Mytext = "";
+			Mytext = Mytext + '<li>' + name + "<button id='btnedit'>fwfw</button>" + '</li>';
+			return Mytext;
+		}
+
+		function refreshe() {
+			$.ajax({
+				url: "<?= URL; ?> index/get_contact_data",
+				type: "POST",
+				data: {
+
+				},
+				success: function(response) {
+					response = JSON.parse(response);
+					if (response.status_code == "900") {
+						var d = response.msg;
+						var names = [];
+						for (i = 0; i < d.length; i++) {
+							names.push(d[i]['name'])
+						}
+						var Myname = names;
+						var result = document.getElementById('refresh_list');
+
+						Myname.forEach(Myresult);
+						result.innerHTML = ;
+					}
+
+				}
+			}, )
+		}
 	</script>
 </body>
 

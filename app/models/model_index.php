@@ -37,30 +37,29 @@ class model_index extends Model
                             "status_code" =>  "200"
                         )
                     );
-                } else if ($res[0]['name'] == $post['contactName']) {
-                    echo json_encode(
-                        array(
-                            "msg" => "no",
-                            "status_code" =>  "303"
-                        )
-                    );
                 } else {
+
                     echo json_encode(
                         array(
-                            "msg" => "no",
-                            "status_code" => "606"
+                            "msg" => "not found",
+                            "status_code" =>  "404"
                         )
                     );
                 }
             }
-        } else {
-
-            echo json_encode(
-                array(
-                    "msg" => "not found",
-                    "status_code" =>  "404"
-                )
-            );
         }
+    }
+    function get_contact_data($post)
+    {
+        $id = Model::session_get('id');
+        $sql = "SELECT *FROM contact WHERE userid=?";
+        $values = array($this->session_get('id'));
+        $result = $this->doSelect($sql, $values);
+        echo json_encode(
+            array(
+                "msg" => $result,
+                "status_code" =>  "900"
+            )
+        );
     }
 }

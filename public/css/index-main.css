@@ -288,7 +288,7 @@ html {
   font-size: 1.8rem;
   color: #82ccdd;
 }
-#modal {
+#Mymodal {
   display: none;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100%;

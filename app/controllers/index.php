@@ -9,9 +9,9 @@ class Index extends Controller
         
         parent::__construct();
         $this->checkLogin = Model::session_get("phone");
-        if ($this->checkLogin == FALSE) {
-            header("Location:" . URL . "login");
-        }
+        // if ($this->checkLogin == FALSE) {
+        //     header("Location:" . URL . "login");
+        // }
     }
 
     function index()
@@ -26,4 +26,9 @@ class Index extends Controller
     {
         $this->model->contact_data($_POST);
     }
+    function get_contact_data()
+    {
+        $this->model->get_contact_data($_POST);
+    }
+
 }
