@@ -15,6 +15,38 @@
 	<link rel="stylesheet" href="public/css/index-main.css">
 </head>
 
+<style>
+	.liclass {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		width: 40px;
+		height: 30px;
+		align-items: center;
+		color: white !important;
+		border-bottom: 1px solid lightgray;
+	}
+
+	.aclass {
+		background: unset;
+		border: 0;
+
+		font-size: 20px;
+		color: white;
+		cursor: pointer;
+	}
+
+	.active {
+		/* background-color: #696bae; */
+		background-color: #2d116e;
+		color: white;
+	}
+
+	p {
+		margin-bottom: 0px;
+	}
+</style>
+
 <body>
 	<div class="container-fluid h-100">
 		<div class="row justify-content-center h-100">
@@ -23,16 +55,22 @@
 					<div class="card-header">
 						<div class="input-group" style="display: flex; justify-content: flex-start; flex-direction: row-reverse;" ;>
 							<a href="#" id="plus"><i class="fa fa-plus-circle plus"></i></a>
-							<a href="#" id="ref"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
+							<a href="#" id="refresh"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
 						</div>
 					</div>
-					<div class="card-body contacts_body">
+
+					<div class="card-body contacts_body" id="bodyside">
+						<ul class="contacts" id="contact">
+
+						</ul>
+					</div>
+					<!-- <div class="card-body contacts_body">
 						<ui class="contacts">
 							<ul id="refresh_list">
 
 							</ul>
 						</ui>
-					</div>
+					</div> -->
 					<div class="card-footer"></div>
 				</div>
 			</div>
@@ -155,34 +193,24 @@
 		</div>
 	</div>
 
-
-
-
-
-
-
+	<div id="modal1">
+		<div class="content">
+			<form onsubmit="return false">
+				<button  id="closeModal" onclick="closeModal()">X</button><br>
+				<input type="text" placeholder="new name" id="newName" class="contact"><br>
+				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
+				<span id="warning2" style="display:none;color:white;">b</span>
+			</form>
+		</div>
+	</div>
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<!-- Script -->
 	<script>
-		window.onload=refreshContactList();
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
-		function refreshContactList() {
-			var user_id = <?php echo Model::session_get('id'); ?>;
-			var data 
-			$.ajax({
-				type:"GET",
-				url:"<? URL; ?> index/get_contact_data",
-				data: {
-				},
-				success:async function (response) {
-					
-				}
-			})
-		}
 
 		function Checkphone(phone) {
 			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
@@ -193,19 +221,109 @@
 		var modal = document.getElementById('Mymodal');
 		var plus = document.getElementById('plus');
 		var add = document.getElementById('add');
-		plus.onclick = function() {
+		var close = document.getElementById('close');
+		var refresh = document.getElementById('refresh');
+		document.getElementById('plus').onclick = function() {
 			Mymodal.style.display = 'block';
+		};
+		jQuery(document).ready(function() {
+
+			$.ajax({
+				url: "<?= URL; ?>index/contact_data2",
+				type: "POST",
+				data: {},
+				success: function(response) {
+					response = JSON.parse(response);
+
+					addContact(response.res);
+				},
+				error: function(response) {
+					alert("err 500");
+				}
+			});
+
+
+		});
+
+
+		function addHtmlElement($name) {
+			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
+			var li = $("<li ></li>").html(item);
+
+			$("#bodyside ").children().append(li);
+			$("li").addClass("liclass");
+			
+			document.getElementById('modal').style.display = 'none';
+			close.onclick = function closeModal() {
+            modal.style.display = 'none';
+        };
+
+
+        document.getElementById('closeModal').onclick = function closeModal1() {
+            document.getElementById('modal1').style.display = 'none';
+        };
+		};
+
+		function edit(event) {
+			document.getElementById("newName").value = "";
+
+			document.getElementById("warning2").style.display = "block";
+			$("#warning2").text("event");
+			document.getElementById("modal1").style.display = 'block';
+		};
+
+		refresh.onclick = function() {
+
+			$.ajax({
+				url: "<?= URL; ?>index/contact_data2",
+				type: "POST",
+				data: {},
+				success: function(response) {
+					response = JSON.parse(response);
+
+					addContact(response.res);
+				},
+				error: function(response) {
+					alert("err 500");
+				}
+			});
+		};
+		function changeName(event) {
+            if (("#newName").value == "") {
+                warning2.style.display = "block";
+                $("#warning2").text("پر کردن تمامی فیلدها الزامیست");
+            } else {
+                event.parentNode.childNodes[1].value = ("#newName").value
+            }
+
+        }
+
+		plus.onclick = function() {
+			document.getElementById("name").value = "";
+			document.getElementById("phone").value = "";
+			document.getElementById("warning").style.display = "none";
+			modal.style.display = 'block';
+		};
+
+
+		document.getElementById("name").onfocus = function() {
+			document.getElementById("name").value = "";
+			$("#warning").text("");
+		};
+		document.getElementById("phone").onfocus = function() {
+			document.getElementById("phone").value = "";
+			$("#warning").text("");
 		};
 
 		add.onclick = function() {
 			var contactName = document.getElementById("name").value;
 			var contactPhone = document.getElementById("phone").value;
-			var warning1 = document.getElementById("warning");
+			var warning = document.getElementById("warning");
 			if (contactName == "" || contactPhone == "") {
-				warning1.style.display = "block";
+				warning.style.display = "block";
 				$("#warning").text("Please Fill In All Fields");
 			} else if (Checkphone(contactPhone) == false) {
-				warning1.style.display = "block";
+				warning.style.display = "block";
 				alert("The Mobile Format Is Not Respected.")
 			} else {
 				$.ajax({
@@ -218,13 +336,27 @@
 					},
 					success: function(response) {
 						response = JSON.parse(response);
-						if (response.status_code == "404") {
-							Mymodal.style.display = "none";
-							alert("The Contact Does Not Have An Account");
+						if (response.status_code == "606") {
+							warning.style.display = "block";
+							$("#warning").text("This contact has already been added to the contact table with another name.");
+						} else if (response.status_code == "101") {
+							warning.style.display = "block";
+							$("#warning").text("The Contact Does Not Have An Account");
+						} else if (response.status_code == "404") {
+							warning.style.display = "block";
+							$("#warning").text("invite audience");
+
+						} else if (response.status_code == "303") {
+
+							warning.style.display = "block";
+							$("#warning").text("This contact has already been added to the contacts table.");
 						} else {
 							Mymodal.style.display = "none";
-							alert("Contact Added");
-							refreshed();
+
+							addHtmlElement(response.arrayres);
+
+
+							// refreshed();
 						}
 					},
 					error: function(response) {
@@ -234,39 +366,13 @@
 
 			};
 		}
-		var ref = document.getElementById("ref")
+		var refresh = document.getElementById("refresh")
+
 		function Myresult(names) {
 			var Mytext = "";
 			Mytext = Mytext + '<li>' + name + "<button id='btnedit'>fwfw</button>" + '</li>';
 			return Mytext;
 		}
-
-		function refreshe() {
-			$.ajax({
-				url: "<?= URL; ?> index/get_contact_data",
-				type: "POST",
-				data: {
-
-				},
-				success: function(response) {
-					response = JSON.parse(response);
-					if (response.status_code == "900") {
-						var d = response.msg;
-						var names = [];
-						for (i = 0; i < d.length; i++) {
-							names.push(d[i]['name'])
-						}
-						var Myname = names;
-						var result = document.getElementById('refresh_list');
-
-						Myname.forEach(Myresult);
-						result.innerHTML = ;
-					}
-
-				}
-			}, )
-		}
 	</script>
 </body>
-
 </html>

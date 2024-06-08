@@ -299,28 +299,27 @@ html {
   z-index: 1;
   border-radius: 15px;
 }
-#closeModal{
+#closeModal {
   margin-left: 350px;
   background: none;
-    color: white;
-    border: none;
-    display: block;
-    border: 2px solid #2ecc71;
-    padding: 10px 15px;
-    outline: none;
-    color: #fff;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer;
-    font-size: 20px;
-    font-family: cursive;
+  color: white;
+  border: none;
+  display: block;
+  border: 2px solid #2ecc71;
+  padding: 10px 15px;
+  outline: none;
+  color: #fff;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: cursive;
 }
-#closeModal:hover{
+#closeModal:hover {
   background-color: #2ecc71;
 }
 
-
-.h2-modal{
+.h2-modal {
   color: #fff;
   margin: 0;
   top: 2px;
@@ -329,7 +328,7 @@ html {
 }
 .content {
   border-radius: 15px;
-  background-color:rgba(0,0,0,0.9);
+  background-color: rgba(0, 0, 0, 0.9);
   margin: 3% auto;
   width: 45%;
   border-radius: 14px;
@@ -348,24 +347,24 @@ html {
   color: white;
   border-radius: 24px;
   transition: 0.25s;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.contact[type="text"]:focus{
-  width:280px;
-  border-color:#2ecc71;
+.contact[type="text"]:focus {
+  width: 280px;
+  border-color: #2ecc71;
 }
-.contact::hover{
+.contact::hover {
   background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #3498db;
-    padding: 14px 10px;
-    width: 200px;
-    outline: none;
-    color: #fff;
-    border-radius: 24px;
-    transition: 0.25s;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: #fff;
+  border-radius: 24px;
+  transition: 0.25s;
 }
 #add {
   background: none;
@@ -382,4 +381,44 @@ html {
 }
 #add:hover {
   background: #2ecc71;
+}
+.liclass {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 40px;
+  height: 30px;
+  align-items: center;
+  color: white !important;
+  border-bottom: 1px solid lightgray;
+}
+
+.aclass {
+  background: unset;
+  border: 0;
+
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.active {
+  /* background-color: #696bae; */
+  background-color: #2d116e;
+  color: white;
+}
+
+p {
+  margin-bottom: 0px;
+}
+#modal {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  border-radius: 15px;
 }

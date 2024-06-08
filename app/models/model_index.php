@@ -25,7 +25,6 @@ class model_index extends Model
                 $stmt = "SELECT * FROM contact WHERE contactid=?";
                 $params = array($result[0]['id']);
                 $res = $this->doSelect($stmt, $params);
-
                 if (sizeof($res) == 0) {
                     $sql = "INSERT INTO contact(userid,contactid,name) VALUES(?,?,?) ";
                     $values = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
@@ -34,7 +33,8 @@ class model_index extends Model
                     echo json_encode(
                         array(
                             "msg" => "ok",
-                            "status_code" =>  "200"
+                            "status_code" =>  "200",
+                            "arrayres" => $post['contactName']
                         )
                     );
                 } else {
@@ -42,24 +42,36 @@ class model_index extends Model
                     echo json_encode(
                         array(
                             "msg" => "not found",
-                            "status_code" =>  "404"
+                            "status_code" =>  "404",
+                            "arrayres" => ""
                         )
                     );
                 }
             }
         }
     }
-    function get_contact_data($post)
+    function contact_data2()
     {
-        $id = Model::session_get('id');
-        $sql = "SELECT *FROM contact WHERE userid=?";
-        $values = array($this->session_get('id'));
-        $result = $this->doSelect($sql, $values);
-        echo json_encode(
-            array(
-                "msg" => $result,
-                "status_code" =>  "900"
-            )
-        );
+        $stmt = "SELECT * FROM contact WHERE userid=?";
+        $params = array($_SESSION['id']);
+        $res = $this->doSelect($stmt, $params);
+        if (sizeof($res) != 0) {
+            echo json_encode(
+                array(
+                    "msg" => "ok",
+                    "status_code" =>  "200",
+                    "res" => $res
+
+                )
+            );
+        } else {
+            echo json_encode(
+                array(
+                    "msg" => "no",
+                    "status_code" =>  "303",
+                    "res" => ""
+                )
+            );
+        }
     }
 }
