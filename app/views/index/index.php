@@ -234,11 +234,10 @@
 				data: {},
 				success: function(response) {
 					response = JSON.parse(response);
-
 					addContact(response.res);
 				},
 				error: function(response) {
-					alert("err 500");
+					alert("errr 500");
 				}
 			});
 
@@ -356,7 +355,6 @@
 							addHtmlElement(response.arrayres);
 
 
-							// refreshed();
 						}
 					},
 					error: function(response) {
@@ -365,13 +363,6 @@
 				});
 
 			};
-		}
-		var refresh = document.getElementById("refresh")
-
-		function Myresult(names) {
-			var Mytext = "";
-			Mytext = Mytext + '<li>' + name + "<button id='btnedit'>fwfw</button>" + '</li>';
-			return Mytext;
 		}
 	</script>
 </body>
