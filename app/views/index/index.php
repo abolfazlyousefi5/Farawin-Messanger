@@ -180,7 +180,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="Mymodal" class="Mymodal">
+	<div id="Mymodal">
 		<div class="content">
 			<button id="closeModal">X</button>
 			<h2 class="h2-modal">Add Contact</h2>
@@ -196,7 +196,7 @@
 	<div id="modal1">
 		<div class="content">
 			<form onsubmit="return false">
-				<button  id="closeModal" onclick="closeModal()">X</button><br>
+				<button id="closeModal" onclick="closeModal_btn()">X</button><br>
 				<input type="text" placeholder="new name" id="newName" class="contact"><br>
 				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
 				<span id="warning2" style="display:none;color:white;">b</span>
@@ -251,16 +251,16 @@
 
 			$("#bodyside ").children().append(li);
 			$("li").addClass("liclass");
-			
-			document.getElementById('modal').style.display = 'none';
-			close.onclick = function closeModal() {
-            modal.style.display = 'none';
-        };
+
+			document.getElementById('Mymodal').style.display = 'none';
+			close.onclick = function closeModal_btn() {
+				modal.style.display = 'none';
+			};
 
 
-        document.getElementById('closeModal').onclick = function closeModal1() {
-            document.getElementById('modal1').style.display = 'none';
-        };
+			document.getElementById('closeModal').onclick = function closeModal1() {
+				document.getElementById('modal1').style.display = 'none';
+			};
 		};
 
 		function edit(event) {
@@ -283,25 +283,26 @@
 					addContact(response.res);
 				},
 				error: function(response) {
-					alert("err 500");
+					alert("خطای 500");
 				}
 			});
 		};
-		function changeName(event) {
-            if (("#newName").value == "") {
-                warning2.style.display = "block";
-                $("#warning2").text("پر کردن تمامی فیلدها الزامیست");
-            } else {
-                event.parentNode.childNodes[1].value = ("#newName").value
-            }
 
-        }
+		function changeName(event) {
+			if (("#newName").value == "") {
+				warning2.style.display = "block";
+				$("#warning2").text("پر کردن تمامی فیلدها الزامیست");
+			} else {
+				event.parentNode.childNodes[1].value = ("#newName").value
+			}
+
+		}
 
 		plus.onclick = function() {
 			document.getElementById("name").value = "";
 			document.getElementById("phone").value = "";
 			document.getElementById("warning").style.display = "none";
-			modal.style.display = 'block';
+			Mymodal.style.display = 'block';
 		};
 
 
@@ -350,11 +351,10 @@
 							warning.style.display = "block";
 							$("#warning").text("This contact has already been added to the contacts table.");
 						} else {
-							Mymodal.style.display = "none";
-
+							// Mymodal.style.display = "none";
+							alert("add contact:)")
+							warning.style.display = "block";
 							addHtmlElement(response.arrayres);
-
-
 						}
 					},
 					error: function(response) {
@@ -366,4 +366,5 @@
 		}
 	</script>
 </body>
+
 </html>

@@ -51,27 +51,28 @@ class model_index extends Model
         }
     }
     function contact_data2()
-    {
-        $stmt = "SELECT * FROM contact WHERE userid=?";
-        $params = array($_SESSION['id']);
-        $res = $this->doSelect($stmt, $params);
-        if (sizeof($res) != 0) {
-            echo json_encode(
-                array(
-                    "msg" => "ok",
-                    "status_code" =>  "200",
-                    "res" => $res
 
-                )
-            );
-        } else {
-            echo json_encode(
-                array(
-                    "msg" => "no",
-                    "status_code" =>  "303",
-                    "res" => ""
-                )
-            );
-        }
+    {
+       $stmt = "SELECT * FROM contact WHERE userid=?";
+       $params = array($_SESSION['id']);
+       $res = $this->doSelect($stmt, $params);
+       if (sizeof($res) != 0) {
+          echo json_encode(
+             array(
+                "msg" => "ok",
+                "status_code" =>  "200",
+                "res" => $res
+ 
+             )
+          );
+       } else {
+          echo json_encode(
+             array(
+                "msg" => "no",
+                "status_code" =>  "303",
+                "res" => ""
+             )
+          );
+       }
     }
 }
