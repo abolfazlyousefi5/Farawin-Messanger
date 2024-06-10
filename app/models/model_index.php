@@ -26,7 +26,7 @@ class model_index extends Model
                 $params = array($result[0]['id']);
                 $res = $this->doSelect($stmt, $params);
                 if (sizeof($res) == 0) {
-                    $sql = "INSERT INTO contact(userid,contactid,name) VALUES(?,?,?) ";
+                    $sql = "INSERT INTO contact(contactid,userid,name) VALUES(?,?,?) ";
                     $values = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
                     $this->doQuery($sql, $values);
 

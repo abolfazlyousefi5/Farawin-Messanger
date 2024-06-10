@@ -12,7 +12,7 @@
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
-	<link rel="stylesheet" href="public/css/index-main.css">
+	<link rel="stylesheet" href="public/css/index.css">
 </head>
 
 <style>
@@ -194,14 +194,14 @@
 	</div>
 
 	<div id="modal1">
-		<div class="content">
-			<form onsubmit="return false">
-				<button id="closeModal" onclick="closeModal_btn()">X</button><br>
-				<input type="text" placeholder="new name" id="newName" class="contact"><br>
-				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
-				<span id="warning2" style="display:none;color:white;">b</span>
-			</form>
-		</div>
+	<div class="content">
+		<form onsubmit="return false">
+			<button id="closeModal1" onclick="closeModal_btn()">X</button><br>
+			<input type="text" placeholder="new name" id="newName" class="contact"><br>
+			<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
+			<span id="warning2" style="display:none;color:white;">b</span>
+		</form>
+	</div>
 	</div>
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -211,7 +211,6 @@
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
-
 		function Checkphone(phone) {
 			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
 			var result = regex.test(phone);
@@ -221,7 +220,7 @@
 		var modal = document.getElementById('Mymodal');
 		var plus = document.getElementById('plus');
 		var add = document.getElementById('add');
-		var close = document.getElementById('close');
+		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
 		document.getElementById('plus').onclick = function() {
 			Mymodal.style.display = 'block';
@@ -244,6 +243,14 @@
 
 		});
 
+		function addContact(res) {
+			$("#bodyside ").children().empty();
+			for (let i = 0; i < res.length; i++) {
+
+				addHtmlElement(res[i]['name']);
+
+			}
+		};
 
 		function addHtmlElement($name) {
 			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
@@ -252,22 +259,21 @@
 			$("#bodyside ").children().append(li);
 			$("li").addClass("liclass");
 
-			document.getElementById('Mymodal').style.display = 'none';
-			close.onclick = function closeModal_btn() {
-				modal.style.display = 'none';
-			};
-
-
-			document.getElementById('closeModal').onclick = function closeModal1() {
-				document.getElementById('modal1').style.display = 'none';
-			};
 		};
+
+		closeModal.onclick = function closeModal() {
+            modal.style.display = 'none';
+        };
+
+
+        document.getElementById('closeModal1').onclick = function closeModal1() {
+            document.getElementById('modal1').style.display = 'none';
+        };
 
 		function edit(event) {
 			document.getElementById("newName").value = "";
-
 			document.getElementById("warning2").style.display = "block";
-			$("#warning2").text("event");
+			$("#warning2").text("change name");
 			document.getElementById("modal1").style.display = 'block';
 		};
 
@@ -279,7 +285,6 @@
 				data: {},
 				success: function(response) {
 					response = JSON.parse(response);
-
 					addContact(response.res);
 				},
 				error: function(response) {
@@ -351,8 +356,7 @@
 							warning.style.display = "block";
 							$("#warning").text("This contact has already been added to the contacts table.");
 						} else {
-							// Mymodal.style.display = "none";
-							alert("add contact:)")
+							Mymodal.style.display = "none";
 							warning.style.display = "block";
 							addHtmlElement(response.arrayres);
 						}

@@ -299,6 +299,7 @@ html {
   z-index: 1;
   border-radius: 15px;
 }
+
 #closeModal {
   margin-left: 350px;
   background: none;
@@ -315,7 +316,27 @@ html {
   font-size: 20px;
   font-family: cursive;
 }
+
 #closeModal:hover {
+  background-color: #2ecc71;
+}
+#closeModal1 {
+  margin-left: 350px;
+  background: none;
+  color: white;
+  border: none;
+  display: block;
+  border: 2px solid #2ecc71;
+  padding: 10px 15px;
+  outline: none;
+  color: #fff;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: cursive;
+}
+#closeModal1:hover {
   background-color: #2ecc71;
 }
 
@@ -335,6 +356,7 @@ html {
   padding: 5%;
   text-align: center;
 }
+
 .contact {
   background: none;
   display: block;
@@ -411,14 +433,5 @@ html {
 p {
   margin-bottom: 0px;
 }
-#modal {
-  display: none;
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  border-radius: 15px;
-}
+
+
