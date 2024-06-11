@@ -54,7 +54,7 @@
 				<div class="card mb-sm-3 mb-md-0 contacts_card">
 					<div class="card-header">
 						<div class="input-group" style="display: flex; justify-content: flex-start; flex-direction: row-reverse;" ;>
-							<a href="#" id="plus"><i class="fa fa-plus-circle plus"></i></a>
+							<a href="#" id="plus"><i class="fa fa-plus-circle plus" onclick="plus()"></i></a>
 							<a href="#" id="refresh"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
 						</div>
 					</div>
@@ -64,13 +64,6 @@
 
 						</ul>
 					</div>
-					<!-- <div class="card-body contacts_body">
-						<ui class="contacts">
-							<ul id="refresh_list">
-
-							</ul>
-						</ui>
-					</div> -->
 					<div class="card-footer"></div>
 				</div>
 			</div>
@@ -194,14 +187,14 @@
 	</div>
 
 	<div id="modal1">
-	<div class="content">
-		<form onsubmit="return false">
-			<button id="closeModal1" onclick="closeModal_btn()">X</button><br>
-			<input type="text" placeholder="new name" id="newName" class="contact"><br>
-			<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
-			<span id="warning2" style="display:none;color:white;">b</span>
-		</form>
-	</div>
+		<div class="content">
+			<form onsubmit="return false">
+				<button id="closeModal1" onclick="closeModal_btn() ">X</button><br>
+				<input type="text" placeholder="new name" id="newName" class="contact"><br>
+				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
+				<span id="warning2" style="display:none;color:white;">b</span>
+			</form>
+		</div>
 	</div>
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -211,6 +204,15 @@
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
+		// $("#closeModal").click(function() {
+		// 	$("#modal1").hide();
+		// });
+		document.addEventListener("DOMContentLoaded", function() {
+			var modal = document.getElementById("modal1");
+			modal.style.display = "none";
+		});
+
+
 		function Checkphone(phone) {
 			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
 			var result = regex.test(phone);
@@ -222,9 +224,6 @@
 		var add = document.getElementById('add');
 		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
-		document.getElementById('plus').onclick = function() {
-			Mymodal.style.display = 'block';
-		};
 		jQuery(document).ready(function() {
 
 			$.ajax({
@@ -253,7 +252,7 @@
 		};
 
 		function addHtmlElement($name) {
-			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
+			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
 			var li = $("<li ></li>").html(item);
 
 			$("#bodyside ").children().append(li);
@@ -261,14 +260,14 @@
 
 		};
 
-		closeModal.onclick = function closeModal() {
-            modal.style.display = 'none';
-        };
+		closeModal.onclick = function closeModal_btn() {
+			Mymodal.style.display = 'none';
+		};
 
 
-        document.getElementById('closeModal1').onclick = function closeModal1() {
-            document.getElementById('modal1').style.display = 'none';
-        };
+		document.getElementById('closeModal1').onclick = function closeModal1() {
+			document.getElementById('modal1').style.display = 'none';
+		};
 
 		function edit(event) {
 			document.getElementById("newName").value = "";
