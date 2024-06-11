@@ -275,6 +275,7 @@
 			$("#warning2").text("change name");
 			document.getElementById("modal1").style.display = 'block';
 		};
+		
 
 		refresh.onclick = function() {
 
