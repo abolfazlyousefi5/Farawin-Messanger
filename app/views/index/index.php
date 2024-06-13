@@ -225,7 +225,6 @@
 		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
 		jQuery(document).ready(function() {
-
 			$.ajax({
 				url: "<?= URL; ?>index/contact_data2",
 				type: "POST",
@@ -238,8 +237,6 @@
 					alert("errr 500");
 				}
 			});
-
-
 		});
 
 		function addContact(res) {
@@ -254,7 +251,6 @@
 		function addHtmlElement($name) {
 			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
 			var li = $("<li ></li>").html(item);
-
 			$("#bodyside ").children().append(li);
 			$("li").addClass("liclass");
 
@@ -276,8 +272,23 @@
 			document.getElementById("modal1").style.display = 'block';
 		};
 		
+		// function refresh () {
+		// 	$.ajax({
+		// 		url: "<?= URL; ?>index/contact_data2",
+		// 		type: "POST",
+		// 		data: {},
+		// 		success: function(response) {
+		// 			response = JSON.parse(response);
+		// 			addContact(response.res);
+		// 		},
+		// 		error: function(response) {
+		// 			alert("خطای 500");
+		// 		}
+		// 	});
+		// };
+		// refresh.onclick();
 
-		refresh.onclick = function() {
+		refresh.onclick= function() {
 
 			$.ajax({
 				url: "<?= URL; ?>index/contact_data2",
@@ -300,7 +311,6 @@
 			} else {
 				event.parentNode.childNodes[1].value = ("#newName").value
 			}
-
 		}
 
 		plus.onclick = function() {

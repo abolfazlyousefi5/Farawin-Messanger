@@ -6,7 +6,6 @@ class model_index extends Model
     {
         parent::__construct();
     }
-
     function contact_data($post)
     {
         $sql = "SELECT * FROM users WHERE phone=?";
@@ -84,5 +83,8 @@ class model_index extends Model
                 )
             );
         }
+    }
+    function contact_data3(){
+    $sql = "UPDATE * FROM contact "
     }
 }
