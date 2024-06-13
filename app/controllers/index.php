@@ -7,14 +7,14 @@ class Index extends Controller
     function __construct()
     {
         parent::__construct();
-        
+
         //   unset( $_SESSION['username']);
-                $this->checkLogin = Model::session_get("phone");
-                
-                // if ($this->checkLogin == FALSE) {
-                //     header("Location:".URL."login");
-                // }
-        
+        $this->checkLogin = Model::session_get("phone");
+
+        // if ($this->checkLogin == FALSE) {
+        //     header("Location:".URL."login");
+        // }
+
     }
 
     function index()
@@ -31,7 +31,10 @@ class Index extends Controller
     }
     function contact_data2()
     {
-        $this->model->contact_data2($_POST);
+        $this->model->contact_data2();
     }
-
+    function contact_data3()
+    {
+        $this->model->contact_data3($_POST);
+    }
 }

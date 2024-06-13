@@ -84,7 +84,8 @@ class model_index extends Model
             );
         }
     }
-    function contact_data3(){
-    $sql = "UPDATE * FROM contact "
-    }
+    // function contact_data3($post){
+    
+    // $sql = "UPDATE contact SET name=? where contactid="
+    // }
 }
