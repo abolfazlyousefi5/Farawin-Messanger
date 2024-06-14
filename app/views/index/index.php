@@ -15,38 +15,6 @@
 	<link rel="stylesheet" href="public/css/index.css">
 </head>
 
-<style>
-	.liclass {
-		display: flex;
-		justify-content: space-between;
-		flex-direction: row;
-		width: 40px;
-		height: 30px;
-		align-items: center;
-		color: white !important;
-		border-bottom: 1px solid lightgray;
-	}
-
-	.aclass {
-		background: unset;
-		border: 0;
-
-		font-size: 20px;
-		color: white;
-		cursor: pointer;
-	}
-
-	.active {
-		/* background-color: #696bae; */
-		background-color: #2d116e;
-		color: white;
-	}
-
-	p {
-		margin-bottom: 0px;
-	}
-</style>
-
 <body>
 	<div class="container-fluid h-100">
 		<div class="row justify-content-center h-100">
@@ -204,9 +172,6 @@
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
-		// $("#closeModal").click(function() {
-		// 	$("#modal1").hide();
-		// });
 		document.addEventListener("DOMContentLoaded", function() {
 			var modal = document.getElementById("modal1");
 			modal.style.display = "none";
@@ -226,7 +191,7 @@
 		var refresh = document.getElementById('refresh');
 		jQuery(document).ready(function() {
 			$.ajax({
-				url: "<?= URL; ?>index/contact_data2",
+				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {

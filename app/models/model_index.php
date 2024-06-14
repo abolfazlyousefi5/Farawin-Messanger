@@ -61,7 +61,7 @@ class model_index extends Model
         }
     }
 
-    function contact_data2()
+    function get_contact_data()
     {
         $stmt = "SELECT * FROM contact WHERE userid=?";
         $params = array($_SESSION['id']);
@@ -84,8 +84,30 @@ class model_index extends Model
             );
         }
     }
-    // function contact_data3($post){
-    
-    // $sql = "UPDATE contact SET name=? where contactid="
-    // }
+    function edit_data($post)
+    {
+        $this->session_set("contactid", $_POST["contactid"]);
+        echo json_encode(array(
+            "msg" => 1,
+            "status_code" =>  "301"
+        ));
+    }
+
+    function update_data($post)
+    {
+        if ($_POST['contactname'] == '') {
+            echo json_encode(array(
+                "msg" => 2,
+                "status_code" =>  "302"
+            ));
+        } else {
+            $sql = " UPDATE `contact` SET `name` = ? WHERE `contact_id` =?";
+            $params = array($_POST['contactname'], $this->session_get('contactid'));
+            $this->doQuery($sql, $params);
+            echo json_encode(array(
+                "msg" => 1,
+                "status_code" =>  "302"
+            ));
+        }
+    }
 }
