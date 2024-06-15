@@ -169,14 +169,17 @@
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<!-- Script -->
 	<script>
+		//----------- close modal ad----------------------//*
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
-		document.addEventListener("DOMContentLoaded", function() {
-			var modal = document.getElementById("modal1");
-			modal.style.display = "none";
-		});
+		//----------- close modal edit----------------------//*
+		// document.addEventListener("DOMContentLoaded", function() {
+		// 	var modal = document.getElementById("modal1");
+		// 	modal.style.display = "none";
+		// });
 
+		//----------- check phone----------------------//*
 
 		function Checkphone(phone) {
 			var regex = new RegExp("^(\\+98|0)?9\\d{9}$");
@@ -189,6 +192,7 @@
 		var add = document.getElementById('add');
 		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
+		//----------- refresh contact F5   ------------------//*
 		jQuery(document).ready(function() {
 			$.ajax({
 				url: "<?= URL; ?>index/get_contact_data",
@@ -204,6 +208,17 @@
 			});
 		});
 
+				//----------- add----------------//*
+
+		function addHtmlElement($name) {
+			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
+			var li = $("<li ></li>").html(item);
+			$("#bodyside ").children().append(li);
+			$("li").addClass("liclass");
+
+		};
+		//----------- add contact----------------//*
+
 		function addContact(res) {
 			$("#bodyside ").children().empty();
 			for (let i = 0; i < res.length; i++) {
@@ -213,19 +228,9 @@
 			}
 		};
 
-		function addHtmlElement($name) {
-			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
-			var li = $("<li ></li>").html(item);
-			$("#bodyside ").children().append(li);
-			$("li").addClass("liclass");
-
-		};
-
-		closeModal.onclick = function closeModal_btn() {
-			Mymodal.style.display = 'none';
-		};
 
 
+		//----------- close modal edit----------------------//*
 		document.getElementById('closeModal1').onclick = function closeModal1() {
 			document.getElementById('modal1').style.display = 'none';
 		};
@@ -236,6 +241,15 @@
 			$("#warning2").text("change name");
 			document.getElementById("modal1").style.display = 'block';
 		};
+		
+		// function changeName(event) {
+		// 	if (("#newName").value == "") {
+		// 		warning2.style.display = "block";
+		// 		$("#warning2").text("پر کردن تمامی فیلدها الزامیست");
+		// 	} else {
+		// 		event.parentNode.childNodes[1].value = ("#newName").value
+		// 	}
+		// }
 
 		// function refresh () {
 		// 	$.ajax({
@@ -256,7 +270,7 @@
 		refresh.onclick = function() {
 
 			$.ajax({
-				url: "<?= URL; ?>index/contact_data2",
+				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
@@ -269,14 +283,7 @@
 			});
 		};
 
-		function changeName(event) {
-			if (("#newName").value == "") {
-				warning2.style.display = "block";
-				$("#warning2").text("پر کردن تمامی فیلدها الزامیست");
-			} else {
-				event.parentNode.childNodes[1].value = ("#newName").value
-			}
-		}
+		
 
 		plus.onclick = function() {
 			document.getElementById("name").value = "";
