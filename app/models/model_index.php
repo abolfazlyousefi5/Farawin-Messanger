@@ -101,7 +101,7 @@ class model_index extends Model
                 "status_code" =>  "302"
             ));
         } else {
-            $sql = " UPDATE `contact` SET `name` = ? WHERE `contact_id` =?";
+            $sql = " UPDATE `contact` SET `name` = ? WHERE `userid` =?";
             $params = array($_POST['contactname'], $this->session_get('contactid'));
             $this->doQuery($sql, $params);
             echo json_encode(array(
