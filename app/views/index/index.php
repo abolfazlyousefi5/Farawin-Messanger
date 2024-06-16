@@ -141,6 +141,8 @@
 			</div>
 		</div>
 	</div>
+	
+	</div>
 	<div id="Mymodal">
 		<div class="content">
 			<button id="closeModal">X</button>
@@ -153,14 +155,13 @@
 			</form>
 		</div>
 	</div>
-
 	<div id="modal1">
 		<div class="content">
 			<form onsubmit="return false">
-				<button id="closeModal1" onclick="closeModal_btn() ">X</button><br>
+				<button id="closeModal1" onclick="closeModal_btn()">X</button><br>
 				<input type="text" placeholder="new name" id="newName" class="contact"><br>
 				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
-				<span id="warning2" style="display:none;color:white;">b</span>
+				<span id="warning2" style="display:none;color:white;"></span>
 			</form>
 		</div>
 	</div>
@@ -192,7 +193,10 @@
 		var add = document.getElementById('add');
 		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
+
+
 		//----------- refresh contact F5   ------------------//*
+
 		jQuery(document).ready(function() {
 			$.ajax({
 				url: "<?= URL; ?>index/get_contact_data",
@@ -208,7 +212,7 @@
 			});
 		});
 
-				//----------- add----------------//*
+		//----------- add----------------//*
 
 		function addHtmlElement($name) {
 			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
@@ -228,7 +232,7 @@
 			}
 		};
 
-
+		console.log("AdadafafaAEq");
 
 		//----------- close modal edit----------------------//*
 		document.getElementById('closeModal1').onclick = function closeModal1() {
@@ -241,13 +245,80 @@
 			$("#warning2").text("change name");
 			document.getElementById("modal1").style.display = 'block';
 		};
-		
-		// function changeName(event) {
-		// 	if (("#newName").value == "") {
-		// 		warning2.style.display = "block";
-		// 		$("#warning2").text("پر کردن تمامی فیلدها الزامیست");
-		// 	} else {
-		// 		event.parentNode.childNodes[1].value = ("#newName").value
+
+
+		function editName(event) {
+			var contactName = event.target.parentElement.querySelector('#contact').innerText;
+			document.getElementById("newName").value = contactName;
+			document.getElementById("warning").style.display = "none";
+			document.getElementById("modal1").style.display = 'block';
+		}
+
+		function closeModal() {
+			document.getElementById('modal1').style.display = 'none';
+		}
+
+		function changeName(event) {
+			var newName = document.getElementById("newName").value;
+			if (newName.trim() === "") {
+				document.getElementById("warning").style.display = "block";
+				document.getElementById("warning").innerText = "Please enter a valid name";
+			} else {
+				// ارسال درخواست به سرور برای به‌روزرسانی نام
+				fetch("<?= URL; ?>index/update_data", {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							name: newName
+						}),
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.status === 'success') {
+							document.getElementById("contact").innerText = newName; // به‌روزرسانی نام در صفحه
+							closeModal(); // بستن مدال
+						} else {
+							document.getElementById("warning").style.display = "block";
+							document.getElementById("warning").innerText = "Failed to update name";
+						}
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+						document.getElementById("warning").style.display = "block";
+						document.getElementById("warning").innerText = "Failed to update name";
+					});
+			}
+		}
+
+		// ----------- close modal edit----------------------//*
+		// function edit(event) {
+		// 	var newName = document.getElementById("newName").value = "";
+		// 	document.getElementById("warning2").style.display = "block";
+		// 	$("#warning2").text("change name");
+		// 	document.getElementById("modal1").style.display = 'block';
+		// 	if (newName) {
+		// 		var contactName = event.target.parentNode.querySelector('.contact-name').textContent; // دریافت نام فعلی مخاطب
+		// 		$.ajax({
+		// 			url: "<?= URL; ?>index/update_data",
+		// 			type: "POST",
+		// 			data: {
+		// 				"contactName": contactName,
+		// 				"newName": newName
+		// 			},
+		// 			success: function(response) {
+		// 				if (response === "success") {
+		// 					event.target.parentNode.querySelector('.contact-name').textContent = newName; // به‌روزرسانی نام مخاطب در ویو
+		// 					alert("Name updated successfully!");
+		// 				} else {
+		// 					alert("Error updating name.");
+		// 				}
+		// 			},
+		// 			error: function(response) {
+		// 				alert("Error updating name.");
+		// 			}
+		// 		});
 		// 	}
 		// }
 
@@ -283,7 +354,7 @@
 			});
 		};
 
-		
+
 
 		plus.onclick = function() {
 			document.getElementById("name").value = "";

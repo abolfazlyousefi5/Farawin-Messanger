@@ -66,6 +66,7 @@ class model_index extends Model
         $stmt = "SELECT * FROM contact WHERE userid=?";
         $params = array($_SESSION['id']);
         $res = $this->doSelect($stmt, $params);
+        // file_put_contents("abbbbb.json",print_r( $res,true));
         if (sizeof($res) != 0) {
             echo json_encode(
                 array(
@@ -110,4 +111,5 @@ class model_index extends Model
             ));
         }
     }
+
 }
