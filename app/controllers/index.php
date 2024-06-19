@@ -37,7 +37,7 @@ class Index extends Controller
     {
         $this->model->update_data($_POST);
     }
-    // function contact_massage(){
-    //     $this->model->contact_massage($_POST);
-    // }
+    function contact_massage(){
+        $this->model->contact_massage($_POST);
+    }
 }

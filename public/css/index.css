@@ -434,3 +434,13 @@ p {
   margin-bottom: 0px;
 }
 
+#selectedContactName {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.contact-item.active {
+  background-color: #f1f1f1;
+  opacity: 0.5;
+}

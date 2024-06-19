@@ -44,7 +44,7 @@
 								<span class="online_icon"></span>
 							</div> -->
 							<div class="user_info">
-								<!-- <span id="selectedContactName">نام مخاطب انتخاب شده</span> -->
+								<span id="changeNam1"></span>
 								<!-- <p>1767 Messages</p> -->
 							</div>
 
@@ -126,17 +126,15 @@
 					</div>
 					<div class="card-footer">
 						<div class="input-group">
-
-							<div class="input-group-append">
+							<div class="input-group-append" id="Massage_Send">
 								<span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span>
 							</div>
-							<textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+							<textarea name="" class="form-control type_msg" placeholder="Type your message..." id="message"></textarea>
 							<div class="input-group-append">
 								<span class="input-group-text attach_btn"><i class="fa fa-paperclip"></i></span>
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -201,7 +199,6 @@
 		var close = document.getElementById('closeModal');
 		var refresh = document.getElementById('refresh');
 
-
 		//----------- refresh contact F5   ------------------//*
 
 		$(document).ready(function() {
@@ -227,13 +224,14 @@
 			});
 		});
 
-		// $(document).on('click', '.contact-item', function() {
-        // $('.contact-item').removeClass('active');
-        // $(this).addClass('active');
+		$(document).on('click', '.contact-item', function() {
+			$('.contact-item').removeClass('active');
+			$(this).addClass('active');
+		});
 
-        var contactName = $(this).find('.contact-name').text();
-        $('#selectedContactName').text(contactName);
-    
+		var contactName = $(this).find('.contact-name').text();
+		$('#selectedContactName').text(contactName);
+
 
 
 		function edit() {
@@ -313,10 +311,62 @@
 				$(this).addClass("active").css({
 					opacity: 0.5
 				}).siblings().removeClass("active");
-
 				var Nam = $("li.active").children("p.name").text();
 				$("#changeNam1").text(Nam);
 				var contactid = $("li.active").children("p.id").text();
+
+
+
+				// $("#Massage_Send").click(function() {
+				// 	var message = $("#message").val();
+
+				// 	$.ajax({
+				// 		url: "<?= URL; ?>index/contact_massage",
+				// 		type: "POST",
+				// 		data: {
+				// 			"contactid": contactid,
+				// 			"message": message
+				// 		},
+				// 		cache: false,
+				// 		success: function(response) {
+				// 			response = JSON.parse(response);
+				// 			if (response.msg == "ok") {
+				// 				alert("پیام با موفقیت ثبت شد");
+				// 			}
+				// 		},
+				// 		error: function(response) {
+				// 			alert("خطای 500");
+				// 		}
+				// 	});
+				// });
+
+				var isMessageSent = false; // وضعیت ارسال پیام
+				$("#Massage_Send").click(function() {
+					if (!isMessageSent) { // اگر پیام ارسال نشده باشد
+						var message = $("#message").val();
+						var contactid = $("li.active").children("p.id").text();
+
+						$.ajax({
+							url: "<?= URL; ?>index/contact_massage",
+							type: "POST",
+							data: {
+								"contactid": contactid,
+								"message": message
+							},
+							cache: false,
+							success: function(response) {
+								response = JSON.parse(response);
+								if (response.msg == "ok") {
+									alert("پیام با موفقیت ثبت شد");
+									isMessageSent = true; // تغییر وضعیت به "پیام ارسال شده"
+								}
+							},
+							error: function(response) {
+								alert("خطای 500");
+							}
+						});
+					}
+				});
 			});
 		}
 

@@ -107,15 +107,53 @@ class model_index extends Model
             )
         );
     }
-    //     function contact_massage($post){
-    //         $sql = "SELECT * FROM massage WHERE SendID=?AND GetID=?";
-    //         $params = array($this->session_get('id'),$_POST["getid"]);
-    //         $result = $this->doSelect($sql, $params);
-    //         if (sizeof($result) == 0){
-    //             $sql = "INSERT INTO massage (SendID,GetID) VALUES (?,?)";
-    //             $params = array($this->session_get('id'),$_POST["getid"]);
-    //             $this->doQuery($sql, $params);
-    //         }
 
+    // function contact_massage($post)
+    // {
+    //    $message = $post['message'];
+    //    $contactid = $post['contactid'];
+    //    for ($i = 0; $i < 1; $i++) {
+    //       $sql = "INSERT INTO message (sendId, getId, text) VALUES (?, ?, ?)";
+    //       $values = array($this->session_get('id'), $contactid, $message);
+    //       $this->doQuery($sql, $values);
+    //    }
+    //    echo json_encode(array("msg" => "ok"));
+    // }
+
+    // function contact_message($post)
+    // {
+    //     $message = $post['message'];
+    //     $contactid = $post['contactid'];
+
+    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? AND text=?";
+    //     $params = array($_SESSION['id'], $contactid, $message);
+    //     $result = $this->doSelect($sql, $params);
+
+    //     if (sizeof($result) > 0) {
+    //         echo json_encode(array("msg" => "This message already exists in the database."));
+    //     } else {
+    //         $sql = "INSERT INTO message (sendId, getId, text) VALUES (?, ?, ?)";
+    //         $values = array($_SESSION['id'], $contactid, $message);
+    //         $this->doQuery($sql, $values);
+    //         echo json_encode(array("msg" => "Message inserted successfully."));
     //     }
+    // }
+    function contact_massage($post)
+    {
+        $message = $post['message'];
+        $contactid = $post['contactid'];
+
+        $sql = "SELECT * FROM message WHERE sendId=? AND getId=? AND text=?";
+        $params = array($_SESSION['id'], $contactid, $message);
+        $result = $this->doSelect($sql, $params);
+
+        if (sizeof($result) > 0) {
+            echo json_encode(array("msg" => "This message already exists in the database."));
+        } else {
+            $sql = "INSERT INTO message (sendId, getId, text) VALUES (?, ?, ?)";
+            $values = array($_SESSION['id'], $contactid, $message);
+            $this->doQuery($sql, $values);
+            echo json_encode(array("msg" => "Message inserted successfully."));
+        }
+    }
 }
