@@ -43,10 +43,10 @@
 								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
 								<span class="online_icon"></span>
 							</div> -->
-							<!-- <div class="user_info">
-								<span>khalid Charif</span>
-								<p>1767 Messages</p>
-							</div> -->
+							<div class="user_info">
+								<!-- <span id="selectedContactName">نام مخاطب انتخاب شده</span> -->
+								<!-- <p>1767 Messages</p> -->
+							</div>
 
 						</div>
 
@@ -141,7 +141,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	</div>
 	<div id="Mymodal">
 		<div class="content">
@@ -160,7 +160,7 @@
 			<form onsubmit="return false">
 				<button id="closeModal1" onclick="closeModal_btn()">X</button><br>
 				<input type="text" placeholder="new name" id="newName" class="contact"><br>
-				<button type="submit" id="changeName" class="contact" onclick="changeName(event)">change name</button><br>
+				<button type="submit" id="changeName" class="contact" onclick="updateName(event)">change name</button>
 				<span id="warning2" style="display:none;color:white;"></span>
 			</form>
 		</div>
@@ -174,6 +174,13 @@
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
+		// function MYmodal(){
+		// 	document.getElementById('MYmodal').style.display= 'none';
+		// }
+
+		function closeModal_btn() {
+			document.getElementById('modal1').style.display = 'none';
+		}
 		//----------- close modal edit----------------------//*
 		// document.addEventListener("DOMContentLoaded", function() {
 		// 	var modal = document.getElementById("modal1");
@@ -197,100 +204,140 @@
 
 		//----------- refresh contact F5   ------------------//*
 
-		jQuery(document).ready(function() {
+		$(document).ready(function() {
 			$.ajax({
-				url: "<?= URL; ?>index/get_contact_data",
+				url: "https://localhost/Farawin-Messanger-master5/index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
-					response = JSON.parse(response);
-					addContact(response.res);
+					if (typeof response !== "object") {
+						response = JSON.parse(response);
+					}
+					if (response.res) {
+						addContact(response.res);
+					} else {
+						console.error("Parsing error: res is undefined in response", response);
+						alert("Parsing error: res is undefined in response");
+					}
 				},
-				error: function(response) {
-					alert("errr 500");
+				error: function(xhr, status, error) {
+					alert("Error: " + error);
+					console.error("AJAX Error: ", status, error);
 				}
 			});
 		});
 
-		//----------- add----------------//*
+		// $(document).on('click', '.contact-item', function() {
+        // $('.contact-item').removeClass('active');
+        // $(this).addClass('active');
 
-		function addHtmlElement($name) {
-			var item = '<p>' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit(event)></i> </button>';
-			var li = $("<li ></li>").html(item);
-			$("#bodyside ").children().append(li);
-			$("li").addClass("liclass");
+        var contactName = $(this).find('.contact-name').text();
+        $('#selectedContactName').text(contactName);
+    });
 
-		};
-		//----------- add contact----------------//*
+
+		function edit() {
+			var contactElement = window.event.target.closest("li");
+			var contactName = contactElement.querySelector("p").textContent;
+			document.getElementById("newName").value = contactName;
+			document.getElementById("modal1").style.display = "block";
+		}
+
+
+		function addContact(res) {
+			$("#bodyside").children().empty();
+			for (let i = 0; i < res.length; i++) {
+				addHtmlElement(res[i]['name'], res
+
+				)
+			}
+		}
+
 
 		function addContact(res) {
 			$("#bodyside ").children().empty();
+			$("#contact ").children().empty();
 			for (let i = 0; i < res.length; i++) {
-
-				addHtmlElement(res[i]['name']);
-
+				console.log(res[i]['name'] + res[i]['contactid']);
+				addHtmlElement(res[i]['name'], res[i]['contactid']);
 			}
 		};
-
-		console.log("AdadafafaAEq");
-
-		//----------- close modal edit----------------------//*
-		document.getElementById('closeModal1').onclick = function closeModal1() {
-			document.getElementById('modal1').style.display = 'none';
-		};
-
-		function edit(event) {
-			document.getElementById("newName").value = "";
-			document.getElementById("warning2").style.display = "block";
-			$("#warning2").text("change name");
-			document.getElementById("modal1").style.display = 'block';
-		};
-
-
-		function editName(event) {
-			var contactName = event.target.parentElement.querySelector('#contact').innerText;
-			document.getElementById("newName").value = contactName;
-			document.getElementById("warning").style.display = "none";
-			document.getElementById("modal1").style.display = 'block';
-		}
-
-		function closeModal() {
-			document.getElementById('modal1').style.display = 'none';
-		}
-
-		function changeName(event) {
-			var newName = document.getElementById("newName").value;
-			if (newName.trim() === "") {
-				document.getElementById("warning").style.display = "block";
-				document.getElementById("warning").innerText = "Please enter a valid name";
+		$("#changeName").click(function() {
+			if ($("#newName").val() == "") {
+				warning2.style.display = "block";
+				$("#warning2").text("پر کردن تمامی فیلدها الزامیست");
 			} else {
-				// ارسال درخواست به سرور برای به‌روزرسانی نام
-				fetch("<?= URL; ?>index/update_data", {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							name: newName
-						}),
-					})
-					.then(response => response.json())
-					.then(data => {
-						if (data.status === 'success') {
-							document.getElementById("contact").innerText = newName; // به‌روزرسانی نام در صفحه
-							closeModal(); // بستن مدال
-						} else {
-							document.getElementById("warning").style.display = "block";
-							document.getElementById("warning").innerText = "Failed to update name";
-						}
-					})
-					.catch((error) => {
-						console.error('Error:', error);
-						document.getElementById("warning").style.display = "block";
-						document.getElementById("warning").innerText = "Failed to update name";
-					});
+				var changename = $("#newName").val();
+
+				$("li.active").children("p.name").text(changename);
+				$("#changeNam1").text(changename);
+				// شروع : تغییر دادن در جدول مخاطبین 
+				// console.log($("li.active").children("p.id").text());
+				var changenametable = $("li.active").children("p.id").text();
+
+				$.ajax({
+					url: "<?= URL; ?>index/update_data",
+					type: "POST",
+					data: {
+						"changename": changename,
+						"changenametable": changenametable
+					},
+					success: function(response) {
+						response = JSON.parse(response);
+					},
+					error: function(response) {
+						alert("خطای 500");
+					}
+				});
+
+				document.getElementById("modal1").style.display = 'none';
+
 			}
+		});
+
+
+		function addHtmlElement($name, $changeid) {
+			// بررسی وجود $name
+			if (!$name) {
+				$name = "Unknown";
+			}
+
+			var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
+			var li = $("<li ></li>").html(item);
+			$("#contact").append(li);
+			$("li").addClass("liclass");
+			$("li").children(".id").hide();
+			$("#modalAdd").css("display", "none");
+
+			$("li.liclass").click(function() {
+				$(this).addClass("active").css({
+					opacity: 0.5
+				}).siblings().removeClass("active");
+
+				var Nam = $("li.active").children("p.name").text();
+				$("#changeNam1").text(Nam);
+				var contactid = $("li.active").children("p.id").text();
+			});
 		}
+
+
+
+
+
+
+
+		// function edit(event) {
+		// 	var contactElement = event.target.closest("li");
+		// 	var contactName = contactElement.querySelector("p").textContent;
+		// 	document.getElementById("newName").value = contactName;
+		// 	document.getElementById("modal1").style.display = "block";
+		// }
+
+
+		// function closeModal() {
+		// 	document.getElementById('modal1').style.display = 'none';
+		// }
+
 
 		// ----------- close modal edit----------------------//*
 		// function edit(event) {
@@ -324,7 +371,7 @@
 
 		// function refresh () {
 		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/contact_data2",
+		// 		url: "<?= URL; ?>index/edit_data",
 		// 		type: "POST",
 		// 		data: {},
 		// 		success: function(response) {
@@ -338,15 +385,21 @@
 		// };
 		// refresh.onclick();
 
-		refresh.onclick = function() {
 
+
+		refresh.onclick = function() {
 			$.ajax({
 				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
-					response = JSON.parse(response);
-					addContact(response.res);
+					try {
+						response = JSON.parse(response);
+						addContact(response.msg); // اصلاح شده از response.res به response.msg
+					} catch (e) {
+						console.error("Parsing error:", e);
+						alert("Error parsing JSON response");
+					}
 				},
 				error: function(response) {
 					alert("خطای 500");
@@ -390,37 +443,38 @@
 					data: {
 						"contactName": contactName,
 						"contactPhone": contactPhone
-
 					},
 					success: function(response) {
-						response = JSON.parse(response);
-						if (response.status_code == "606") {
-							warning.style.display = "block";
-							$("#warning").text("This contact has already been added to the contact table with another name.");
-						} else if (response.status_code == "101") {
-							warning.style.display = "block";
-							$("#warning").text("The Contact Does Not Have An Account");
-						} else if (response.status_code == "404") {
-							warning.style.display = "block";
-							$("#warning").text("invite audience");
-
-						} else if (response.status_code == "303") {
-
-							warning.style.display = "block";
-							$("#warning").text("This contact has already been added to the contacts table.");
-						} else {
-							Mymodal.style.display = "none";
-							warning.style.display = "block";
-							addHtmlElement(response.arrayres);
+						try {
+							response = JSON.parse(response);
+							if (response.status_code == "606") {
+								warning.style.display = "block";
+								$("#warning").text("This contact has already been added to the contact table with another name.");
+							} else if (response.status_code == "101") {
+								warning.style.display = "block";
+								$("#warning").text("The Contact Does Not Have An Account");
+							} else if (response.status_code == "404") {
+								warning.style.display = "block";
+								$("#warning").text("invite audience");
+							} else if (response.status_code == "303") {
+								warning.style.display = "block";
+								$("#warning").text("This contact has already been added to the contacts table.");
+							} else {
+								Mymodal.style.display = "none";
+								warning.style.display = "block";
+								addHtmlElement(response.arrayres.name); // اصلاح شده
+							}
+						} catch (e) {
+							console.error("Parsing error:", e);
+							alert("Error parsing JSON response");
 						}
 					},
 					error: function(response) {
 						alert("error 500");
 					}
 				});
-
-			};
-		}
+			}
+		};
 	</script>
 </body>
 

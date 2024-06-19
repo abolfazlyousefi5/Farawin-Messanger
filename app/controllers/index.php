@@ -33,12 +33,11 @@ class Index extends Controller
     {
         $this->model->get_contact_data();
     }
-    function edit_data()
-    {
-        $this->model->edit_data($_POST);
-    }
     function update_data()
     {
         $this->model->update_data($_POST);
     }
+    // function contact_massage(){
+    //     $this->model->contact_massage($_POST);
+    // }
 }

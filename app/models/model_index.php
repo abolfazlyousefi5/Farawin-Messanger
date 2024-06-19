@@ -9,107 +9,113 @@ class model_index extends Model
     function contact_data($post)
     {
         $sql = "SELECT * FROM users WHERE phone=?";
-        $values = array($post['contactPhone']);
-        $result = $this->doSelect($sql, $values);
+        $params = array($post['contactPhone']);
+        $result = $this->doSelect($sql, $params);
 
-        if (sizeof($result) != 0) {
-            if ($_SESSION['id'] == $result[0]['id']) {
-                echo json_encode(
-                    array(
-                        "msg" => "Your information cannot be added to the contact list.",
-                        "status_code" =>  "101"
-                    )
-                );
-            } else {
-                $stmt = "SELECT * FROM contact WHERE contactid=?";
-                $params = array($result[0]['id']);
-                $res = $this->doSelect($stmt, $params);
-
-                if (sizeof($res) == 0) {
-                    $sql = "INSERT INTO contact(userid,contactid,name) VALUES(?,?,?) ";
-                    $values = array($_SESSION['id'], $result[0]['id'], $post['contactName']);
-                    $this->doQuery($sql, $values);
-
-                    $stmt = "SELECT * FROM contact WHERE userid=?";
-                    $params = array($_SESSION['id']);
-                    $res = $this->doSelect($stmt, $params);
-
-                    echo json_encode(
-                        array(
-                            "msg" => "ok",
-                            "status_code" =>  "200",
-                            "arrayres" =>  $post['contactName']
-                        )
-                    );
-                } else {
-                    echo json_encode(
-                        array(
-                            "msg" => "no",
-                            "status_code" =>  "303",
-                            "arrayres" => ""
-                        )
-                    );
-                }
-            }
-        } else {
+        if (sizeof($result) == 0) {
             echo json_encode(
                 array(
                     "msg" => "not found",
-                    "status_code" =>  "404"
+                    "status_code" => "404"
                 )
             );
+        } else if ($result[0]['id'] == $this->session_get('id')) {
+            echo json_encode(array(
+                "msg" => "youre user",
+                "status_code" => "300"
+            ));
+        } else {
+            $sql = "SELECT * FROM contact WHERE contactid=? AND userid=?";
+            $params = array($result[0]['id'], $this->session_get('id'));
+            $res = $this->doSelect($sql, $params);
+
+            if (sizeof($res) != 0) {
+                echo json_encode(
+                    array(
+                        "msg" => "contact already exists",
+                        "status_code" => "405"
+                    )
+                );
+            } else {
+                $sql = "INSERT INTO contact (contactid, userid, name) VALUES (?,?,?)";
+                $params = array($result[0]['id'], $this->session_get('id'), $post['contactName']);
+                $this->doQuery($sql, $params);
+                echo json_encode(
+                    array(
+                        "msg" => "ok",
+                        "status_code" => "200",
+                        "arrayres" => array(
+                            "name" => $post['contactName'],
+                            "contactid" => $result[0]['id']
+                        )
+                    )
+                );
+            }
         }
     }
-
     function get_contact_data()
     {
-        $stmt = "SELECT * FROM contact WHERE userid=?";
-        $params = array($_SESSION['id']);
-        $res = $this->doSelect($stmt, $params);
-        // file_put_contents("abbbbb.json",print_r( $res,true));
-        if (sizeof($res) != 0) {
+        $sql = "SELECT * FROM contact WHERE userid=?";
+        $params = array($this->session_get('id'));
+        $result = $this->doSelect($sql, $params);
+
+        if (sizeof($result) != 0) {
+            // file_put_contents("meh.json",print_r( $res,true));
             echo json_encode(
                 array(
-                    "msg" => "ok",
-                    "status_code" =>  "200",
-                    "res" => $res
+
+                    "res" => $result
+
                 )
             );
         } else {
             echo json_encode(
                 array(
-                    "msg" => "no",
-                    "status_code" =>  "303",
-                    "res" => ""
+
+                    "msg" =>  "no",
+
                 )
             );
         }
-    }
-    function edit_data($post)
-    {
-        $this->session_set("contactid", $_POST["contactid"]);
-        echo json_encode(array(
-            "msg" => 1,
-            "status_code" =>  "301"
-        ));
     }
 
     function update_data($post)
     {
-        if ($_POST['contactname'] == '') {
-            echo json_encode(array(
-                "msg" => 2,
-                "status_code" =>  "302"
-            ));
-        } else {
-            $sql = " UPDATE `contact` SET `name` = ? WHERE `userid` =?";
-            $params = array($_POST['contactname'], $this->session_get('contactid'));
-            $this->doQuery($sql, $params);
-            echo json_encode(array(
-                "msg" => 1,
-                "status_code" =>  "302"
-            ));
-        }
-    }
+        // if ($_POST['contactname'] == '') {
+        //     echo json_encode(array(
+        //         "msg" => 2,
+        //         "status_code" =>  "302"
+        //     ));
+        // } else {
+        //     $sql = " UPDATE `contact` SET `name` = ? WHERE `contactid` =?";
+        //     $params = array($_POST['contactname'], $this->session_get('contactid'));
+        //     $this->doQuery($sql, $params);
+        //     echo json_encode(array(
+        //         "msg" => 1,
+        //         "status_code" =>  "302"
+        //     ));
+        // }
+        //   $id=base64_decode($post['changenametable']) ; //مقدار رمز نگاری شده را رمز گشایی میکند
+        $id = $post['changenametable'];
+        $sql = "UPDATE contact SET name=? where contactid=$id";
+        $values = array($post['changename']);
+        $this->doQuery($sql, $values);
+        echo json_encode(
+            array(
+                "msg" => "ok"
 
+            )
+        );
+    }
+    //     function contact_massage($post){
+    //         $sql = "SELECT * FROM massage WHERE SendID=?AND GetID=?";
+    //         $params = array($this->session_get('id'),$_POST["getid"]);
+    //         $result = $this->doSelect($sql, $params);
+    //         if (sizeof($result) == 0){
+    //             $sql = "INSERT INTO massage (SendID,GetID) VALUES (?,?)";
+    //             $params = array($this->session_get('id'),$_POST["getid"]);
+    //             $this->doQuery($sql, $params);
+    //         }
+
+    //     }
 }
