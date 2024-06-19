@@ -288,7 +288,8 @@ html {
   font-size: 1.8rem;
   color: #82ccdd;
 }
-#Mymodal ,#modal1  {
+#Mymodal,
+#modal1 {
   display: none;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -434,7 +435,7 @@ p {
   margin-bottom: 0px;
 }
 
-#selectedContactName {
+/* #selectedContactName {
   font-size: 1.2rem;
   font-weight: bold;
   margin-left: 10px;
@@ -443,4 +444,4 @@ p {
 .contact-item.active {
   background-color: #f1f1f1;
   opacity: 0.5;
-}
+} */
