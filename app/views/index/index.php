@@ -233,7 +233,7 @@
 
         var contactName = $(this).find('.contact-name').text();
         $('#selectedContactName').text(contactName);
-    });
+    
 
 
 		function edit() {
