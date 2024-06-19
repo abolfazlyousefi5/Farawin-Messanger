@@ -405,6 +405,22 @@ html {
 #add:hover {
   background: #2ecc71;
 }
+#changeName {
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2ecc71;
+  padding: 14px 40px;
+  outline: none;
+  color: #fff;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+#changeName:hover {
+  background: #2ecc71;
+}
 .liclass {
   display: flex;
   justify-content: space-between;
