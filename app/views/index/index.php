@@ -237,7 +237,6 @@
 		function edit() {
 			var contactElement = window.event.target.closest("li");
 			var contactName = contactElement.querySelector("p").textContent;
-			// document.getElementById("newName").value = contactName;
 			document.getElementById("modal1").style.display = "block";
 		}
 
