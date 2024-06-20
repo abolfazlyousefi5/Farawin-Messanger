@@ -241,21 +241,21 @@
 		}
 
 
-		function addContact(res) {
-			$("#bodyside").children().empty();
-			for (let i = 0; i < res.length; i++) {
-				addHtmlElement(res[i]['name'], res
+		// function addContact(res) {
+		// 	$("#bodyside").children().empty();
+		// 	for (let i = 0; i < res.length; i++) {
+		// 		addHtmlElement(res[i]['name'], res
 
-				)
-			}
-		}
+		// 		)
+		// 	}
+		// }
 
 
 		function addContact(res) {
 			$("#bodyside ").children().empty();
 			$("#contact ").children().empty();
 			for (let i = 0; i < res.length; i++) {
-				console.log(res[i]['name'] + res[i]['contactid']);
+				// console.log(res[i]['name'] + res[i]['contactid']);
 				addHtmlElement(res[i]['name'], res[i]['contactid']);
 			}
 		};
@@ -292,15 +292,82 @@
 			}
 		});
 
+		// function addHtmlElement($name, $changeid) {
+		// 	// بررسی وجود $name
+		// 	if (!$name) {
+		// 		$name = "Unknown";
+		// 	}
+		// 	var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
+		// 	var li = $("<li ></li>").html(item);
+		// 	$("#contact").append(li);
+		// 	$("li").addClass("liclass");
+		// 	$("li").children(".id").hide();
+		// 	$("#modalAdd").css("display", "none");
 
-		function addHtmlElement($name, $changeid) {
+		// 	$("li.liclass").click(function() {
+		// 		$(this).addClass("active").css({
+		// 			opacity: 0.5
+		// 		}).siblings().removeClass("active");
+		// 		var Nam = $("li.active").children("p.name").text();
+		// 		$("#changeNam1").text(Nam);
+		// 		var contactid = $("li.active").children("p.id").text();
+
+
+		// 		var isMessageSent = false; // وضعیت ارسال پیام
+		// 		$("#Massage_Send").click(function() {
+		// 			if (!isMessageSent) { // اگر پیام ارسال نشده باشد
+		// 				var message = $("#message").val();
+		// 				var contactid = $("li.active").children("p.id").text();
+
+		// 				$.ajax({
+		// 					url: "<?= URL; ?>index/contact_massage",
+		// 					type: "POST",
+		// 					data: {
+		// 						"contactid": contactid,
+		// 						"message": message
+		// 					},
+		// 					cache: false,
+		// 					success: function(response) {
+		// 						response = JSON.parse(response);
+		// 						if (response.msg == "ok") {
+		// 							alert("پیام با موفقیت ثبت شد");
+		// 							isMessageSent = true; // تغییر وضعیت به "پیام ارسال شده"
+		// 						}
+		// 					},
+		// 					error: function(response) {
+		// 						alert("خطای 500");
+		// 					}
+		// 				});
+		// 			}
+		// 		});
+		// 	});
+		// }
+		function sendMassage(contactid, message) {
+			$.ajax({
+				url: "<?= URL; ?>index/contact_massage",
+				type: "POST",
+				data: {
+					"contactid": contactid,
+					"message": message
+				},
+				cache: false,
+				success: function(response) {
+					response = JSON.parse(response);
+					if (response.msg == "ok") {
+						alert("پیام با موفقیت ثبت شد");
+					} 
+				},
+			});
+		}
+
+		function addHtmlElement($name,$changeid) {
 			// بررسی وجود $name
 			if (!$name) {
 				$name = "Unknown";
 			}
 
-			var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
-			var li = $("<li ></li>").html(item);
+			var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass"><i class="fa fa-edit aclass" id="edit" onclick="edit()"></i></button>';
+			var li = $("<li></li>").html(item);
 			$("#contact").append(li);
 			$("li").addClass("liclass");
 			$("li").children(".id").hide();
@@ -314,60 +381,20 @@
 				$("#changeNam1").text(Nam);
 				var contactid = $("li.active").children("p.id").text();
 
-
-
-				// $("#Massage_Send").click(function() {
-				// 	var message = $("#message").val();
-
-				// 	$.ajax({
-				// 		url: "<?= URL; ?>index/contact_massage",
-				// 		type: "POST",
-				// 		data: {
-				// 			"contactid": contactid,
-				// 			"message": message
-				// 		},
-				// 		cache: false,
-				// 		success: function(response) {
-				// 			response = JSON.parse(response);
-				// 			if (response.msg == "ok") {
-				// 				alert("پیام با موفقیت ثبت شد");
-				// 			}
-				// 		},
-				// 		error: function(response) {
-				// 			alert("خطای 500");
-				// 		}
-				// 	});
-				// });
-
-				var isMessageSent = false; // وضعیت ارسال پیام
-				$("#Massage_Send").click(function() {
-					if (!isMessageSent) { // اگر پیام ارسال نشده باشد
+				// تعریف وضعیت ارسال پیام
+				var isMessageSent = false;
+				$("#Massage_Send").off('click').on('click', function() {
+					if (!isMessageSent) {
 						var message = $("#message").val();
-						var contactid = $("li.active").children("p.id").text();
-
-						$.ajax({
-							url: "<?= URL; ?>index/contact_massage",
-							type: "POST",
-							data: {
-								"contactid": contactid,
-								"message": message
-							},
-							cache: false,
-							success: function(response) {
-								response = JSON.parse(response);
-								if (response.msg == "ok") {
-									alert("پیام با موفقیت ثبت شد");
-									isMessageSent = true; // تغییر وضعیت به "پیام ارسال شده"
-								}
-							},
-							error: function(response) {
-								alert("خطای 500");
-							}
-						});
+						sendMassage(contactid, message);
+						isMessageSent = true;
 					}
 				});
 			});
 		}
+
+
+
 
 
 

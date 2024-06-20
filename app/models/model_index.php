@@ -119,25 +119,6 @@ class model_index extends Model
     //    }
     //    echo json_encode(array("msg" => "ok"));
     // }
-
-    // function contact_message($post)
-    // {
-    //     $message = $post['message'];
-    //     $contactid = $post['contactid'];
-
-    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? AND text=?";
-    //     $params = array($_SESSION['id'], $contactid, $message);
-    //     $result = $this->doSelect($sql, $params);
-
-    //     if (sizeof($result) > 0) {
-    //         echo json_encode(array("msg" => "This message already exists in the database."));
-    //     } else {
-    //         $sql = "INSERT INTO message (sendId, getId, text) VALUES (?, ?, ?)";
-    //         $values = array($_SESSION['id'], $contactid, $message);
-    //         $this->doQuery($sql, $values);
-    //         echo json_encode(array("msg" => "Message inserted successfully."));
-    //     }
-    // }
     function contact_massage($post)
     {
         $message = $post['message'];
@@ -150,8 +131,8 @@ class model_index extends Model
         if (sizeof($result) > 0) {
             echo json_encode(array("msg" => "This message already exists in the database."));
         } else {
-            $sql = "INSERT INTO message (sendId, getId, text) VALUES (?, ?, ?)";
-            $values = array($_SESSION['id'], $contactid, $message);
+            $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
+            $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d"));
             $this->doQuery($sql, $values);
             echo json_encode(array("msg" => "Message inserted successfully."));
         }
