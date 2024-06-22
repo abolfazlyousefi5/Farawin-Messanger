@@ -39,10 +39,10 @@
 				<div class="card">
 					<div class="card-header msg_head">
 						<div class="d-flex bd-highlight">
-							<!-- <div class="img_cont">
-								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+							 <div class="img_cont">
+								<img src="public/images/user-default-image.jpg" class="rounded-circle user_img">
 								<span class="online_icon"></span>
-							</div> -->
+							</div> 
 							<div class="user_info">
 								<span id="changeNam1"></span>
 								<!-- <p>1767 Messages</p> -->
@@ -172,18 +172,13 @@
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
 		});
-		// function MYmodal(){
-		// 	document.getElementById('MYmodal').style.display= 'none';
-		// }
+
+		//----------- close modal edit----------------------//*
 
 		function closeModal_btn() {
 			document.getElementById('modal1').style.display = 'none';
 		}
-		//----------- close modal edit----------------------//*
-		// document.addEventListener("DOMContentLoaded", function() {
-		// 	var modal = document.getElementById("modal1");
-		// 	modal.style.display = "none";
-		// });
+		
 
 		//----------- check phone----------------------//*
 
@@ -213,7 +208,7 @@
 					if (response.res) {
 						addContact(response.res);
 					} else {
-						console.error("Parsing error: res is undefined in response", response);
+						// console.error("Parsing error: res is undefined in response", response);
 						alert("Parsing error: res is undefined in response");
 					}
 				},
@@ -229,26 +224,11 @@
 			$(this).addClass('active');
 		});
 
-		var contactName = $(this).find('.contact-name').text();
-		$('#selectedContactName').text(contactName);
-
-
-
 		function edit() {
 			var contactElement = window.event.target.closest("li");
 			var contactName = contactElement.querySelector("p").textContent;
 			document.getElementById("modal1").style.display = "block";
 		}
-
-
-		// function addContact(res) {
-		// 	$("#bodyside").children().empty();
-		// 	for (let i = 0; i < res.length; i++) {
-		// 		addHtmlElement(res[i]['name'], res
-
-		// 		)
-		// 	}
-		// }
 
 
 		function addContact(res) {
@@ -392,11 +372,6 @@
 				});
 			});
 		}
-
-
-
-
-
 
 
 

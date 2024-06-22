@@ -132,7 +132,7 @@ class model_index extends Model
             echo json_encode(array("msg" => "This message already exists in the database."));
         } else {
             $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
-            $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d"));
+            $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d H:i:s"));
             $this->doQuery($sql, $values);
             echo json_encode(array("msg" => "Message inserted successfully."));
         }
