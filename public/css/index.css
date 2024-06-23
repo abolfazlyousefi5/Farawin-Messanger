@@ -451,13 +451,18 @@ p {
   margin-bottom: 0px;
 }
 
-/* #selectedContactName {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-left: 10px;
+.sender-message {
+  background-color: #daf5da; /* سبز روشن */
+  color: #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-.contact-item.active {
-  background-color: #f1f1f1;
-  opacity: 0.5;
-} */
+.receiver-message {
+  background-color: #dae8fc; /* آبی روشن */
+  color: #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
