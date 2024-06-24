@@ -69,6 +69,10 @@
 							<div class="msg_cotainer_send">
 								Hi abolfazl i am good tnx how about you?
 							</div>
+
+						</div>
+						<div class="d-flex justify-content-end mb-4" id="receiver">
+
 						</div>
 					</div>
 					<div class="card-footer">
