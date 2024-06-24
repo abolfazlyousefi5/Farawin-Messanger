@@ -141,13 +141,23 @@ class model_index extends Model
     {
         $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
         $params = array($sendId, $getId, $text, self::jalali_date("Y/m/d H:i:s"));
-        return $this->doQuery($sql, $params);
+        $resutl = $this->doSelect($sql, $params);
+
+        echo json_encode(array(
+            "data" => $resutl,
+            "status_code" => "110"
+        ));
     }
 
     function getMessages($userId, $contactId)
     {
         $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (getId=? AND sendId=?) ORDER BY DateSend ASC";
         $params = array($userId, $contactId, $contactId, $userId);
-        return $this->doSelect($sql, $params);
+        $resutl = $this->doSelect($sql, $params);
+
+        echo json_encode(array(
+            "data" => "ok",
+            "status_code" => "111"
+        ));
     }
 }

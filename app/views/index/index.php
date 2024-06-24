@@ -39,10 +39,10 @@
 				<div class="card">
 					<div class="card-header msg_head">
 						<div class="d-flex bd-highlight">
-							 <div class="img_cont">
+							<div class="img_cont">
 								<img src="public/images/user-default-image.jpg" class="rounded-circle user_img">
 								<span class="online_icon"></span>
-							</div> 
+							</div>
 							<div class="user_info">
 								<span id="changeNam1"></span>
 								<!-- <p>1767 Messages</p> -->
@@ -60,68 +60,15 @@
 						</div>
 					</div>
 					<div class="card-body msg_card_body">
-						<div class="d-flex justify-content-start mb-4">
-							<!-- <div class="img_cont_msg">
-								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-							</div>
+						<div class="d-flex justify-content-start mb-4" id="sender">
 							<div class="msg_cotainer">
-								Hi, how are you samim?
-								<span class="msg_time">8:40 AM, Today</span>
-							</div> -->
-						</div>
-						<div class="d-flex justify-content-end mb-4">
-							<!-- <div class="msg_cotainer_send">
-								Hi Khalid i am good tnx how about you?
-								<span class="msg_time_send">8:55 AM, Today</span>
+								Hi, how are you 
 							</div>
-							<div class="img_cont_msg">
-								<img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
-							</div> -->
 						</div>
-						<div class="d-flex justify-content-start mb-4">
-							<!-- <div class="img_cont_msg">
-								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+						<div class="d-flex justify-content-end mb-4" id="receiver">
+							<div class="msg_cotainer_send">
+								Hi abolfazl i am good tnx how about you?
 							</div>
-							<div class="msg_cotainer">
-								I am good too, thank you for your chat template
-								<span class="msg_time">9:00 AM, Today</span>
-							</div> -->
-						</div>
-						<div class="d-flex justify-content-end mb-4">
-							<!-- <div class="msg_cotainer_send">
-								You are welcome
-								<span class="msg_time_send">9:05 AM, Today</span>
-							</div>
-							<div class="img_cont_msg">
-								<img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
-							</div> -->
-						</div>
-						<div class="d-flex justify-content-start mb-4">
-							<!-- <div class="img_cont_msg">
-								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-							</div>
-							<div class="msg_cotainer">
-								I am looking for your next templates
-								<span class="msg_time">9:07 AM, Today</span>
-							</div> -->
-						</div>
-						<div class="d-flex justify-content-end mb-4">
-							<!-- <div class="msg_cotainer_send">
-								Ok, thank you have a good day
-								<span class="msg_time_send">9:10 AM, Today</span>
-							</div>
-							<div class="img_cont_msg">
-								<img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
-							</div> -->
-						</div>
-						<div class="d-flex justify-content-start mb-4">
-							<!-- <div class="img_cont_msg">
-								<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-							</div>
-							<div class="msg_cotainer">
-								Bye, see you
-								<span class="msg_time">9:12 AM, Today</span>
-							</div> -->
 						</div>
 					</div>
 					<div class="card-footer">
@@ -178,7 +125,7 @@
 		function closeModal_btn() {
 			document.getElementById('modal1').style.display = 'none';
 		}
-		
+
 
 		//----------- check phone----------------------//*
 
@@ -272,56 +219,6 @@
 			}
 		});
 
-		// function addHtmlElement($name, $changeid) {
-		// 	// بررسی وجود $name
-		// 	if (!$name) {
-		// 		$name = "Unknown";
-		// 	}
-		// 	var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass" ><i class="fa fa-edit aclass" id="edit"  onclick=edit()></i> </button>';
-		// 	var li = $("<li ></li>").html(item);
-		// 	$("#contact").append(li);
-		// 	$("li").addClass("liclass");
-		// 	$("li").children(".id").hide();
-		// 	$("#modalAdd").css("display", "none");
-
-		// 	$("li.liclass").click(function() {
-		// 		$(this).addClass("active").css({
-		// 			opacity: 0.5
-		// 		}).siblings().removeClass("active");
-		// 		var Nam = $("li.active").children("p.name").text();
-		// 		$("#changeNam1").text(Nam);
-		// 		var contactid = $("li.active").children("p.id").text();
-
-
-		// 		var isMessageSent = false; // وضعیت ارسال پیام
-		// 		$("#Massage_Send").click(function() {
-		// 			if (!isMessageSent) { // اگر پیام ارسال نشده باشد
-		// 				var message = $("#message").val();
-		// 				var contactid = $("li.active").children("p.id").text();
-
-		// 				$.ajax({
-		// 					url: "<?= URL; ?>index/contact_massage",
-		// 					type: "POST",
-		// 					data: {
-		// 						"contactid": contactid,
-		// 						"message": message
-		// 					},
-		// 					cache: false,
-		// 					success: function(response) {
-		// 						response = JSON.parse(response);
-		// 						if (response.msg == "ok") {
-		// 							alert("پیام با موفقیت ثبت شد");
-		// 							isMessageSent = true; // تغییر وضعیت به "پیام ارسال شده"
-		// 						}
-		// 					},
-		// 					error: function(response) {
-		// 						alert("خطای 500");
-		// 					}
-		// 				});
-		// 			}
-		// 		});
-		// 	});
-		// }
 		function sendMassage(contactid, message) {
 			$.ajax({
 				url: "<?= URL; ?>index/contact_massage",
@@ -334,13 +231,42 @@
 				success: function(response) {
 					response = JSON.parse(response);
 					if (response.msg == "ok") {
-						alert("پیام با موفقیت ثبت شد");
-					} 
+						// Message sent successfully, update UI
+						var messageContainer = '<div class="d-flex justify-content-end mb-4">' +
+							'<div class="msg_cotainer_send">' +
+							message +
+							'<span class="msg_time_send">Sent just now</span>' +
+							'</div>' +
+							'<div class="img_cont_msg">' +
+							'<img src="public/images/user-default-image.jpg" class="rounded-circle user_img_msg">' +
+							'</div>' +
+							'</div>';
+						$('.msg_card_body').append(messageContainer);
+						$("#message").val(""); // Clear input after sending
+					} else {
+						alert("Failed to send message");
+					}
 				},
+				error: function(response) {
+					alert("Error sending message");
+				}
 			});
 		}
 
-		function addHtmlElement($name,$changeid) {
+		function displayMessage(response) {
+			if (response.sender == 'you') {
+				var messageElement = $('<div></div>').addClass('sender-message').text(response.message);
+				$('#sender').append(messageElement);
+			} else {
+				var messageElement = $('<div></div>').addClass('receiver-message').text(response.message);
+				$('#receiver').append(messageElement);
+			}
+		}
+
+
+
+
+		function addHtmlElement($name, $changeid) {
 			// بررسی وجود $name
 			if (!$name) {
 				$name = "Unknown";
@@ -372,10 +298,6 @@
 				});
 			});
 		}
-
-
-
-
 
 		// function edit(event) {
 		// 	var contactElement = event.target.closest("li");
