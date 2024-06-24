@@ -62,7 +62,7 @@
 					<div class="card-body msg_card_body">
 						<div class="d-flex justify-content-start mb-4" id="sender">
 							<div class="msg_cotainer">
-								Hi, how are you 
+								Hi, how are you !
 							</div>
 						</div>
 						<div class="d-flex justify-content-end mb-4" id="receiver">
