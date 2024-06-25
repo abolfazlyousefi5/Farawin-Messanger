@@ -146,18 +146,21 @@
 
 		$(document).ready(function() {
 			$.ajax({
-				url: "https://localhost/Farawin-Messanger-master5/index/get_contact_data",
+				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
-					if (typeof response !== "object") {
+					console.log(response); // چاپ پاسخ برای بررسی آن
+					try {
 						response = JSON.parse(response);
-					}
-					if (response.res) {
-						addContact(response.res);
-					} else {
-						// console.error("Parsing error: res is undefined in response", response);
-						alert("Parsing error: res is undefined in response");
+						if (response.res) {
+							addContact(response.res);
+						} else {
+							alert("Parsing error: res is undefined in response");
+						}
+					} catch (e) {
+						console.error("Error parsing JSON:", e);
+						alert("Error parsing JSON response");
 					}
 				},
 				error: function(xhr, status, error) {
@@ -165,11 +168,6 @@
 					console.error("AJAX Error: ", status, error);
 				}
 			});
-		});
-
-		$(document).on('click', '.contact-item', function() {
-			$('.contact-item').removeClass('active');
-			$(this).addClass('active');
 		});
 
 		function edit() {
@@ -195,7 +193,6 @@
 				var changename = $("#newName").val();
 
 				$("li.active").children("p.name").text(changename);
-				$("#changeNam1").text(changename);
 				// شروع : تغییر دادن در جدول مخاطبین 
 				// console.log($("li.active").children("p.id").text());
 				var changenametable = $("li.active").children("p.id").text();
@@ -250,37 +247,23 @@
 			});
 		}
 
-		function loadMessages(contactid) {
+
+
+		function loadMessages(contactId) {
 			$.ajax({
-				url: "<?= URL; ?>index/load_messages",
+				url: "<?= URL; ?>index/getMessages",
 				type: "POST",
-				data: JSON.stringify({
-					"contactid": contactid
-				}),
-				contentType: "application/json",
+				data: {
+					"userId": userId,
+					"contactId": contactId
+				},
 				success: function(response) {
 					try {
 						response = JSON.parse(response);
-						if (response.status_code === 200) {
-							// Clear existing messages
-							$('.msg_card_body').html('');
-
-							// Display messages in the UI
-							for (let i = 0; i < response.messages.length; i++) {
-								const message = response.messages[i];
-								let messageContainer;
-
-								if (message.sender_id == <?= $_SESSION['id']; ?>) {
-									messageContainer = `<div class="d-flex justify-content-end mb-4">
-                                                            <div class="msg_cotainer_send">${message.message}</div>
-                                                        </div>`;
-								} else {
-									messageContainer = `<div class="d-flex justify-content-start mb-4">
-                                                            <div class="msg_cotainer">${message.message}</div>
-                                                        </div>`;
-								}
-								$('.msg_card_body').append(messageContainer);
-							}
+						if (response.data == "ok") {
+							response.messages.forEach(msg => {
+								displayMessage(msg);
+							});
 						} else {
 							alert("Failed to load messages");
 						}
@@ -290,15 +273,37 @@
 					}
 				},
 				error: function(xhr, status, error) {
-					console.error("Error loading messages:", error);
-					alert("Error loading messages");
+					alert("Error loading messages: " + error);
+					console.error("AJAX Error: ", status, error);
 				}
 			});
 		}
 
+		// Function to display a message in the UI
+		function displayMessage(message) {
+			var messageContainer;
+			if (message.sender == userId) {
+				// Message sent by logged-in user
+				messageContainer = `
+                        <div class="d-flex justify-content-end mb-4">
+                            <div class="msg_cotainer_send">
+                                ${message.message}
+                            </div>
+                        </div>`;
+			} else {
+				// Message received from another user
+				messageContainer = `
+                        <div class="d-flex justify-content-start mb-4">
+                            <div class="msg_cotainer">
+                                ${message.message}
+                            </div>
+                        </div>`;
+			}
+			$("#messageContainer").append(messageContainer);
+		}
 
-		// Click event for sending a message
-		$("#Message_Send").click(function() {
+		// Function to send a message
+		$("#Massage_Send").click(function() {
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
@@ -320,22 +325,17 @@
 
 
 
-		function addHtmlElement($name, $changeid) {
-			// بررسی وجود $name
-			if (!$name) {
-				$name = "Unknown";
-			}
+		var isHiddenInputCreated = false;
 
-			var item = `
-        <p class="id">${$changeid}</p>
-        <p class="name">${$name}</p>
-        <button class="aclass">
-            <i class="fa fa-edit aclass" id="edit" onclick="edit()"></i>
-        </button>`;
-			var li = $("<li></li>").html(item);
+		function addHtmlElement(name, contactid) {
+			if (!isHiddenInputCreated) {
+				$("<input>").attr("type", "hidden").attr("id", "hiddeninput").appendTo("body");
+				isHiddenInputCreated = true;
+			}
+			var li = $("<li>").attr("data-id", contactid).attr("class", "liclass");
+			var buttonHTML = '<p>' + name + '</p><button class="aclass left1"><i class="fa fa-edit  aclass" id="edit" onclick="edit()"></i></button>';
+			li.html(buttonHTML);
 			$("#contact").append(li);
-			$("li").addClass("liclass");
-			$("li").children(".id").hide();
 			$("#modalAdd").css("display", "none");
 
 			$("li.liclass").click(function() {
@@ -348,7 +348,7 @@
 
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
-				$("#Message_Send").off('click').on('click', function() {
+				$("#Massage_Send").off('click').on('click', function() {
 					if (!isMessageSent) {
 						var message = $("#message").val();
 						sendMessage(contactid, message);
@@ -477,26 +477,33 @@
 		// refresh.onclick();
 
 
-
 		refresh.onclick = function() {
-			$.ajax({
-				url: "<?= URL; ?>index/get_contact_data",
-				type: "POST",
-				data: {},
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						addContact(response.msg); // اصلاح شده از response.res به response.msg
-					} catch (e) {
-						console.error("Parsing error:", e);
-						alert("Error parsing JSON response");
+			$(document).ready(function() {
+				$.ajax({
+					url: "<?= URL; ?>index/get_contact_data",
+					type: "POST",
+					data: {},
+					success: function(response) {
+						console.log(response); // چاپ پاسخ برای بررسی آن
+						try {
+							response = JSON.parse(response);
+							if (response.res) {
+								addContact(response.res);
+							} else {
+								alert("Parsing error: res is undefined in response");
+							}
+						} catch (e) {
+							console.error("Error parsing JSON:", e);
+							alert("Error parsing JSON response");
+						}
+					},
+					error: function(xhr, status, error) {
+						alert("Error: " + error);
+						console.error("AJAX Error: ", status, error);
 					}
-				},
-				error: function(response) {
-					alert("خطای 500");
-				}
+				});
 			});
-		};
+		}
 
 
 

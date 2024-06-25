@@ -41,9 +41,18 @@ class Index extends Controller
     {
         $this->model->contact_message($_POST);
     }
-    public function load_chat() {
-
-        $this->model->load_chat($_POST);
+    function insertMessage()
+    {
+        $sendId = $_POST['sendId']; 
+        $getId = $_POST['getId'];
+        $text = $_POST['text']; 
+        $this->model->insertMessage($sendId, $getId, $text);
     }
-    
+
+    function getMessages()
+    {
+        $userId = $_POST['userId']; 
+        $contactId = $_POST['contactId']; 
+        $this->model->getMessages($userId, $contactId);
+    }
 }
