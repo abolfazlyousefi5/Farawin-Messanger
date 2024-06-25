@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
-	
+
 </head>
 
 <body>
@@ -74,7 +74,7 @@
 					</div>
 					<div class="card-footer">
 						<div class="input-group">
-							<div class="input-group-append" id="Massage_Send">
+							<div class="input-group-append" id="Message_Send">
 								<span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span>
 							</div>
 							<textarea name="" class="form-control type_msg" placeholder="Type your message..." id="message"></textarea>
@@ -222,7 +222,7 @@
 
 		function sendMessage(contactid, message) {
 			$.ajax({
-				url: "<?= URL; ?>index/contact_massage",
+				url: "<?= URL; ?>index/contact_message",
 				type: "POST",
 				data: {
 					"contactid": contactid,
@@ -298,14 +298,14 @@
 
 
 		// Click event for sending a message
-		$("#Massage_Send").click(function() {
+		$("#Message_Send").click(function() {
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
 		});
 
 		$(document).ready(function() {
-			$("#Massage_Send").click(function() {
+			$("#Message_Send").click(function() {
 				var contactid = $("li.active").children("p.id").text();
 				var message = $("#message").val();
 				sendMessage(contactid, message);
@@ -348,7 +348,7 @@
 
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
-				$("#Massage_Send").off('click').on('click', function() {
+				$("#Message_Send").off('click').on('click', function() {
 					if (!isMessageSent) {
 						var message = $("#message").val();
 						sendMessage(contactid, message);
@@ -357,6 +357,64 @@
 				});
 			});
 		}
+
+		$("#contact").on("click", "li", function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			var Nam = $(".active").children("p").text();
+			$("#changeNam1").text(Nam);
+			var ihtml = '<i class="fa fa-trash  aclass"></i>';
+			$("#but").html(ihtml);
+			var contactid = $(this).attr("data-id");
+			$("#hiddeninput").val(contactid);
+			$("#msg-card_body").empty();
+			$("#msg-card_body").children().empty();
+
+			// ارسال درخواست AJAX برای دریافت پیام‌ها
+			$.ajax({
+				url: "<?= URL; ?>index/load_chat",
+				type: "POST",
+				data: {
+					"contactid": contactid
+				},
+				success: function(response) {
+					try {
+						response = JSON.parse(response);
+						// فراخوانی تابع viewChatfunc برای نمایش پیام‌ها
+						viewChatfunc(response.arrayMessages, response.userid, response.contactid);
+					} catch (e) {
+						console.error("Error parsing JSON: " + e.message);
+					}
+				},
+				error: function(response) {
+					alert("خطای 500");
+				}
+			});
+		});
+
+		// تابع viewChatfunc برای نمایش پیام‌ها
+		function viewChatfunc(arrayMessages, userid, contactid) {
+			try {
+				$.each(arrayMessages, function(index, message) {
+					var id = message.id;
+					var sendId = message.sendId;
+					var text = message.text;
+					var date = message.date;
+					var div = $("<div>").attr("class", "boxchat ").attr("id", id);
+					var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
+					$(div).html(item);
+					$("#msg-card_body").append($(div));
+
+					if (sendId == userid) {
+						$(div).addClass("left");
+					} else if (sendId == contactid) {
+						$(div).addClass("right");
+					}
+				});
+			} catch (exception) {
+				console.error("Error displaying messages: " + exception.message);
+			}
+		}
+
 
 
 		// function edit(event) {

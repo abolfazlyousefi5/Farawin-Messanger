@@ -119,7 +119,7 @@ class model_index extends Model
     //    }
     //    echo json_encode(array("msg" => "ok"));
     // }
-    function contact_massage($post)
+    function contact_message($post)
     {
         $message = $post['message'];
         $contactid = $post['contactid'];
@@ -136,8 +136,8 @@ class model_index extends Model
             $this->doQuery($sql, $values);
 
             // Determine the color based on sender and receiver
-            $senderColor = 'blue';  
-            $receiverColor = 'green'; 
+            $senderColor = 'blue';
+            $receiverColor = 'green';
 
             echo json_encode(array(
                 "msg" => "Message inserted successfully.",
@@ -146,42 +146,65 @@ class model_index extends Model
             ));
         }
     }
-    function loadMessages($contactId)
+    // function loadMessages($contactId)
+    // {
+    //     $userId = $this->session_get('id');
+
+    //     // Select messages between current user and the contact
+    //     $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (sendId=? AND getId=?) ORDER BY DateSend ASC";
+    //     $params = array($userId, $contactId, $contactId, $userId);
+    //     $result = $this->doSelect($sql, $params);
+
+    //     if ($result) {
+    //         $messages = array();
+    //         foreach ($result as $row) {
+    //             $senderId = $row['sendId'];
+    //             $message = $row['text'];
+
+    //             // Determine sender and receiver colors
+    //             $senderColor = ($senderId == $userId) ? 'blue' : 'green';
+    //             $receiverColor = ($senderId == $userId) ? 'green' : 'blue';
+
+    //             $messages[] = array(
+    //                 'sender_id' => $senderId,
+    //                 'message' => $message,
+    //                 'senderColor' => $senderColor,
+    //                 'receiverColor' => $receiverColor
+    //             );
+    //         }
+
+    //         echo json_encode(array(
+    //             "status_code" => 200,
+    //             "messages" => $messages
+    //         ));
+    //     } else {
+    //         echo json_encode(array(
+    //             "status_code" => 404,
+    //             "error" => "No messages found"
+    //         ));
+    //     }
+    // }
+
+    function viewchat($post)
     {
-        $userId = $this->session_get('id');
+        // گرفتن مقادیر مورد نیاز از داده‌های POST
+        $contactid = $post['contactid'];
+        $userid = $_SESSION['id'];
 
-        // Select messages between current user and the contact
-        $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (sendId=? AND getId=?) ORDER BY DateSend ASC";
-        $params = array($userId, $contactId, $contactId, $userId);
-        $result = $this->doSelect($sql, $params);
+        // پرس‌وجوی SQL برای گرفتن پیام‌ها بین دو کاربر
+        $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (getId=? AND sendId=?)";
+        $params = array($userid, $contactid, $userid, $contactid);
+        $arrayMessages = $this->doSelect($sql, $params);
 
-        if ($result) {
-            $messages = array();
-            foreach ($result as $row) {
-                $senderId = $row['sendId'];
-                $message = $row['text'];
-
-                // Determine sender and receiver colors
-                $senderColor = ($senderId == $userId) ? 'blue' : 'green';
-                $receiverColor = ($senderId == $userId) ? 'green' : 'blue';
-
-                $messages[] = array(
-                    'sender_id' => $senderId,
-                    'message' => $message,
-                    'senderColor' => $senderColor,
-                    'receiverColor' => $receiverColor
-                );
-            }
-
-            echo json_encode(array(
-                "status_code" => 200,
-                "messages" => $messages
-            ));
-        } else {
-            echo json_encode(array(
-                "status_code" => 404,
-                "error" => "No messages found"
-            ));
+        // اگر پیامی یافت شد، آن را به صورت JSON ارسال می‌کنیم
+        if (sizeof($arrayMessages) > 0) {
+            echo json_encode(
+                array(
+                    "arrayMessages" => $arrayMessages,
+                    "userid" => $userid,
+                    "contactid" => $contactid
+                )
+            );
         }
     }
 }
