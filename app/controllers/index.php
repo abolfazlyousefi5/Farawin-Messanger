@@ -41,18 +41,8 @@ class Index extends Controller
     {
         $this->model->contact_massage($_POST);
     }
-    function insertMessage()
+    function load_messages()
     {
-        $sendId = $_POST['sendId']; 
-        $getId = $_POST['getId'];
-        $text = $_POST['text']; 
-        $this->model->insertMessage($sendId, $getId, $text);
-    }
-
-    function getMessages()
-    {
-        $userId = $_POST['userId']; 
-        $contactId = $_POST['contactId']; 
-        $this->model->getMessages($userId, $contactId);
+        $this->model->load_messages($_POST);
     }
 }
