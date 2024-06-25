@@ -43,10 +43,16 @@ class Index extends Controller
     }
     function insertMessage()
     {
-        $this->model->insertMessage($_POST);
+        $sendId = $_POST['sendId']; 
+        $getId = $_POST['getId'];
+        $text = $_POST['text']; 
+        $this->model->insertMessage($sendId, $getId, $text);
     }
+
     function getMessages()
     {
-        $this->model->getMessages($_POST);
+        $userId = $_POST['userId']; 
+        $contactId = $_POST['contactId']; 
+        $this->model->getMessages($userId, $contactId);
     }
 }

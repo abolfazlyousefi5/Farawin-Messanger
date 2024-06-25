@@ -137,27 +137,31 @@ class model_index extends Model
             echo json_encode(array("msg" => "Message inserted successfully."));
         }
     }
+
     function insertMessage($sendId, $getId, $text)
     {
         $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
         $params = array($sendId, $getId, $text, self::jalali_date("Y/m/d H:i:s"));
-        $resutl = $this->doSelect($sql, $params);
+        $result = $this->doQuery($sql, $params);
 
-        echo json_encode(array(
-            "data" => $resutl,
-            "status_code" => "110"
-        ));
+        if ($result) {
+            echo json_encode(array("data" => "Message inserted successfully", "status_code" => "110"));
+        } else {
+            echo json_encode(array("data" => "Error inserting message", "status_code" => "500"));
+        }
     }
 
     function getMessages($userId, $contactId)
     {
         $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (getId=? AND sendId=?) ORDER BY DateSend ASC";
         $params = array($userId, $contactId, $contactId, $userId);
-        $resutl = $this->doSelect($sql, $params);
+        $result = $this->doSelect($sql, $params);
 
-        echo json_encode(array(
-            "data" => "ok",
-            "status_code" => "111"
-        ));
+        if (!empty($result)) {
+            echo json_encode(array("data" => $result, "status_code" => "111"));
+        } else {
+            echo json_encode(array("data" => "Error fetching messages", "status_code" => "500"));
+        }
+        return $result;
     }
 }

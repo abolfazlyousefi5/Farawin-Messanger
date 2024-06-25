@@ -62,17 +62,13 @@
 					<div class="card-body msg_card_body">
 						<div class="d-flex justify-content-start mb-4" id="sender">
 							<div class="msg_cotainer">
-								Hi, how are you !
+								Hi, how are you samim?
 							</div>
 						</div>
 						<div class="d-flex justify-content-end mb-4" id="receiver">
 							<div class="msg_cotainer_send">
-								Hi abolfazl i am good tnx how about you?
+								Hi Khalid i am good tnx how about you?
 							</div>
-
-						</div>
-						<div class="d-flex justify-content-end mb-4" id="receiver">
-
 						</div>
 					</div>
 					<div class="card-footer">
@@ -223,7 +219,7 @@
 			}
 		});
 
-		function sendMassage(contactid, message) {
+		function sendMessage(contactid, message) {
 			$.ajax({
 				url: "<?= URL; ?>index/contact_massage",
 				type: "POST",
@@ -231,20 +227,15 @@
 					"contactid": contactid,
 					"message": message
 				},
-				cache: false,
 				success: function(response) {
 					response = JSON.parse(response);
 					if (response.msg == "ok") {
 						// Message sent successfully, update UI
-						var messageContainer = '<div class="d-flex justify-content-end mb-4">' +
-							'<div class="msg_cotainer_send">' +
-							message +
-							'<span class="msg_time_send">Sent just now</span>' +
-							'</div>' +
-							'<div class="img_cont_msg">' +
-							'<img src="public/images/user-default-image.jpg" class="rounded-circle user_img_msg">' +
-							'</div>' +
-							'</div>';
+						var messageContainer = `
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            ${message}
+                    </div>`;
 						$('.msg_card_body').append(messageContainer);
 						$("#message").val(""); // Clear input after sending
 					} else {
@@ -257,16 +248,82 @@
 			});
 		}
 
-		function displayMessage(response) {
-			if (response.sender == 'you') {
-				var messageElement = $('<div></div>').addClass('sender-message').text(response.message);
-				$('#sender').append(messageElement);
-			} else {
-				var messageElement = $('<div></div>').addClass('receiver-message').text(response.message);
-				$('#receiver').append(messageElement);
-			}
+
+
+		function loadMessages(contactId) {
+			$.ajax({
+				url: "<?= URL; ?>index/getMessages",
+				type: "POST",
+				data: {
+					"userId": userId,
+					"contactId": contactId
+				},
+				success: function(response) {
+					try {
+						response = JSON.parse(response);
+						if (response.data == "ok") {
+							response.messages.forEach(msg => {
+								displayMessage(msg);
+							});
+						} else {
+							alert("Failed to load messages");
+						}
+					} catch (e) {
+						console.error("Parsing error:", e);
+						alert("Error parsing JSON response");
+					}
+				},
+				error: function(xhr, status, error) {
+					alert("Error loading messages: " + error);
+					console.error("AJAX Error: ", status, error);
+				}
+			});
 		}
 
+		// Function to display a message in the UI
+		function displayMessage(message) {
+			var messageContainer;
+			if (message.sender == userId) {
+				// Message sent by logged-in user
+				messageContainer = `
+                        <div class="d-flex justify-content-end mb-4">
+                            <div class="msg_cotainer_send">
+                                ${message.message}
+                            </div>
+                        </div>`;
+			} else {
+				// Message received from another user
+				messageContainer = `
+                        <div class="d-flex justify-content-start mb-4">
+                            <div class="msg_cotainer">
+                                ${message.message}
+                            </div>
+                        </div>`;
+			}
+			$("#messageContainer").append(messageContainer);
+		}
+
+		// Function to send a message
+		$("#Massage_Send").click(function() {
+			var contactid = $("li.active").children("p.id").text();
+			var message = $("#message").val();
+			sendMessage(contactid, message);
+		});
+
+		
+		$(document).ready(function() {
+			$("#Massage_Send").click(function() {
+				var contactid = $("li.active").children("p.id").text();
+				var message = $("#message").val();
+				sendMessage(contactid, message);
+			});
+
+			$("li.liclass").click(function() {
+				var contactid = $(this).children("p.id").text();
+				$('.msg_card_body').empty(); // Clear the message area
+				loadMessages(contactid);
+			});
+		});
 
 
 
@@ -276,7 +333,12 @@
 				$name = "Unknown";
 			}
 
-			var item = '<p class="id">' + $changeid + '</p><p class="name">' + $name + '</p><button class="aclass"><i class="fa fa-edit aclass" id="edit" onclick="edit()"></i></button>';
+			var item = `
+        <p class="id">${$changeid}</p>
+        <p class="name">${$name}</p>
+        <button class="aclass">
+            <i class="fa fa-edit aclass" id="edit" onclick="edit()"></i>
+        </button>`;
 			var li = $("<li></li>").html(item);
 			$("#contact").append(li);
 			$("li").addClass("liclass");
@@ -296,12 +358,13 @@
 				$("#Massage_Send").off('click').on('click', function() {
 					if (!isMessageSent) {
 						var message = $("#message").val();
-						sendMassage(contactid, message);
+						sendMessage(contactid, message);
 						isMessageSent = true;
 					}
 				});
 			});
 		}
+
 
 		// function edit(event) {
 		// 	var contactElement = event.target.closest("li");
