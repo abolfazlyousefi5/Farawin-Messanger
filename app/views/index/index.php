@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
+
 </head>
 
 <body>
@@ -73,7 +74,7 @@
 					</div>
 					<div class="card-footer">
 						<div class="input-group">
-							<div class="input-group-append" id="Massage_Send">
+							<div class="input-group-append" id="Message_Send">
 								<span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span>
 							</div>
 							<textarea name="" class="form-control type_msg" placeholder="Type your message..." id="message"></textarea>
@@ -145,18 +146,21 @@
 
 		$(document).ready(function() {
 			$.ajax({
-				url: "https://localhost/Farawin-Messanger-master5/index/get_contact_data",
+				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
-					if (typeof response !== "object") {
+					console.log(response); // چاپ پاسخ برای بررسی آن
+					try {
 						response = JSON.parse(response);
-					}
-					if (response.res) {
-						addContact(response.res);
-					} else {
-						// console.error("Parsing error: res is undefined in response", response);
-						alert("Parsing error: res is undefined in response");
+						if (response.res) {
+							addContact(response.res);
+						} else {
+							alert("Parsing error: res is undefined in response");
+						}
+					} catch (e) {
+						console.error("Error parsing JSON:", e);
+						alert("Error parsing JSON response");
 					}
 				},
 				error: function(xhr, status, error) {
@@ -164,11 +168,6 @@
 					console.error("AJAX Error: ", status, error);
 				}
 			});
-		});
-
-		$(document).on('click', '.contact-item', function() {
-			$('.contact-item').removeClass('active');
-			$(this).addClass('active');
 		});
 
 		function edit() {
@@ -194,7 +193,6 @@
 				var changename = $("#newName").val();
 
 				$("li.active").children("p.name").text(changename);
-				$("#changeNam1").text(changename);
 				// شروع : تغییر دادن در جدول مخاطبین 
 				// console.log($("li.active").children("p.id").text());
 				var changenametable = $("li.active").children("p.id").text();
@@ -221,7 +219,7 @@
 
 		function sendMessage(contactid, message) {
 			$.ajax({
-				url: "<?= URL; ?>index/contact_massage",
+				url: "<?= URL; ?>index/contact_message",
 				type: "POST",
 				data: {
 					"contactid": contactid,
@@ -232,11 +230,12 @@
 					if (response.msg == "ok") {
 						// Message sent successfully, update UI
 						var messageContainer = `
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="msg_cotainer_send">
-                            ${message}
-                    </div>`;
-						$('.msg_card_body').append(messageContainer);
+                                <div class="d-flex justify-content-end mb-4">
+                                    <div class="msg_cotainer_send">
+                                        ${message}
+                                    </div>
+                                </div>`;
+						$('#message-container').append(messageContainer);
 						$("#message").val(""); // Clear input after sending
 					} else {
 						alert("Failed to send message");
@@ -249,70 +248,15 @@
 		}
 
 
-
-		function loadMessages(contactId) {
-			$.ajax({
-				url: "<?= URL; ?>index/getMessages",
-				type: "POST",
-				data: {
-					"userId": userId,
-					"contactId": contactId
-				},
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						if (response.data == "ok") {
-							response.messages.forEach(msg => {
-								displayMessage(msg);
-							});
-						} else {
-							alert("Failed to load messages");
-						}
-					} catch (e) {
-						console.error("Parsing error:", e);
-						alert("Error parsing JSON response");
-					}
-				},
-				error: function(xhr, status, error) {
-					alert("Error loading messages: " + error);
-					console.error("AJAX Error: ", status, error);
-				}
-			});
-		}
-
-		// Function to display a message in the UI
-		function displayMessage(message) {
-			var messageContainer;
-			if (message.sender == userId) {
-				// Message sent by logged-in user
-				messageContainer = `
-                        <div class="d-flex justify-content-end mb-4">
-                            <div class="msg_cotainer_send">
-                                ${message.message}
-                            </div>
-                        </div>`;
-			} else {
-				// Message received from another user
-				messageContainer = `
-                        <div class="d-flex justify-content-start mb-4">
-                            <div class="msg_cotainer">
-                                ${message.message}
-                            </div>
-                        </div>`;
-			}
-			$("#messageContainer").append(messageContainer);
-		}
-
-		// Function to send a message
-		$("#Massage_Send").click(function() {
+		// Click event for sending a message
+		$("#Message_Send").click(function() {
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
 		});
 
-		
 		$(document).ready(function() {
-			$("#Massage_Send").click(function() {
+			$("#Message_Send").click(function() {
 				var contactid = $("li.active").children("p.id").text();
 				var message = $("#message").val();
 				sendMessage(contactid, message);
@@ -327,43 +271,88 @@
 
 
 
-		function addHtmlElement($name, $changeid) {
-			// بررسی وجود $name
-			if (!$name) {
-				$name = "Unknown";
+		var isHiddenInputCreated = false;
+
+		function addHtmlElement(name, contactid) {
+			if (!isHiddenInputCreated) {
+				$("<input>").attr("type", "hidden").attr("id", "hiddeninput").appendTo("body");
+				isHiddenInputCreated = true;
 			}
-
-			var item = `
-        <p class="id">${$changeid}</p>
-        <p class="name">${$name}</p>
-        <button class="aclass">
-            <i class="fa fa-edit aclass" id="edit" onclick="edit()"></i>
-        </button>`;
-			var li = $("<li></li>").html(item);
+			var li = $("<li>").attr("data-id", contactid).attr("class", "liclass");
+			var buttonHTML = '<p>' + name + '</p><button class="aclass left1"><i class="fa fa-edit  aclass" id="edit" onclick="edit()"></i></button>';
+			li.html(buttonHTML);
 			$("#contact").append(li);
-			$("li").addClass("liclass");
-			$("li").children(".id").hide();
 			$("#modalAdd").css("display", "none");
-
-			$("li.liclass").click(function() {
-				$(this).addClass("active").css({
-					opacity: 0.5
-				}).siblings().removeClass("active");
-				var Nam = $("li.active").children("p.name").text();
-				$("#changeNam1").text(Nam);
-				var contactid = $("li.active").children("p.id").text();
-
-				// تعریف وضعیت ارسال پیام
-				var isMessageSent = false;
-				$("#Massage_Send").off('click').on('click', function() {
-					if (!isMessageSent) {
-						var message = $("#message").val();
-						sendMessage(contactid, message);
-						isMessageSent = true;
-					}
-				});
+			var isMessageSent = false;
+			$("#Message_Send").off('click').on('click', function() {
+				if (!isMessageSent) {
+					var message = $("#message").val();
+					sendMessage(contactid, message);
+					isMessageSent = true;
+				}
 			});
 		}
+
+		$("#contact").on("click", "li", function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			var Nam = $(".active").children("p").text();
+			var contactid = $(this).attr("data-id");
+			$("#hiddeninput").val(contactid);
+			$("#msg-card_body").empty();
+			$("#msg-card_body").children().empty();
+			$.ajax({
+				url: "<?= URL; ?>index/load_messages",
+				type: "POST",
+				data: {
+					"contactid": contactid
+				},
+				success: function(response) {
+					console.log("Server response:", response); // بررسی پاسخ در کنسول
+					try {
+						response = JSON.parse(response);
+						if (response.arrayMessages && response.userid && response.contactid) {
+							viewChatfunc(response.arrayMessages, response.userid, response.contactid);
+						} else {
+							alert("Invalid response structure");
+						}
+					} catch (e) {
+						console.error("Error parsing JSON:", e);
+						alert("Error parsing JSON response");
+					}
+				},
+				error: function(response) {
+					alert("خطای 500");
+				}
+			});
+		});
+
+
+		// چت های بین مخاطب و فرد لاگین کننده را به نمایش میگذارد
+		function viewChatfunc(arrayMessages, userid, contactid) {
+
+			try {
+				$.each(arrayMessages, function(index, message) {
+					var id = message.id;
+					var sendId = message.sendId;
+					var text = message.text;
+					var date = message.date;
+					console.log(id + "  " + sendId + "  " + text + "  " + date);
+					var div = $("<div>").attr("class", "boxchat ").attr("id", id);
+					var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
+					$(div).html(item);
+					$("#msg-card_body").append($(div));
+
+					if (sendId == userid) {
+						$(div).addClass("left");
+					} else if (sendId == contactid) {
+						$(div).addClass("right");
+					}
+				});
+			} catch (exception) {
+				console.error("606");
+			}
+		}
+
 
 
 		// function edit(event) {
@@ -426,26 +415,33 @@
 		// refresh.onclick();
 
 
-
 		refresh.onclick = function() {
-			$.ajax({
-				url: "<?= URL; ?>index/get_contact_data",
-				type: "POST",
-				data: {},
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						addContact(response.msg); // اصلاح شده از response.res به response.msg
-					} catch (e) {
-						console.error("Parsing error:", e);
-						alert("Error parsing JSON response");
+			$(document).ready(function() {
+				$.ajax({
+					url: "<?= URL; ?>index/get_contact_data",
+					type: "POST",
+					data: {},
+					success: function(response) {
+						console.log(response); // چاپ پاسخ برای بررسی آن
+						try {
+							response = JSON.parse(response);
+							if (response.res) {
+								addContact(response.res);
+							} else {
+								alert("Parsing error: res is undefined in response");
+							}
+						} catch (e) {
+							console.error("Error parsing JSON:", e);
+							alert("Error parsing JSON response");
+						}
+					},
+					error: function(xhr, status, error) {
+						alert("Error: " + error);
+						console.error("AJAX Error: ", status, error);
 					}
-				},
-				error: function(response) {
-					alert("خطای 500");
-				}
+				});
 			});
-		};
+		}
 
 
 
