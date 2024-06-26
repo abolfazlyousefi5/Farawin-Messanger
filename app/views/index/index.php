@@ -250,51 +250,51 @@
 			});
 		}
 
-		function loadMessages(contactid) {
-			$.ajax({
-				url: "<?= URL; ?>index/load_messages",
-				type: "POST",
-				data: JSON.stringify({
-					"contactid": contactid
-				}),
-				contentType: "application/json",
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						if (response.status_code === 200) {
-							// Clear existing messages
-							$('.msg_card_body').html('');
+		// function loadMessages(contactid) {
+		// 	$.ajax({
+		// 		url: "<?= URL; ?>index/load_messages",
+		// 		type: "POST",
+		// 		data: JSON.stringify({
+		// 			"contactid": contactid
+		// 		}),
+		// 		contentType: "application/json",
+		// 		success: function(response) {
+		// 			try {
+		// 				response = JSON.parse(response);
+		// 				if (response.status_code === 200) {
+		// 					// Clear existing messages
+		// 					$('.msg_card_body').html('');
 
-							// Display messages in the UI
-							for (let i = 0; i < response.messages.length; i++) {
-								const message = response.messages[i];
-								let messageContainer;
+		// 					// Display messages in the UI
+		// 					for (let i = 0; i < response.messages.length; i++) {
+		// 						const message = response.messages[i];
+		// 						let messageContainer;
 
-								if (message.sender_id == <?= $_SESSION['id']; ?>) {
-									messageContainer = `<div class="d-flex justify-content-end mb-4">
-                                                            <div class="msg_cotainer_send">${message.message}</div>
-                                                        </div>`;
-								} else {
-									messageContainer = `<div class="d-flex justify-content-start mb-4">
-                                                            <div class="msg_cotainer">${message.message}</div>
-                                                        </div>`;
-								}
-								$('.msg_card_body').append(messageContainer);
-							}
-						} else {
-							alert("Failed to load messages");
-						}
-					} catch (e) {
-						console.error("Parsing error:", e);
-						alert("Error parsing JSON response");
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error("Error loading messages:", error);
-					alert("Error loading messages");
-				}
-			});
-		}
+		// 						if (message.sender_id == <?= $_SESSION['id']; ?>) {
+		// 							messageContainer = `<div class="d-flex justify-content-end mb-4">
+        //                                                     <div class="msg_cotainer_send">${message.message}</div>
+        //                                                 </div>`;
+		// 						} else {
+		// 							messageContainer = `<div class="d-flex justify-content-start mb-4">
+        //                                                     <div class="msg_cotainer">${message.message}</div>
+        //                                                 </div>`;
+		// 						}
+		// 						$('.msg_card_body').append(messageContainer);
+		// 					}
+		// 				} else {
+		// 					alert("Failed to load messages");
+		// 				}
+		// 			} catch (e) {
+		// 				console.error("Parsing error:", e);
+		// 				alert("Error parsing JSON response");
+		// 			}
+		// 		},
+		// 		error: function(xhr, status, error) {
+		// 			console.error("Error loading messages:", error);
+		// 			alert("Error loading messages");
+		// 		}
+		// 	});
+		// }
 
 
 		// Click event for sending a message
