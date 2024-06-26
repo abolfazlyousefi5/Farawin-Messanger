@@ -136,8 +136,8 @@ class model_index extends Model
             $this->doQuery($sql, $values);
 
             // Determine the color based on sender and receiver
-            $senderColor = 'blue';  
-            $receiverColor = 'green'; 
+            $senderColor = 'blue';
+            $receiverColor = 'green';
 
             echo json_encode(array(
                 "msg" => "Message inserted successfully.",
@@ -146,44 +146,63 @@ class model_index extends Model
             ));
         }
     }
-    function loadMessages($contactId)
+    // function loadMessages($contactId)
+    // {
+    //     $userId = $this->session_get('id');
+
+    //     // Select messages between current user and the contact
+    //     $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (sendId=? AND getId=?) ORDER BY DateSend ASC";
+    //     $params = array($userId, $contactId, $contactId, $userId);
+    //     $result = $this->doSelect($sql, $params);
+
+    //     if ($result) {
+    //         $messages = array();
+    //         foreach ($result as $row) {
+    //             $senderId = $row['sendId'];
+    //             $message = $row['text'];
+
+    //             // Determine sender and receiver colors
+    //             $senderColor = ($senderId == $userId) ? 'blue' : 'green';
+    //             $receiverColor = ($senderId == $userId) ? 'green' : 'blue';
+
+    //             $messages[] = array(
+    //                 'sender_id' => $senderId,
+    //                 'message' => $message,
+    //                 'senderColor' => $senderColor,
+    //                 'receiverColor' => $receiverColor
+    //             );
+    //         }
+
+    //         echo json_encode(array(
+    //             "status_code" => 200,
+    //             "messages" => $messages
+    //         ));
+    //     } else {
+    //         echo json_encode(array(
+    //             "status_code" => 404,
+    //             "error" => "No messages found"
+    //         ));
+    //     }
+    // }
+
+
+    function loadMessages($post)
     {
-        $userId = $this->session_get('id');
+        $contactid = $post['contactid'];
+        $userid = $_SESSION['id'];
 
-        // Select messages between current user and the contact
-        $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR (sendId=? AND getId=?) ORDER BY DateSend ASC";
-        $params = array($userId, $contactId, $contactId, $userId);
-        $result = $this->doSelect($sql, $params);
+        $sql = "SELECT * FROM message WHERE (sendId=? AND getId=?) OR ( sendId=? AND getId=? )";
+        $params = array($userid, $contactid, $contactid, $userid);
+        $arrayMessages = $this->doSelect($sql, $params);
+        if (sizeof($arrayMessages) > 0) {
+            echo json_encode(
+                array(
+                    "arrayMessages" => $arrayMessages,
+                    "userid" => $userid,
+                    "contactid" => $contactid
 
-        if ($result) {
-            $messages = array();
-            foreach ($result as $row) {
-                $senderId = $row['sendId'];
-                $message = $row['text'];
-
-                // Determine sender and receiver colors
-                $senderColor = ($senderId == $userId) ? 'blue' : 'green';
-                $receiverColor = ($senderId == $userId) ? 'green' : 'blue';
-
-                $messages[] = array(
-                    'sender_id' => $senderId,
-                    'message' => $message,
-                    'senderColor' => $senderColor,
-                    'receiverColor' => $receiverColor
-                );
-            }
-
-            echo json_encode(array(
-                "status_code" => 200,
-                "messages" => $messages
-            ));
-        } else {
-            echo json_encode(array(
-                "status_code" => 404,
-                "error" => "No messages found"
-            ));
+                )
+            );
         }
     }
-
-  
 }

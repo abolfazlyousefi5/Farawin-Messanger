@@ -296,7 +296,7 @@
 
 
 		// Click event for sending a message
-		$("#Massage_Send").click(function() {
+		$("#Message_Send").click(function() {
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
@@ -341,7 +341,7 @@
 
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
-				$("#Massage_Send").off('click').on('click', function() {
+				$("#Message_Send").off('click').on('click', function() {
 					if (!isMessageSent) {
 						var message = $("#message").val();
 						sendMessage(contactid, message);
