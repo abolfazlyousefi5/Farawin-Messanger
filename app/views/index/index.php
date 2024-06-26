@@ -251,7 +251,6 @@
 			});
 		}
 
-<<<<<<< HEAD
 		// function loadMessages(contactid) {
 		// 	$.ajax({
 		// 		url: "<?= URL; ?>index/load_messages",
@@ -301,7 +300,6 @@
 
 		// Click event for sending a message
 		$("#Massage_Send").click(function() {
-=======
 		function loadMessages(contactid) {
 			$.ajax({
 				url: "<?= URL; ?>index/load_messages",
@@ -352,7 +350,6 @@
 
 		// Click event for sending a message
 		$("#Message_Send").click(function() {
->>>>>>> bf5db8bcf8d51cb61b6a74f1ef68799c13410770
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
