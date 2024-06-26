@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
+	
 </head>
 
 <body>
@@ -232,11 +233,12 @@
 					if (response.msg == "ok") {
 						// Message sent successfully, update UI
 						var messageContainer = `
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="msg_cotainer_send">
-                            ${message}
-                    </div>`;
-						$('.msg_card_body').append(messageContainer);
+                                <div class="d-flex justify-content-end mb-4">
+                                    <div class="msg_cotainer_send">
+                                        ${message}
+                                    </div>
+                                </div>`;
+						$('#message-container').append(messageContainer);
 						$("#message").val(""); // Clear input after sending
 					} else {
 						alert("Failed to send message");
@@ -248,23 +250,37 @@
 			});
 		}
 
-
-
-		function loadMessages(contactId) {
+		function loadMessages(contactid) {
 			$.ajax({
-				url: "<?= URL; ?>index/getMessages",
+				url: "<?= URL; ?>index/load_messages",
 				type: "POST",
-				data: {
-					"userId": userId,
-					"contactId": contactId
-				},
+				data: JSON.stringify({
+					"contactid": contactid
+				}),
+				contentType: "application/json",
 				success: function(response) {
 					try {
 						response = JSON.parse(response);
-						if (response.data == "ok") {
-							response.messages.forEach(msg => {
-								displayMessage(msg);
-							});
+						if (response.status_code === 200) {
+							// Clear existing messages
+							$('.msg_card_body').html('');
+
+							// Display messages in the UI
+							for (let i = 0; i < response.messages.length; i++) {
+								const message = response.messages[i];
+								let messageContainer;
+
+								if (message.sender_id == <?= $_SESSION['id']; ?>) {
+									messageContainer = `<div class="d-flex justify-content-end mb-4">
+                                                            <div class="msg_cotainer_send">${message.message}</div>
+                                                        </div>`;
+								} else {
+									messageContainer = `<div class="d-flex justify-content-start mb-4">
+                                                            <div class="msg_cotainer">${message.message}</div>
+                                                        </div>`;
+								}
+								$('.msg_card_body').append(messageContainer);
+							}
 						} else {
 							alert("Failed to load messages");
 						}
@@ -274,43 +290,20 @@
 					}
 				},
 				error: function(xhr, status, error) {
-					alert("Error loading messages: " + error);
-					console.error("AJAX Error: ", status, error);
+					console.error("Error loading messages:", error);
+					alert("Error loading messages");
 				}
 			});
 		}
 
-		// Function to display a message in the UI
-		function displayMessage(message) {
-			var messageContainer;
-			if (message.sender == userId) {
-				// Message sent by logged-in user
-				messageContainer = `
-                        <div class="d-flex justify-content-end mb-4">
-                            <div class="msg_cotainer_send">
-                                ${message.message}
-                            </div>
-                        </div>`;
-			} else {
-				// Message received from another user
-				messageContainer = `
-                        <div class="d-flex justify-content-start mb-4">
-                            <div class="msg_cotainer">
-                                ${message.message}
-                            </div>
-                        </div>`;
-			}
-			$("#messageContainer").append(messageContainer);
-		}
 
-		// Function to send a message
+		// Click event for sending a message
 		$("#Massage_Send").click(function() {
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
 		});
 
-		
 		$(document).ready(function() {
 			$("#Massage_Send").click(function() {
 				var contactid = $("li.active").children("p.id").text();
