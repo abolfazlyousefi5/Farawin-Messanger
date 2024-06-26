@@ -282,6 +282,7 @@
 								}
 								$('.msg_card_body').append(messageContainer);
 							}
+							
 						} else {
 							alert("Failed to load messages");
 						}
