@@ -13,11 +13,7 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> e94e13f52b6180a90a610d6d4076e6ca0210ea8c
 </head>
 
 <body>
@@ -282,7 +278,7 @@
 								}
 								$('.msg_card_body').append(messageContainer);
 							}
-							
+
 						} else {
 							alert("Failed to load messages");
 						}
