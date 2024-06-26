@@ -119,7 +119,7 @@ class model_index extends Model
     //    }
     //    echo json_encode(array("msg" => "ok"));
     // }
-    function contact_massage($post)
+    function contact_message($post)
     {
         $message = $post['message'];
         $contactid = $post['contactid'];
@@ -184,4 +184,6 @@ class model_index extends Model
             ));
         }
     }
+
+  
 }
