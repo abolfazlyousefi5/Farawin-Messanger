@@ -37,12 +37,17 @@ class Index extends Controller
     {
         $this->model->update_data($_POST);
     }
-    function contact_message()
+    function contact_massage()
     {
-        $this->model->contact_message($_POST);
+        $this->model->contact_massage($_POST);
     }
-    function load_messages()
+    // function load_messages()
+    // {
+    //     $this->model->load_messages($_POST);
+    // }
+    function viewchat()
     {
-        $this->model->load_messages($_POST);
+
+        $this->model->viewchat($_POST);
     }
 }
