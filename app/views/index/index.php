@@ -13,15 +13,7 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> bf5db8bcf8d51cb61b6a74f1ef68799c13410770
->>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
 </head>
 
 <body>
@@ -69,12 +61,12 @@
 						</div>
 					</div>
 					<div class="card-body msg_card_body">
-						<div class="d-flex justify-content-start mb-4" id="sender">
+						<div class="justify-content-start mb-4" id="sender" style="text-align: right;">
 							<div class="msg_cotainer">
 								Hi, how are you samim?
 							</div>
 						</div>
-						<div class="d-flex justify-content-end mb-4" id="receiver">
+						<div class=" justify-content-end mb-4" id="receiver">
 							<div class="msg_cotainer_send">
 								Hi Khalid i am good tnx how about you?
 							</div>
@@ -238,139 +230,27 @@
 				},
 				success: function(response) {
 					response = JSON.parse(response);
-					if (response.msg == "ok") {
-						// Message sent successfully, update UI
-						var messageContainer = `
-                                <div class="d-flex justify-content-end mb-4">
-                                    <div class="msg_cotainer_send">
-                                        ${message}
-                                    </div>
-                                </div>`;
-						$('#message-container').append(messageContainer);
-						$("#message").val(""); // Clear input after sending
-					} else {
-						alert("Failed to send message");
-					}
+					// console.log(response.msg[2]['text']);
+					response.msg.forEach( function(i){
+						console.log(i['text']);
+						if (response.msg2==i["sendId"]) {
+							$("#sender").append("<div class='msg_cotainer'>"+i['text']+"</div>")
+						}
+						else{
+							$("#receiver").append("<div class='msg_cotainer_send'>"+i['text']+"</div>")
+						}
+					});
 				},
 				error: function(response) {
 					alert("Error sending message");
 				}
 			});
 		}
-<<<<<<< HEAD
-		$("#Massage_Send").click(function() {
-=======
-
-<<<<<<< HEAD
-=======
-		// function loadMessages(contactid) {
-		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/load_messages",
-		// 		type: "POST",
-		// 		data: JSON.stringify({
-		// 			"contactid": contactid
-		// 		}),
-		// 		contentType: "application/json",
-		// 		success: function(response) {
-		// 			try {
-		// 				response = JSON.parse(response);
-		// 				if (response.status_code === 200) {
-		// 					// Clear existing messages
-		// 					$('.msg_card_body').html('');
-
-		// 					// Display messages in the UI
-		// 					for (let i = 0; i < response.messages.length; i++) {
-		// 						const message = response.messages[i];
-		// 						let messageContainer;
-
-		// 						if (message.sender_id == <?= $_SESSION['id']; ?>) {
-		// 							messageContainer = `<div class="d-flex justify-content-end mb-4">
-        //                                                     <div class="msg_cotainer_send">${message.message}</div>
-        //                                                 </div>`;
-		// 						} else {
-		// 							messageContainer = `<div class="d-flex justify-content-start mb-4">
-        //                                                     <div class="msg_cotainer">${message.message}</div>
-        //                                                 </div>`;
-		// 						}
-		// 						$('.msg_card_body').append(messageContainer);
-		// 					}
-		// 				} else {
-		// 					alert("Failed to load messages");
-		// 				}
-		// 			} catch (e) {
-		// 				console.error("Parsing error:", e);
-		// 				alert("Error parsing JSON response");
-		// 			}
-		// 		},
-		// 		error: function(xhr, status, error) {
-		// 			console.error("Error loading messages:", error);
-		// 			alert("Error loading messages");
-		// 		}
-		// 	});
-		// }
 
 
 		// Click event for sending a message
-		$("#Massage_Send").click(function() {
->>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
-		function loadMessages(contactid) {
-			$.ajax({
-				url: "<?= URL; ?>index/load_messages",
-				type: "POST",
-				data: JSON.stringify({
-					"contactid": contactid
-				}),
-				contentType: "application/json",
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						if (response.status_code === 200) {
-							// Clear existing messages
-							$('.msg_card_body').html('');
 
-							// Display messages in the UI
-							for (let i = 0; i < response.messages.length; i++) {
-								const message = response.messages[i];
-								let messageContainer;
-
-								if (message.sender_id == <?= $_SESSION['id']; ?>) {
-									messageContainer = `<div class="d-flex justify-content-end mb-4">
-                                                            <div class="msg_cotainer_send">${message.message}</div>
-                                                        </div>`;
-								} else {
-									messageContainer = `<div class="d-flex justify-content-start mb-4">
-                                                            <div class="msg_cotainer">${message.message}</div>
-                                                        </div>`;
-								}
-								$('.msg_card_body').append(messageContainer);
-							}
-<<<<<<< HEAD
-=======
-
->>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
-						} else {
-							alert("Failed to load messages");
-						}
-					} catch (e) {
-						console.error("Parsing error:", e);
-						alert("Error parsing JSON response");
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error("Error loading messages:", error);
-					alert("Error loading messages");
-				}
-			});
-		}
-
-
-		// Click event for sending a message
-<<<<<<< HEAD
-		$("#Massage_Send").click(function() {
-=======
 		$("#Message_Send").click(function() {
->>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
->>>>>>> 74017a7a3ce3e7d11449b84e6ea945726aabd302
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
@@ -381,12 +261,15 @@
 				var contactid = $("li.active").children("p.id").text();
 				var message = $("#message").val();
 				sendMessage(contactid, message);
+				
 			});
 
 			$("li.liclass").click(function() {
 				var contactid = $(this).children("p.id").text();
 				$('.msg_card_body').empty(); // Clear the message area
 				loadMessages(contactid);
+				sendMessage(contactid,message);
+				
 			});
 		});
 
@@ -526,7 +409,6 @@
         </button>`;
 			var li = $("<li></li>").html(item);
 			$("#contact").append(li);
-<<<<<<< HEAD
 			$("li").addClass("liclass");
 			$("li").children(".id").hide();
 			$("#Mymodal").css("display", "none");
@@ -548,7 +430,6 @@
 					}
 				});
 			});
-=======
 			$("#modalAdd").css("display", "none");
 
 			$("li.liclass").click(function() {
@@ -595,7 +476,7 @@
 						// فراخوانی تابع viewChatfunc برای نمایش پیام‌ها
 						viewChatfunc(response.arrayMessages, response.userid, response.contactid);
 					} catch (e) {
-						console.error("Error parsing JSON: " + e.message);
+					
 					}
 				},
 				error: function(response) {
@@ -605,29 +486,28 @@
 		});
 
 		// تابع viewChatfunc برای نمایش پیام‌ها
-		function viewChatfunc(arrayMessages, userid, contactid) {
-			try {
-				$.each(arrayMessages, function(index, message) {
-					var id = message.id;
-					var sendId = message.sendId;
-					var text = message.text;
-					var date = message.date;
-					var div = $("<div>").attr("class", "boxchat ").attr("id", id);
-					var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
-					$(div).html(item);
-					$("#msg-card_body").append($(div));
+		// function viewChatfunc(arrayMessages, userid, contactid) {
+		// 	try {
+		// 		$.each(arrayMessages, function(index, message) {
+		// 			var id = message.id;
+		// 			var sendId = message.sendId;
+		// 			var text = message.text;
+		// 			var date = message.date;
+		// 			var div = $("<div>").attr("class", "boxchat ").attr("id", id);
+		// 			var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
+		// 			$(div).html(item);
+		// 			$("#msg-card_body").append($(div));
 
-					if (sendId == userid) {
-						$(div).addClass("left");
-					} else if (sendId == contactid) {
-						$(div).addClass("right");
-					}
-				});
-			} catch (exception) {
-				console.error("Error displaying messages: " + exception.message);
-			}
->>>>>>> 74017a7a3ce3e7d11449b84e6ea945726aabd302
-		}
+		// 			if (sendId == userid) {
+		// 				$(div).addClass("left");
+		// 			} else if (sendId == contactid) {
+		// 				$(div).addClass("right");
+		// 			}
+		// 		});
+		// 	} catch (exception) {
+		// 		console.error("Error displaying messages: " + exception.message);
+		// 	}
+		// }
 
 
 		// function edit(event) {

@@ -45,9 +45,9 @@ class Index extends Controller
     // {
     //     $this->model->load_messages($_POST);
     // }
-    function viewchat()
+    function load_chat()
     {
 
-        $this->model->viewchat($_POST);
+        $this->model->load_chat($_POST);
     }
 }
