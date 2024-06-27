@@ -13,7 +13,15 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
+<<<<<<< HEAD
+	
+=======
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> bf5db8bcf8d51cb61b6a74f1ef68799c13410770
+>>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
 </head>
 
 <body>
@@ -249,7 +257,120 @@
 				}
 			});
 		}
+<<<<<<< HEAD
 		$("#Massage_Send").click(function() {
+=======
+
+<<<<<<< HEAD
+=======
+		// function loadMessages(contactid) {
+		// 	$.ajax({
+		// 		url: "<?= URL; ?>index/load_messages",
+		// 		type: "POST",
+		// 		data: JSON.stringify({
+		// 			"contactid": contactid
+		// 		}),
+		// 		contentType: "application/json",
+		// 		success: function(response) {
+		// 			try {
+		// 				response = JSON.parse(response);
+		// 				if (response.status_code === 200) {
+		// 					// Clear existing messages
+		// 					$('.msg_card_body').html('');
+
+		// 					// Display messages in the UI
+		// 					for (let i = 0; i < response.messages.length; i++) {
+		// 						const message = response.messages[i];
+		// 						let messageContainer;
+
+		// 						if (message.sender_id == <?= $_SESSION['id']; ?>) {
+		// 							messageContainer = `<div class="d-flex justify-content-end mb-4">
+        //                                                     <div class="msg_cotainer_send">${message.message}</div>
+        //                                                 </div>`;
+		// 						} else {
+		// 							messageContainer = `<div class="d-flex justify-content-start mb-4">
+        //                                                     <div class="msg_cotainer">${message.message}</div>
+        //                                                 </div>`;
+		// 						}
+		// 						$('.msg_card_body').append(messageContainer);
+		// 					}
+		// 				} else {
+		// 					alert("Failed to load messages");
+		// 				}
+		// 			} catch (e) {
+		// 				console.error("Parsing error:", e);
+		// 				alert("Error parsing JSON response");
+		// 			}
+		// 		},
+		// 		error: function(xhr, status, error) {
+		// 			console.error("Error loading messages:", error);
+		// 			alert("Error loading messages");
+		// 		}
+		// 	});
+		// }
+
+
+		// Click event for sending a message
+		$("#Massage_Send").click(function() {
+>>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
+		function loadMessages(contactid) {
+			$.ajax({
+				url: "<?= URL; ?>index/load_messages",
+				type: "POST",
+				data: JSON.stringify({
+					"contactid": contactid
+				}),
+				contentType: "application/json",
+				success: function(response) {
+					try {
+						response = JSON.parse(response);
+						if (response.status_code === 200) {
+							// Clear existing messages
+							$('.msg_card_body').html('');
+
+							// Display messages in the UI
+							for (let i = 0; i < response.messages.length; i++) {
+								const message = response.messages[i];
+								let messageContainer;
+
+								if (message.sender_id == <?= $_SESSION['id']; ?>) {
+									messageContainer = `<div class="d-flex justify-content-end mb-4">
+                                                            <div class="msg_cotainer_send">${message.message}</div>
+                                                        </div>`;
+								} else {
+									messageContainer = `<div class="d-flex justify-content-start mb-4">
+                                                            <div class="msg_cotainer">${message.message}</div>
+                                                        </div>`;
+								}
+								$('.msg_card_body').append(messageContainer);
+							}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
+						} else {
+							alert("Failed to load messages");
+						}
+					} catch (e) {
+						console.error("Parsing error:", e);
+						alert("Error parsing JSON response");
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Error loading messages:", error);
+					alert("Error loading messages");
+				}
+			});
+		}
+
+
+		// Click event for sending a message
+<<<<<<< HEAD
+		$("#Massage_Send").click(function() {
+=======
+		$("#Message_Send").click(function() {
+>>>>>>> 949e91f38dd104e6fdac33a2bd5fdbdff4040dad
+>>>>>>> 74017a7a3ce3e7d11449b84e6ea945726aabd302
 			var contactid = $("li.active").children("p.id").text();
 			var message = $("#message").val();
 			sendMessage(contactid, message);
@@ -405,6 +526,7 @@
         </button>`;
 			var li = $("<li></li>").html(item);
 			$("#contact").append(li);
+<<<<<<< HEAD
 			$("li").addClass("liclass");
 			$("li").children(".id").hide();
 			$("#Mymodal").css("display", "none");
@@ -426,6 +548,85 @@
 					}
 				});
 			});
+=======
+			$("#modalAdd").css("display", "none");
+
+			$("li.liclass").click(function() {
+				$(this).addClass("active").css({
+					opacity: 0.5
+				}).siblings().removeClass("active");
+				var Nam = $("li.active").children("p.name").text();
+				$("#changeNam1").text(Nam);
+				var contactid = $("li.active").children("p.id").text();
+
+				// تعریف وضعیت ارسال پیام
+				var isMessageSent = false;
+				$("#Message_Send").off('click').on('click', function() {
+					if (!isMessageSent) {
+						var message = $("#message").val();
+						sendMessage(contactid, message);
+						isMessageSent = true;
+					}
+				});
+			});
+		}
+
+		$("#contact").on("click", "li", function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			var Nam = $(".active").children("p").text();
+			$("#changeNam1").text(Nam);
+			var ihtml = '<i class="fa fa-trash  aclass"></i>';
+			$("#but").html(ihtml);
+			var contactid = $(this).attr("data-id");
+			$("#hiddeninput").val(contactid);
+			$("#msg-card_body").empty();
+			$("#msg-card_body").children().empty();
+
+			// ارسال درخواست AJAX برای دریافت پیام‌ها
+			$.ajax({
+				url: "<?= URL; ?>index/load_chat",
+				type: "POST",
+				data: {
+					"contactid": contactid
+				},
+				success: function(response) {
+					try {
+						response = JSON.parse(response);
+						// فراخوانی تابع viewChatfunc برای نمایش پیام‌ها
+						viewChatfunc(response.arrayMessages, response.userid, response.contactid);
+					} catch (e) {
+						console.error("Error parsing JSON: " + e.message);
+					}
+				},
+				error: function(response) {
+					alert("خطای 500");
+				}
+			});
+		});
+
+		// تابع viewChatfunc برای نمایش پیام‌ها
+		function viewChatfunc(arrayMessages, userid, contactid) {
+			try {
+				$.each(arrayMessages, function(index, message) {
+					var id = message.id;
+					var sendId = message.sendId;
+					var text = message.text;
+					var date = message.date;
+					var div = $("<div>").attr("class", "boxchat ").attr("id", id);
+					var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
+					$(div).html(item);
+					$("#msg-card_body").append($(div));
+
+					if (sendId == userid) {
+						$(div).addClass("left");
+					} else if (sendId == contactid) {
+						$(div).addClass("right");
+					}
+				});
+			} catch (exception) {
+				console.error("Error displaying messages: " + exception.message);
+			}
+>>>>>>> 74017a7a3ce3e7d11449b84e6ea945726aabd302
 		}
 
 
