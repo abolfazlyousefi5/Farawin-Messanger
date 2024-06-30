@@ -178,14 +178,11 @@ class model_index extends Model
         $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ORDER BY id";
         $params = array($contactid, $_SESSION['id']);
         $result2 = $this->doSelect($sql, $params);
-
-        // ترکیب دو مجموعه 
         $result3 = array_merge($result1, $result2);
 
         usort($result3, function ($a, $b) {
             return $a['id'] - $b['id'];
         });
-
         echo json_encode(array(
             "msg" => $result3,
             "msg2" => $_SESSION['id']
