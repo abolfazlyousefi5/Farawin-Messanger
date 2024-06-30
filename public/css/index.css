@@ -178,6 +178,8 @@ html {
   margin-bottom: auto;
   margin-left: 10px;
   border-radius: 25px;
+  max-width: 50%;
+
   background-color: #82ccdd;
   padding: 10px;
   position: relative;
@@ -186,8 +188,9 @@ html {
 .msg_cotainer_send {
   margin-top: auto;
   margin-bottom: auto;
-  margin-right: 10px;
+  margin-right: 230px;
   border-radius: 25px;
+  max-width: 50%;
   background-color: #78e08f;
   padding: 10px;
   position: relative;

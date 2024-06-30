@@ -12,7 +12,7 @@
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
-	<link rel="stylesheet" href="public/css/index.css">
+	 <link rel="stylesheet" href="public/css/index.css">
 
 </head>
 
@@ -60,7 +60,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="card-body msg_card_body" id="loadmessage">
+					<div class="card-body msg_card_body" >
 						<div class="justify-content-start mb-4" id="sender" style="text-align: right;">
 							<!-- <div class="msg_cotainer">
 							</div> -->
