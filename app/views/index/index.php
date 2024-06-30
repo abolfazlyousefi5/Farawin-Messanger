@@ -60,16 +60,16 @@
 							</ul>
 						</div>
 					</div>
-					<div class="card-body msg_card_body">
+					<div class="card-body msg_card_body" id="loadmessage">
 						<div class="justify-content-start mb-4" id="sender" style="text-align: right;">
-							<div class="msg_cotainer">
-								Hi, how are you samim?
-							</div>
+							<!-- <div class="msg_cotainer">
+							</div> -->
+							<ul class="contacts" id="contact"></ul>
 						</div>
-						<div class=" justify-content-end mb-4" id="receiver">
-							<div class="msg_cotainer_send">
-								Hi Khalid i am good tnx how about you?
-							</div>
+						<div class="justify-content-end mb-4" id="receiver">
+							<!-- <div class="msg_cotainer_send">
+							</div> -->
+							<ul class="contacts" id="contact"></ul>
 						</div>
 					</div>
 					<div class="card-footer">
@@ -156,8 +156,7 @@
 					if (response.res) {
 						addContact(response.res);
 					} else {
-						// console.error("Parsing error: res is undefined in response", response);
-						alert("Parsing error: res is undefined in response");
+						console.error("Parsing error: res is undefined in response");
 					}
 				},
 				error: function(xhr, status, error) {
@@ -220,6 +219,33 @@
 			}
 		});
 
+		// function sendMessage(contactid, message) {
+		// 	$.ajax({
+		// 		url: "<?= URL; ?>index/contact_massage",
+		// 		type: "POST",
+		// 		data: {
+		// 			"contactid": contactid,
+		// 			"message": message
+		// 		},
+		// 		success: function(response) {
+		// 			response = JSON.parse(response);
+		// 			// console.log(response.msg[2]['text']);
+		// 			response.msg.forEach(function(i) {
+		// 				console.log(i['text']);
+		// 				if (response.msg2 == i["sendId"]) {
+		// 					$("#sender").append("<div class='msg_cotainer'>" + i['text'] + "</div>")
+		// 				} else {
+		// 					$("#receiver").append("<div class='msg_cotainer_send'>" + i['text'] + "</div>")
+		// 				}
+		// 			});
+		// 		},
+		// 		error: function(response) {
+		// 			alert("Error sending message");
+		// 		}
+		// 	});
+		// }
+
+
 		function sendMessage(contactid, message) {
 			$.ajax({
 				url: "<?= URL; ?>index/contact_massage",
@@ -230,22 +256,41 @@
 				},
 				success: function(response) {
 					response = JSON.parse(response);
-					// console.log(response.msg[2]['text']);
-					response.msg.forEach( function(i){
-						console.log(i['text']);
-						if (response.msg2==i["sendId"]) {
-							$("#sender").append("<div class='msg_cotainer'>"+i['text']+"</div>")
-						}
-						else{
-							$("#receiver").append("<div class='msg_cotainer_send'>"+i['text']+"</div>")
-						}
-					});
+					displayMessages(response.msg, response.msg2);
 				},
 				error: function(response) {
 					alert("Error sending message");
 				}
 			});
 		}
+
+		function displayMessages(messages, userId) {
+			$("#sender").empty();
+			$("#receiver").empty();
+			messages.forEach(function(i) {
+				var messageElement = "<div><div class='msg_text'>" + i['text'] + "</div><small class='msg_date'>" + i['DateSend'] + "</small></div>";
+				if (userId == i["sendId"]) {
+					$("#sender").append("<div class='msg_cotainer'>" + messageElement + "</div>");
+				} else {
+					$("#receiver").append("<div class='msg_cotainer_send'>" + messageElement + "</div>");
+				}
+			});
+		}
+
+		$(document).ready(function() {
+			$("#Massage_Send").click(function() {
+				var contactid = $("li.active").children("p.id").text();
+				var message = $("#message").val();
+				sendMessage(contactid, message);
+				$("#message").val(''); // Clear the message input after sending
+			});
+
+			$("li.liclass").click(function() {
+				var contactid = $(this).children("p.id").text();
+				loadMessages(contactid);
+			});
+		});
+
 
 
 		// Click event for sending a message
@@ -261,146 +306,25 @@
 				var contactid = $("li.active").children("p.id").text();
 				var message = $("#message").val();
 				sendMessage(contactid, message);
-				
+
 			});
 
 			$("li.liclass").click(function() {
 				var contactid = $(this).children("p.id").text();
 				$('.msg_card_body').empty(); // Clear the message area
 				loadMessages(contactid);
-				sendMessage(contactid,message);
-				
+				sendMessage(contactid, message);
+
 			});
 		});
 
-
-		// var isHiddenInputCreated = false;
-
-		// function addHtmlElement($name, $contactid) {
-		// 	// ساختن یک اینپوت از نوع مخفی
-		// 	if (!isHiddenInputCreated) {
-		// 		$("<input>").attr("type", "hidden").attr("id", "hiddeninput").appendTo("body");
-		// 		isHiddenInputCreated = true;
-		// 	}
-
-		// 	var li = $("<li>").attr("data-id", $contactid).attr("class", "liclass");
-		// 	var buttonHTML = '<p>' + $name + '</p><button class="aclass left1"><i class="fa fa-edit  aclass" id="edit" onclick="edit()"></i></button>';
-		// 	li.html(buttonHTML);
-		// 	$("#contact").append(li);
-		// 	$("#modalAdd").css("display", "none");
-		// }
-
-		// $("#contact").on("click", "li", function() {
-		// 	$(this).addClass("active").siblings().removeClass("active");
-		// 	var Nam = $(".active").children("p").text();
-		// 	$("#changeNam1").text(Nam);
-		// 	var ihtml = '<i class="fa fa-trash  aclass"  ></i>';
-		// 	$("#but").html(ihtml);
-		// 	var contactid = $(this).attr("data-id");
-		// 	$("#hiddeninput").val(contactid);
-		// 	$("#msg-card_body").empty();
-		// 	$("#msg-card_body").children().empty();
-		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/viewchat",
-		// 		type: "POST",
-		// 		data: {
-		// 			"contactid": contactid
-		// 		},
-		// 		success: function(response) {
-		// 			response = JSON.parse(response);
-
-		// 			viewChatfunc(response.arrayMessages, response.userid, response.contactid);
-
-		// 		},
-		// 		error: function(response) {
-		// 			alert("خطای 500");
-		// 		}
-		// 	});
-
-
-		// });
-		// // چت های بین مخاطب و فرد لاگین کننده را به نمایش میگذارد
-		// function viewChatfunc(arrayMessages, userid, contactid) {
-
-		// 	try {
-		// 		$.each(arrayMessages, function(index, message) {
-		// 			var id = message.id;
-		// 			var sendId = message.sendId;
-		// 			var text = message.text;
-		// 			var date = message.date;
-		// 			console.log(id + "  " + sendId + "  " + text + "  " + date);
-		// 			var div = $("<div>").attr("class", "boxchat ").attr("id", id);
-		// 			var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
-		// 			$(div).html(item);
-		// 			$("#msg-card_body").append($(div));
-
-		// 			if (sendId == userid) {
-		// 				$(div).addClass("left");
-		// 			} else if (sendId == contactid) {
-		// 				$(div).addClass("right");
-		// 			}
-		// 		});
-		// 	} catch (exception) {
-		// 		console.error("606");
-		// 	}
-		// }
-
-		// function loadMessages(contactid) {
-		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/load_messages",
-		// 		type: "POST",
-		// 		data: JSON.stringify({
-		// 			"contactid": contactid
-		// 		}),
-		// 		contentType: "application/json",
-		// 		success: function(response) {
-		// 			try {
-		// 				response = JSON.parse(response);
-		// 				if (response.status_code === 200) {
-		// 					// Clear existing messages
-		// 					$('.msg_card_body').html('');
-
-		// 					// Display messages in the UI
-		// 					for (let i = 0; i < response.messages.length; i++) {
-		// 						const message = response.messages[i];
-		// 						let messageContainer;
-
-		// 						if (message.sender_id == <?= $_SESSION['id']; ?>) {
-		// 							messageContainer = `<div class="d-flex justify-content-end mb-4">
-		//                                                     <div class="msg_cotainer_send">${message.message}</div>
-		//                                                 </div>`;
-		// 						} else {
-		// 							messageContainer = `<div class="d-flex justify-content-start mb-4">
-		//                                                     <div class="msg_cotainer">${message.message}</div>
-		//                                                 </div>`;
-		// 						}
-		// 						$('.msg_card_body').append(messageContainer);
-		// 					}
-		// 				} else {
-		// 					alert("Failed to load messages");
-		// 				}
-		// 			} catch (e) {
-		// 				console.error("Parsing error:", e);
-		// 				alert("Error parsing JSON response");
-		// 			}
-		// 		},
-		// 		error: function(xhr, status, error) {
-		// 			console.error("Error loading messages:", error);
-		// 			alert("Error loading messages");
-		// 		}
-		// 	});
-		// }
-
-
 		// Click event for sending a message
-
 
 		function addHtmlElement($name, $changeid) {
 			// بررسی وجود $name
 			if (!$name) {
 				$name = "Unknown";
 			}
-
 			var item = `
         <p class="id">${$changeid}</p>
         <p class="name">${$name}</p>
@@ -430,8 +354,6 @@
 					}
 				});
 			});
-			$("#modalAdd").css("display", "none");
-
 			$("li.liclass").click(function() {
 				$(this).addClass("active").css({
 					opacity: 0.5
@@ -439,7 +361,6 @@
 				var Nam = $("li.active").children("p.name").text();
 				$("#changeNam1").text(Nam);
 				var contactid = $("li.active").children("p.id").text();
-
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
 				$("#Message_Send").off('click').on('click', function() {
@@ -451,125 +372,6 @@
 				});
 			});
 		}
-
-		$("#contact").on("click", "li", function() {
-			$(this).addClass("active").siblings().removeClass("active");
-			var Nam = $(".active").children("p").text();
-			$("#changeNam1").text(Nam);
-			var ihtml = '<i class="fa fa-trash  aclass"></i>';
-			$("#but").html(ihtml);
-			var contactid = $(this).attr("data-id");
-			$("#hiddeninput").val(contactid);
-			$("#msg-card_body").empty();
-			$("#msg-card_body").children().empty();
-
-			// ارسال درخواست AJAX برای دریافت پیام‌ها
-			$.ajax({
-				url: "<?= URL; ?>index/load_chat",
-				type: "POST",
-				data: {
-					"contactid": contactid
-				},
-				success: function(response) {
-					try {
-						response = JSON.parse(response);
-						// فراخوانی تابع viewChatfunc برای نمایش پیام‌ها
-						viewChatfunc(response.arrayMessages, response.userid, response.contactid);
-					} catch (e) {
-					
-					}
-				},
-				error: function(response) {
-					alert("خطای 500");
-				}
-			});
-		});
-
-		// تابع viewChatfunc برای نمایش پیام‌ها
-		// function viewChatfunc(arrayMessages, userid, contactid) {
-		// 	try {
-		// 		$.each(arrayMessages, function(index, message) {
-		// 			var id = message.id;
-		// 			var sendId = message.sendId;
-		// 			var text = message.text;
-		// 			var date = message.date;
-		// 			var div = $("<div>").attr("class", "boxchat ").attr("id", id);
-		// 			var item = '<div class="message">' + ' <pre>' + text + '</pre>' + '</div><div class="time">' + date + '</div>';
-		// 			$(div).html(item);
-		// 			$("#msg-card_body").append($(div));
-
-		// 			if (sendId == userid) {
-		// 				$(div).addClass("left");
-		// 			} else if (sendId == contactid) {
-		// 				$(div).addClass("right");
-		// 			}
-		// 		});
-		// 	} catch (exception) {
-		// 		console.error("Error displaying messages: " + exception.message);
-		// 	}
-		// }
-
-
-		// function edit(event) {
-		// 	var contactElement = event.target.closest("li");
-		// 	var contactName = contactElement.querySelector("p").textContent;
-		// 	document.getElementById("newName").value = contactName;
-		// 	document.getElementById("modal1").style.display = "block";
-		// }
-
-
-		// function closeModal() {
-		// 	document.getElementById('modal1').style.display = 'none';
-		// }
-
-
-		// ----------- close modal edit----------------------//*
-		// function edit(event) {
-		// 	var newName = document.getElementById("newName").value = "";
-		// 	document.getElementById("warning2").style.display = "block";
-		// 	$("#warning2").text("change name");
-		// 	document.getElementById("modal1").style.display = 'block';
-		// 	if (newName) {
-		// 		var contactName = event.target.parentNode.querySelector('.contact-name').textContent; // دریافت نام فعلی مخاطب
-		// 		$.ajax({
-		// 			url: "<?= URL; ?>index/update_data",
-		// 			type: "POST",
-		// 			data: {
-		// 				"contactName": contactName,
-		// 				"newName": newName
-		// 			},
-		// 			success: function(response) {
-		// 				if (response === "success") {
-		// 					event.target.parentNode.querySelector('.contact-name').textContent = newName; // به‌روزرسانی نام مخاطب در ویو
-		// 					alert("Name updated successfully!");
-		// 				} else {
-		// 					alert("Error updating name.");
-		// 				}
-		// 			},
-		// 			error: function(response) {
-		// 				alert("Error updating name.");
-		// 			}
-		// 		});
-		// 	}
-		// }
-
-		// function refresh () {
-		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/edit_data",
-		// 		type: "POST",
-		// 		data: {},
-		// 		success: function(response) {
-		// 			response = JSON.parse(response);
-		// 			addContact(response.res);
-		// 		},
-		// 		error: function(response) {
-		// 			alert("خطای 500");
-		// 		}
-		// 	});
-		// };
-		// refresh.onclick();
-
-
 
 		refresh.onclick = function() {
 			$.ajax({

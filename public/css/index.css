@@ -466,3 +466,11 @@ p {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+/* #loadmessage{
+  display: inline-block;
+  max-width: 50%;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+} */
