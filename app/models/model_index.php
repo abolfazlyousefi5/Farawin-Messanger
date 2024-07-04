@@ -128,38 +128,7 @@ class model_index extends Model
     //     ));
     // }
 
-    // function contact_massage($post)
-    // {
-    //     $message = $post['message'];
-    //     $contactid = $post['contactid'];
 
-    //     // درج پیام جدید در جدول پیام‌ها
-    //     $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
-    //     $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d H:i:s"));
-    //     $this->doQuery($sql, $values);
-
-    //     // دریافت پیام‌های ارسال شده و دریافت شده توسط کاربر
-    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ";
-    //     $params = array($_SESSION['id'], $contactid);
-    //     $result1 = $this->doSelect($sql, $params);
-
-    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ";
-    //     $params = array($contactid, $_SESSION['id']);
-    //     $result2 = $this->doSelect($sql, $params);
-
-    //     // ترکیب دو مجموعه پیام‌ها
-    //     $result3 = array_merge($result1, $result2);
-
-    //     // مرتب‌سازی پیام‌ها بر اساس تاریخ ارسال با استفاده از usort
-    //     usort($result3, function ($a, $b) {
-    //         return strtotime($a['DateSend']) - strtotime($b['DateSend']);
-    //     });
-
-    //     // ارسال پاسخ به صورت JSON
-    //     echo json_encode(array(
-    //         "msg" => $result3,
-    //         "msg2" => $_SESSION['id']
-    //     ));
     function contact_massage($post)
     {
         $message = $post['message'];
@@ -168,8 +137,13 @@ class model_index extends Model
         $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
         $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d H:i:s"));
         $this->doQuery($sql, $values);
-
+       
         // دریافت پیام‌های ارسال شده توسط کاربر و مرتب‌سازی بر اساس ID
+
+    }
+    function refresh_message($post)
+    {
+        $contactid = $post['contactid'];
         $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ORDER BY id";
         $params = array($_SESSION['id'], $contactid);
         $result1 = $this->doSelect($sql, $params);
@@ -179,10 +153,6 @@ class model_index extends Model
         $params = array($contactid, $_SESSION['id']);
         $result2 = $this->doSelect($sql, $params);
         $result3 = array_merge($result1, $result2);
-
-        usort($result3, function ($a, $b) {
-            return $a['id'] - $b['id'];
-        });
         echo json_encode(array(
             "msg" => $result3,
             "msg2" => $_SESSION['id']

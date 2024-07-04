@@ -174,7 +174,7 @@ html {
 }
 
 .msg_cotainer {
-  margin-top: auto;
+  margin-top: 15px;
   margin-bottom: auto;
   margin-left: 10px;
   border-radius: 25px;
@@ -188,7 +188,7 @@ html {
 .msg_cotainer_send {
   margin-top: auto;
   margin-bottom: auto;
-  margin-right: 230px;
+  margin-right: 320px;
   border-radius: 25px;
   max-width: 50%;
   background-color: #78e08f;

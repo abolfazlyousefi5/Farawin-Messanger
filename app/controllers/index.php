@@ -41,4 +41,9 @@ class Index extends Controller
     {
         $this->model->contact_massage($_POST);
     }
+    function refresh_message()
+    {
+        $this->model->refresh_message($_POST);
+    }
+  
 }

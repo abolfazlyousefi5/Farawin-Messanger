@@ -177,14 +177,16 @@
 			document.getElementById("modal1").style.display = "block";
 		}
 
-
+		// ***************************************************************************************	
 		function addContact(res) {
 			$("#bodyside ").children().empty();
 			$("#contact ").children().empty();
 			for (let i = 0; i < res.length; i++) {
-				// console.log(res[i]['name'] + res[i]['contactid']);
 				addHtmlElement(res[i]['name'], res[i]['contactid']);
 			}
+			var contactid = $("li.active").children("p.id").text();
+			var message = $("#message").val();
+			// displayMessages(messages, contactid);
 		};
 		$("#changeName").click(function() {
 			if ($("#newName").val() == "") {
@@ -195,6 +197,8 @@
 
 				$("li.active").children("p.name").text(changename);
 				$("#changeNam1").text(changename);
+
+
 				// شروع : تغییر دادن در جدول مخاطبین 
 				// console.log($("li.active").children("p.id").text());
 				var changenametable = $("li.active").children("p.id").text();
@@ -255,8 +259,6 @@
 					"message": message
 				},
 				success: function(response) {
-					response = JSON.parse(response);
-					displayMessages(response.msg, response.msg2);
 				},
 				error: function(response) {
 					alert("Error sending message");
@@ -264,15 +266,14 @@
 			});
 		}
 
-		function displayMessages(messages, userId) {
-			$("#sender").empty();
-			$("#receiver").empty();
+		function displayMessages(messages, contactid) {
+			$(".msg_card_body").empty()
 			messages.forEach(function(i) {
 				var messageElement = "<div><div class='msg_text'>" + i['text'] + "</div><small class='msg_date'>" + i['DateSend'] + "</small></div>";
-				if (userId == i["sendId"]) {
-					$("#sender").append("<div class='msg_cotainer'>" + messageElement + "</div>");
+				if (contactid == i["sendId"]) {
+					$(".msg_card_body").append("<div class='msg_cotainer'>" + messageElement + "</div>");
 				} else {
-					$("#receiver").append("<div class='msg_cotainer_send'>" + messageElement + "</div>");
+					$(".msg_card_body").append("<div class='msg_cotainer_send'>" + messageElement + "</div>");
 				}
 			});
 		}
@@ -283,11 +284,6 @@
 				var message = $("#message").val();
 				sendMessage(contactid, message);
 				$("#message").val(''); // Clear the message input after sending
-			});
-
-			$("li.liclass").click(function() {
-				var contactid = $(this).children("p.id").text();
-				loadMessages(contactid);
 			});
 		});
 
@@ -309,14 +305,33 @@
 
 			});
 
-			$("li.liclass").click(function() {
-				var contactid = $(this).children("p.id").text();
-				$('.msg_card_body').empty(); // Clear the message area
-				loadMessages(contactid);
-				sendMessage(contactid, message);
-
-			});
+		
 		});
+
+		function refresh_message(rrr) {
+			$.ajax({
+				url: "<?= URL; ?>index/refresh_message",
+				type: "POST",
+				data: {
+					"contactid": rrr,
+				},
+				success: function(response) {
+					response = JSON.parse(response);
+					let messages = [];
+					for(let [i, val] of response.msg.entries()){
+						messages.push(val);
+					}
+					console.log(messages)
+					messages.sort((a, b) => a.id - b.id);
+					console.log(messages)
+					displayMessages(messages, response.msg2);
+				},
+				error: function(response) {
+					alert("Error sending message");
+				}
+			});
+		}
+
 
 		// Click event for sending a message
 
@@ -344,26 +359,10 @@
 				var Nam = $("li.active").children("p.name").text();
 				$("#changeNam1").text(Nam);
 				var contactid = $("li.active").children("p.id").text();
+				refresh_message(contactid);
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
 				$("#Massage_Send").off('click').on('click', function() {
-					if (!isMessageSent) {
-						var message = $("#message").val();
-						sendMessage(contactid, message);
-						isMessageSent = true;
-					}
-				});
-			});
-			$("li.liclass").click(function() {
-				$(this).addClass("active").css({
-					opacity: 0.5
-				}).siblings().removeClass("active");
-				var Nam = $("li.active").children("p.name").text();
-				$("#changeNam1").text(Nam);
-				var contactid = $("li.active").children("p.id").text();
-				// تعریف وضعیت ارسال پیام
-				var isMessageSent = false;
-				$("#Message_Send").off('click').on('click', function() {
 					if (!isMessageSent) {
 						var message = $("#message").val();
 						sendMessage(contactid, message);
