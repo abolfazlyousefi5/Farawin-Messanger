@@ -277,22 +277,12 @@
 
 
 		// Click event for sending a message
-
-		$("#Message_Send").click(function() {
-			var contactid = $("li.active").children("p.id").text();
-			var message = $("#message").val();
-			sendMessage(contactid, message);
-		});
-
 		$(document).ready(function() {
 			$("#Massage_Send").click(function() {
 				var contactid = $("li.active").children("p.id").text();
 				var message = $("#message").val();
 				sendMessage(contactid, message);
-
 			});
-
-
 		});
 
 		function refresh_message(rrr) {
