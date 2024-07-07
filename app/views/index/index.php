@@ -23,7 +23,7 @@
 					<div class="card-header">
 						<div class="input-group" style="display: flex; justify-content: flex-start; flex-direction: row-reverse;" ;>
 							<a href="#" id="plus"><i class="fa fa-plus-circle plus" onclick="plus()"></i></a>
-							<a href="#" id="refresh"><i class="fa fa-refresh" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
+							<a href="https://localhost/Farawin-Messanger-master5/login/" id="refresh"><i class="fa fa-sign-out" style="font-size: 1.6rem; color: #82ccdd; margin-left: 10px; margin-top: 2px;"></i></a>
 						</div>
 					</div>
 
@@ -159,7 +159,8 @@
 
 		$(document).ready(function() {
 			$.ajax({
-				url: "https://localhost/Farawin-Messanger-master5/index/get_contact_data",
+
+				url: "<?= URL; ?>index/get_contact_data",
 				type: "POST",
 				data: {},
 				success: function(response) {
@@ -382,7 +383,7 @@
 				var messageId = $(this).data('id');
 				var messageText = $(this).text();
 				showMessageModal(messageId, messageText);
-			});		
+			});
 		});
 
 		// Click event for sending a message
