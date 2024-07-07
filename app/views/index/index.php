@@ -13,7 +13,6 @@
 	<link rel="stylesheet" href="public/css/font-awesome.min.css">
 	<!-- CSS -->
 	<link rel="stylesheet" href="public/css/index.css">
-
 </head>
 
 <body>
@@ -111,7 +110,21 @@
 			</form>
 		</div>
 	</div>
+
+	<!-- Edit and Delete Message Modal -->
+	<div id="modal_message">
+		<div class="content">
+			<form onsubmit="return false">
+				<span id="closeModal_message">&times;</span><br>
+				<textarea id="editMessageText" class="contact"></textarea><br>
+				<button type="submit" id="editMessageBtn" class="contact" onclick="editMessage(event)">ویرایش</button>
+				<button type="button" id="deleteMessageBtn" class="contact" onclick="deleteMessage(event)">حذف</button>
+				<span id="warning2" style="display:none;color:red;"></span>
+			</form>
+		</div>
+	</div>
 	<!-- JQuery -->
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<!-- Script -->
@@ -223,33 +236,6 @@
 			}
 		});
 
-		// function sendMessage(contactid, message) {
-		// 	$.ajax({
-		// 		url: "<?= URL; ?>index/contact_massage",
-		// 		type: "POST",
-		// 		data: {
-		// 			"contactid": contactid,
-		// 			"message": message
-		// 		},
-		// 		success: function(response) {
-		// 			response = JSON.parse(response);
-		// 			// console.log(response.msg[2]['text']);
-		// 			response.msg.forEach(function(i) {
-		// 				console.log(i['text']);
-		// 				if (response.msg2 == i["sendId"]) {
-		// 					$("#sender").append("<div class='msg_cotainer'>" + i['text'] + "</div>")
-		// 				} else {
-		// 					$("#receiver").append("<div class='msg_cotainer_send'>" + i['text'] + "</div>")
-		// 				}
-		// 			});
-		// 		},
-		// 		error: function(response) {
-		// 			alert("Error sending message");
-		// 		}
-		// 	});
-		// }
-
-
 		function sendMessage(contactid, message) {
 			$.ajax({
 				url: "<?= URL; ?>index/contact_massage",
@@ -258,8 +244,7 @@
 					"contactid": contactid,
 					"message": message
 				},
-				success: function(response) {
-				},
+				success: function(response) {},
 				error: function(response) {
 					alert("Error sending message");
 				}
@@ -269,7 +254,7 @@
 		function displayMessages(messages, contactid) {
 			$(".msg_card_body").empty()
 			messages.forEach(function(i) {
-				var messageElement = "<div><div class='msg_text'>" + i['text'] + "</div><small class='msg_date'>" + i['DateSend'] + "</small></div>";
+				var messageElement = "<div><div class='msg_text' data-id='" + i['id'] + "'>" + i['text'] + "</div><small class='msg_date'>" + i['DateSend'] + "</small></div>";
 				if (contactid == i["sendId"]) {
 					$(".msg_card_body").append("<div class='msg_cotainer'>" + messageElement + "</div>");
 				} else {
@@ -277,6 +262,7 @@
 				}
 			});
 		}
+
 
 		$(document).ready(function() {
 			$("#Massage_Send").click(function() {
@@ -305,7 +291,7 @@
 
 			});
 
-		
+
 		});
 
 		function refresh_message(rrr) {
@@ -318,7 +304,7 @@
 				success: function(response) {
 					response = JSON.parse(response);
 					let messages = [];
-					for(let [i, val] of response.msg.entries()){
+					for (let [i, val] of response.msg.entries()) {
 						messages.push(val);
 					}
 					console.log(messages)
@@ -332,6 +318,73 @@
 			});
 		}
 
+		$(document).ready(function() {
+			var currentMessageId;
+
+			function showMessageModal(messageId, messageText) {
+				currentMessageId = messageId;
+				$('#editMessageText').val(messageText);
+				$('#modal_message').show();
+			}
+
+			$('#closeModal_message').click(function() {
+				$('#modal_message').hide();
+			});
+
+			$(window).click(function(event) {
+				if (event.target.id === 'modal_message') {
+					$('#modal_message').hide();
+				}
+			});
+
+			$('#editMessageBtn').click(function() {
+				var newText = $('#editMessageText').val();
+				$.ajax({
+					url: "<?= URL; ?>index/edit_message",
+					type: "POST",
+					data: {
+						"messageId": currentMessageId,
+						"newText": newText
+					},
+					success: function(response) {
+						response = JSON.parse(response);
+						$('#modal_message').hide();
+						// Refresh messages or update the specific message in the DOM
+						// For example:
+						$(`#message-${currentMessageId}`).text(newText);
+					},
+					error: function(response) {
+						alert("Error editing message");
+					}
+				});
+			});
+
+			$('#deleteMessageBtn').click(function() {
+				$.ajax({
+					url: "<?= URL; ?>index/delete_message",
+					type: "POST",
+					data: {
+						"messageId": currentMessageId
+					},
+					success: function(response) {
+						response = JSON.parse(response);
+						$('#modal_message').hide();
+						// Remove the message from the DOM
+						$(`#message-${currentMessageId}`).remove();
+					},
+					error: function(response) {
+						alert("Error deleting message");
+					}
+				});
+			});
+
+			// Add click event to message elements to show modal
+			$(document).on('click', '.msg_text', function() {
+				var messageId = $(this).data('id');
+				var messageText = $(this).text();
+				showMessageModal(messageId, messageText);
+			});
+		});
 
 		// Click event for sending a message
 

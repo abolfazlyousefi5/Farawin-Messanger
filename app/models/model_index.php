@@ -137,7 +137,7 @@ class model_index extends Model
         $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
         $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d H:i:s"));
         $this->doQuery($sql, $values);
-       
+
         // دریافت پیام‌های ارسال شده توسط کاربر و مرتب‌سازی بر اساس ID
 
     }
@@ -156,6 +156,28 @@ class model_index extends Model
         echo json_encode(array(
             "msg" => $result3,
             "msg2" => $_SESSION['id']
+        ));
+    }
+    function delete_message($post)
+    {
+        $messageId = $post['messageId'];
+        $sql = "DELETE FROM message WHERE id=?";
+        $params = array($messageId);
+        $this->doQuery($sql, $params);
+        echo json_encode(array(
+            "msg" => "Message deleted successfully"
+        ));
+    }
+
+    function edit_message($post)
+    {
+        $messageId = $post['messageId'];
+        $newText = $post['newText'];
+        $sql = "UPDATE message SET text=? WHERE id=?";
+        $params = array($newText, $messageId);
+        $this->doQuery($sql, $params);
+        echo json_encode(array(
+            "msg" => "Message updated successfully"
         ));
     }
 }
