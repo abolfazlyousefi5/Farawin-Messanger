@@ -350,7 +350,6 @@
 						response = JSON.parse(response);
 						$('#modal_message').hide();
 						// Refresh messages or update the specific message in the DOM
-						// For example:
 						$(`#message-${currentMessageId}`).text(newText);
 					},
 					error: function(response) {
@@ -383,7 +382,7 @@
 				var messageId = $(this).data('id');
 				var messageText = $(this).text();
 				showMessageModal(messageId, messageText);
-			});
+			});		
 		});
 
 		// Click event for sending a message
