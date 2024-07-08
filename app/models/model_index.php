@@ -92,42 +92,6 @@ class model_index extends Model
         );
     }
 
-    // function contact_massage($post)
-    // {
-    //     $message = $post['message'];
-    //     $contactid = $post['contactid'];
-
-    //     // $sql = "SELECT * FROM message WHERE sendId=? AND getId=? AND text=?";
-    //     // $params = array($_SESSION['id'], $contactid, $message);
-    //     // $result = $this->doSelect($sql, $params);
-
-
-    //     $sql = "INSERT INTO message (sendId, getId, text, DateSend) VALUES (?, ?, ?, ?)";
-    //     $values = array($_SESSION['id'], $contactid, $message, self::jalali_date("Y/m/d H:i:s"));
-    //     $this->doQuery($sql, $values);
-
-
-    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ";
-    //     $params = array($_SESSION['id'], $contactid);
-    //     $result1 = $this->doSelect($sql, $params);
-
-    //     $sql = "SELECT * FROM message WHERE sendId=? AND getId=? ";
-    //     $params = array($contactid, $_SESSION['id']);
-    //     $result2 = $this->doSelect($sql, $params);
-    //     $result3 = array_merge($result1, $result2);
-    //     sort($result3);
-    //     // Determine the color based on sender and receiver
-    //     // $senderColor = 'blue';  
-    //     // $receiverColor = 'green'; 
-
-    //     echo json_encode(array(
-    //         "msg" => $result3,
-    //         "msg2" => $_SESSION['id']
-    //         // "senderColor" => $senderColor,
-    //         // "receiverColor" => $receiverColor
-    //     ));
-    // }
-
 
     function contact_massage($post)
     {

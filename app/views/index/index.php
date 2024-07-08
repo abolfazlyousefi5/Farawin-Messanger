@@ -118,7 +118,7 @@
 				<span id="closeModal_message">&times;</span><br>
 				<textarea id="editMessageText" class="contact"></textarea><br>
 				<button type="submit" id="editMessageBtn" class="contact" onclick="editMessage(event)">ویرایش</button>
-				<button type="button" id="deleteMessageBtn" class="contact" onclick="deleteMessage(event)">حذف</button>
+				<button type="button" id="deleteMessageBtn" class="contact" onclick=" deleteMessage(event)">حذف</button>
 				<span id="warning2" style="display:none;color:red;"></span>
 			</form>
 		</div>
@@ -309,6 +309,8 @@
 			});
 		}
 
+
+		// Click event for editing a message and del
 		$(document).ready(function() {
 			var currentMessageId;
 
@@ -342,6 +344,8 @@
 						$('#modal_message').hide();
 						// Refresh messages or update the specific message in the DOM
 						$(`#message-${currentMessageId}`).text(newText);
+						// refresh_message();
+
 					},
 					error: function(response) {
 						alert("Error editing message");
@@ -361,6 +365,7 @@
 						$('#modal_message').hide();
 						// Remove the message from the DOM
 						$(`#message-${currentMessageId}`).remove();
+						// refresh_message();
 					},
 					error: function(response) {
 						alert("Error deleting message");
