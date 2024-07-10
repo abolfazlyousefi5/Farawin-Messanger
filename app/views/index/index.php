@@ -344,8 +344,7 @@
 						$('#modal_message').hide();
 						// Refresh messages or update the specific message in the DOM
 						$(`#message-${currentMessageId}`).text(newText);
-						// refresh_message();
-
+						refresh_message(contactid);
 					},
 					error: function(response) {
 						alert("Error editing message");
@@ -365,7 +364,7 @@
 						$('#modal_message').hide();
 						// Remove the message from the DOM
 						$(`#message-${currentMessageId}`).remove();
-						// refresh_message();
+						refresh_message(contactid);
 					},
 					error: function(response) {
 						alert("Error deleting message");
@@ -414,6 +413,7 @@
 					if (!isMessageSent) {
 						var message = $("#message").val();
 						sendMessage(contactid, message);
+						refresh_message(contactid);
 						isMessageSent = true;
 					}
 				});
