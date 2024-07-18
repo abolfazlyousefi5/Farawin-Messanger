@@ -129,6 +129,9 @@
 	<script type="text/javascript" src="public/js/demo.js"></script>
 	<!-- Script -->
 	<script>
+
+		var contact1;
+
 		//----------- close modal ad----------------------//*
 		$("#closeModal").click(function() {
 			$("#Mymodal").hide();
@@ -313,7 +316,7 @@
 		// Click event for editing a message and del
 		$(document).ready(function() {
 			var currentMessageId;
-
+			var contactid2;
 			function showMessageModal(messageId, messageText) {
 				currentMessageId = messageId;
 				$('#editMessageText').val(messageText);
@@ -344,7 +347,7 @@
 						$('#modal_message').hide();
 						// Refresh messages or update the specific message in the DOM
 						$(`#message-${currentMessageId}`).text(newText);
-						refresh_message(contactid);
+						refresh_message(contact1);
 					},
 					error: function(response) {
 						alert("Error editing message");
@@ -364,7 +367,7 @@
 						$('#modal_message').hide();
 						// Remove the message from the DOM
 						$(`#message-${currentMessageId}`).remove();
-						refresh_message(contactid);
+						refresh_message(contact1);
 					},
 					error: function(response) {
 						alert("Error deleting message");
@@ -406,6 +409,7 @@
 				var Nam = $("li.active").children("p.name").text();
 				$("#changeNam1").text(Nam);
 				var contactid = $("li.active").children("p.id").text();
+				contact1 = contactid;
 				refresh_message(contactid);
 				// تعریف وضعیت ارسال پیام
 				var isMessageSent = false;
