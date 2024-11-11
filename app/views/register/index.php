@@ -32,7 +32,7 @@
                 <span></span>
                 <span></span>
             </a>
-            <a href="https://localhost/farawin-Messanger-master/login" class="beautiful-button">Do you have an account?</a>
+            <a href="https://localhost/Farawin-Messanger-master5/login/" class="beautiful-button">Do you have an account?</a>
             <br>
             <span id="#showError"></span>
         </form>
